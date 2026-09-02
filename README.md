@@ -1,59 +1,173 @@
-# MsWord
+# Legal Office Management System
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.12.
+A web-based **Legal Office Management System** for managing, monitoring, and tracking legal files throughout their processing workflow.
 
-## Development server
+Built with **Angular**, **Spring Boot**, and **PostgreSQL**.
 
-To start a local development server, run:
+## Features
+
+* User registration and login
+* JWT authentication
+* Legal file management
+* Case and status tracking
+* Document type and format management
+* File actions and reviews
+* Final document and proof of service management
+* Dashboard for monitoring legal files
+
+## Technology Stack
+
+**Frontend**
+
+* Angular 21
+* TypeScript
+* HTML & CSS
+* RxJS
+
+**Backend**
+
+* Java
+* Spring Boot
+* Spring Security
+* JWT
+* Spring Data JPA
+* Maven
+
+**Database**
+
+* PostgreSQL
+
+**Tools**
+
+* Visual Studio Code
+* Eclipse
+* Git & GitHub
+* Postman
+
+## System Architecture
+
+```text
+Angular Frontend
+       ↓
+  REST API / HTTP
+       ↓
+Spring Boot Backend
+       ↓
+   JPA / Hibernate
+       ↓
+PostgreSQL Database
+```
+
+### Authentication
+
+```text
+Angular
+   ↓
+Login / Register
+   ↓
+Spring Boot
+   ↓
+Spring Security + JWT
+   ↓
+PostgreSQL
+```
+
+## Legal File Workflow
+
+```text
+RECEIVED
+    ↓
+INITIAL REVIEW
+    ↓
+FOR REVIEW
+    ↓
+FINAL DOCUMENT
+    ↓
+COMPLETED
+```
+
+## Database
+
+Main tables:
+
+```text
+users
+statuses
+spms_types
+offices
+document_types
+logbook_types
+document_formats
+legal_files
+file_actions
+file_documents
+initial_reviews
+file_reviews
+final_documents
+proof_of_service
+```
+
+The `legal_files` table serves as the **central record** of the system.
+
+## Development
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Run the development server:
 
 ```bash
 ng serve
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Open:
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
+```text
+http://localhost:4200/
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
+Build the project:
 
 ```bash
 ng build
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+Run tests:
 
 ```bash
 ng test
 ```
 
-## Running end-to-end tests
+## Deployment
 
-For end-to-end (e2e) testing, run:
+Planned deployment:
 
-```bash
-ng e2e
+```text
+Angular Frontend → Vercel
+Spring Boot API  → Railway
+PostgreSQL       → Database Server
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+## Project Status
 
-## Additional Resources
+* [/] Angular project setup
+* [/] Login & registration
+* [/] JWT authentication
+* [/] Dashboard
+* [/] Legal Files interface
+* [/] PostgreSQL database
+* [/] Spring Boot backend foundation
+* [/] Legal file editing
+* [/] Status updating
+* [/] Document management
+* [/] Review workflow
+* [/] Production deployment
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## Author
+
+**Jonathan Eguna**
+
+Built with **Angular, Spring Boot, Java, Spring Security, JWT, and PostgreSQL**.
