@@ -1,0 +1,146 @@
+<div class="register-container">
+
+  <div class="register-card">
+
+    <h1>Legal Office</h1>
+
+    <h2>Create Account</h2>
+
+    <form (ngSubmit)="register()">
+
+      <!-- Full Name -->
+      <div class="form-group">
+
+        <label for="fullName">
+          Full Name
+        </label>
+
+        <input
+          id="fullName"
+          type="text"
+          name="fullName"
+          [(ngModel)]="registerData.fullName"
+          placeholder="Enter full name"
+          required
+        >
+
+      </div>
+
+      <!-- Username -->
+      <div class="form-group">
+
+        <label for="username">
+          Username
+        </label>
+
+        <input
+          id="username"
+          type="text"
+          name="username"
+          [(ngModel)]="registerData.username"
+          placeholder="Enter username"
+          autocomplete="username"
+          required
+        >
+
+      </div>
+
+      <!-- Email -->
+      <div class="form-group">
+
+        <label for="email">
+          Email
+        </label>
+
+        <input
+          id="email"
+          type="email"
+          name="email"
+          [(ngModel)]="registerData.email"
+          placeholder="Enter email"
+          autocomplete="email"
+          required
+        >
+
+      </div>
+
+      <!-- Password -->
+      <div class="form-group">
+
+        <label for="password">
+          Password
+        </label>
+
+        <input
+          id="password"
+          type="password"
+          name="password"
+          [(ngModel)]="registerData.password"
+          placeholder="Enter password"
+          autocomplete="new-password"
+          required
+        >
+
+      </div>
+
+      <!-- Confirm Password -->
+      <div class="form-group">
+
+        <label for="confirmPassword">
+          Confirm Password
+        </label>
+
+        <input
+          id="confirmPassword"
+          type="password"
+          name="confirmPassword"
+          [(ngModel)]="confirmPassword"
+          placeholder="Confirm password"
+          autocomplete="new-password"
+          required
+        >
+
+      </div>
+
+      <!-- Error -->
+      <div
+        class="error-message"
+        *ngIf="errorMessage"
+      >
+        {{ errorMessage }}
+      </div>
+
+      <!-- Success -->
+      <div
+        class="success-message"
+        *ngIf="successMessage"
+      >
+        {{ successMessage }}
+      </div>
+
+      <!-- Register Button -->
+      <button
+        type="submit"
+        [disabled]="loading"
+      >
+
+        {{ loading ? 'Creating Account...' : 'Register' }}
+
+      </button>
+
+    </form>
+
+    <!-- Login Link -->
+    <p class="login-link">
+
+      Already have an account?
+
+      <a routerLink="/login">
+        Login
+      </a>
+
+    </p>
+
+  </div>
+
+</div>

@@ -1,0 +1,414 @@
+/* =========================
+   MAIN CONTAINER
+   ========================= */
+
+.legal-files {
+  width: 100%;
+  padding: 24px;
+  box-sizing: border-box;
+  background: #f5f6f8;
+}
+
+
+/* =========================
+   PAGE HEADER
+   ========================= */
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-bottom: 18px;
+}
+
+.page-header h2 {
+  margin: 0;
+
+  font-size: 24px;
+  font-weight: 600;
+}
+
+
+/* =========================
+   ADD BUTTON
+   ========================= */
+
+.add-button {
+  padding: 9px 16px;
+
+  border: 1px solid #1f4e78;
+  border-radius: 4px;
+
+  background: #1f4e78;
+  color: white;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+.add-button:hover {
+  background: #173a5c;
+}
+
+
+/* =========================
+   CREATE FORM
+   ========================= */
+
+.form-container {
+  width: 100%;
+  margin-bottom: 20px;
+
+  background: white;
+
+  border: 1px solid #c8c8c8;
+  border-radius: 4px;
+
+  box-sizing: border-box;
+}
+
+
+/* =========================
+   FORM HEADER
+   ========================= */
+
+.form-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 14px 18px;
+
+  background: #f2f2f2;
+
+  border-bottom: 1px solid #c8c8c8;
+}
+
+.form-header h3 {
+  margin: 0;
+
+  font-size: 17px;
+  font-weight: 600;
+}
+
+
+/* CLOSE BUTTON */
+
+.close-button {
+  width: 30px;
+  height: 30px;
+
+  border: none;
+  border-radius: 3px;
+
+  background: transparent;
+
+  font-size: 22px;
+  line-height: 1;
+
+  cursor: pointer;
+}
+
+.close-button:hover {
+  background: #ddd;
+}
+
+
+/* =========================
+   FORM
+   ========================= */
+
+form {
+  padding: 20px;
+}
+
+
+/* =========================
+   FORM GRID
+   ========================= */
+
+.form-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+
+  gap: 16px 18px;
+}
+
+
+/* =========================
+   FORM GROUP
+   ========================= */
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+
+  min-width: 0;
+}
+
+.form-group label {
+  margin-bottom: 6px;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  color: #333;
+}
+
+
+/* =========================
+   INPUTS
+   ========================= */
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+
+  padding: 9px 10px;
+
+  box-sizing: border-box;
+
+  border: 1px solid #bcbcbc;
+  border-radius: 3px;
+
+  background: white;
+
+  font-family: inherit;
+  font-size: 13px;
+
+  color: #333;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+
+  border-color: #1f4e78;
+
+  box-shadow: 0 0 0 1px #1f4e78;
+}
+
+
+/* =========================
+   TEXTAREA
+   ========================= */
+
+.form-group textarea {
+  min-height: 80px;
+
+  resize: vertical;
+}
+
+
+/* CONTACT DETAILS FULL WIDTH */
+
+.full-width {
+  grid-column: 1 / -1;
+}
+
+
+/* =========================
+   FORM BUTTONS
+   ========================= */
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+
+  gap: 10px;
+
+  margin-top: 20px;
+  padding-top: 16px;
+
+  border-top: 1px solid #ddd;
+}
+
+
+/* CANCEL */
+
+.cancel-button {
+  padding: 9px 18px;
+
+  border: 1px solid #aaa;
+  border-radius: 4px;
+
+  background: white;
+
+  color: #333;
+
+  font-size: 13px;
+
+  cursor: pointer;
+}
+
+.cancel-button:hover {
+  background: #eee;
+}
+
+
+/* SAVE */
+
+.save-button {
+  padding: 9px 18px;
+
+  border: 1px solid #1f4e78;
+  border-radius: 4px;
+
+  background: #1f4e78;
+
+  color: white;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+.save-button:hover {
+  background: #173a5c;
+}
+
+
+/* =========================
+   TABLE WRAPPER
+   ========================= */
+
+.table-wrapper {
+  width: 100%;
+
+  overflow-x: auto;
+
+  background: white;
+
+  border: 1px solid #c8c8c8;
+}
+
+
+/* =========================
+   TABLE
+   ========================= */
+
+table {
+  width: 100%;
+
+  min-width: 1500px;
+
+  border-collapse: collapse;
+
+  table-layout: auto;
+
+  font-size: 12px;
+}
+
+
+/* =========================
+   TABLE HEADER
+   ========================= */
+
+thead th {
+  padding: 9px 10px;
+
+  background: #e7e6e6;
+
+  border: 1px solid #b7b7b7;
+
+  color: #222;
+
+  font-weight: 600;
+
+  text-align: left;
+
+  white-space: nowrap;
+}
+
+
+/* =========================
+   TABLE BODY
+   ========================= */
+
+tbody td {
+  padding: 8px 10px;
+
+  border: 1px solid #d0d0d0;
+
+  background: white;
+
+  color: #333;
+
+  white-space: nowrap;
+}
+
+
+/* =========================
+   EXCEL-LIKE ROW HOVER
+   ========================= */
+
+tbody tr:hover td {
+  background: #f3f6fa;
+}
+
+
+/* =========================
+   ALTERNATING ROWS
+   ========================= */
+
+tbody tr:nth-child(even) td {
+  background: #fafafa;
+}
+
+tbody tr:nth-child(even):hover td {
+  background: #f3f6fa;
+}
+
+
+/* =========================
+   RESPONSIVE FORM
+   ========================= */
+
+@media (max-width: 1000px) {
+
+  .form-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+}
+
+
+@media (max-width: 650px) {
+
+  .legal-files {
+    padding: 12px;
+  }
+
+  .page-header {
+    align-items: flex-start;
+    gap: 12px;
+    flex-direction: column;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .full-width {
+    grid-column: auto;
+  }
+
+  .form-actions {
+    flex-direction: column;
+  }
+
+  .cancel-button,
+  .save-button {
+    width: 100%;
+  }
+
+}

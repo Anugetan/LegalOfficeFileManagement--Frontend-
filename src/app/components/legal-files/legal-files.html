@@ -1,0 +1,501 @@
+
+<div class="legal-files">
+
+  <!-- ========================= -->
+  <!-- PAGE HEADER -->
+  <!-- ========================= -->
+
+  <div class="page-header">
+
+    <h2>Legal Files</h2>
+
+    <button
+      class="add-button"
+      type="button"
+      (click)="openCreateForm()">
+
+      + Add Legal File
+
+    </button>
+
+  </div>
+
+
+  <!-- ========================= -->
+  <!-- CREATE FORM -->
+  <!-- ========================= -->
+
+  @if (showForm) {
+
+    <div class="form-container">
+
+      <div class="form-header">
+
+        <h3>Create Legal File</h3>
+
+        <button
+          type="button"
+          class="close-button"
+          (click)="closeCreateForm()">
+
+          ×
+
+        </button>
+
+      </div>
+
+
+      <form
+        [formGroup]="legalFileForm"
+        (ngSubmit)="saveLegalFile()">
+
+        <div class="form-grid">
+
+
+          <!-- CASE NUMBER -->
+
+          <div class="form-group">
+
+            <label for="caseNo">
+              Case No.
+            </label>
+
+            <input
+              id="caseNo"
+              type="text"
+              formControlName="caseNo"
+              placeholder="Enter case number">
+
+          </div>
+
+
+          <!-- DATE RECEIVED -->
+
+          <div class="form-group">
+
+            <label for="dateReceived">
+              Date Received
+            </label>
+
+            <input
+              id="dateReceived"
+              type="date"
+              formControlName="dateReceived">
+
+          </div>
+
+
+          <!-- TIME RECEIVED -->
+
+          <div class="form-group">
+
+            <label for="timeReceived">
+              Time Received
+            </label>
+
+            <input
+              id="timeReceived"
+              type="time"
+              formControlName="timeReceived">
+
+          </div>
+
+
+          <!-- DATE COMPLETED -->
+
+          <div class="form-group">
+
+            <label for="dateCompleted">
+              Date Completed
+            </label>
+
+            <input
+              id="dateCompleted"
+              type="date"
+              formControlName="dateCompleted">
+
+          </div>
+
+
+          <!-- STATUS -->
+
+          <div class="form-group">
+
+            <label for="statusId">
+              Status
+            </label>
+
+            <select
+              id="statusId"
+              formControlName="statusId">
+
+              <option [ngValue]="null">
+                Select Status
+              </option>
+
+              @for (status of statuses; track status.id) {
+
+                <option [ngValue]="status.id">
+                  {{ status.statusName }}
+                </option>
+
+              }
+
+            </select>
+
+          </div>
+
+
+          <!-- SPMS TYPE -->
+
+          <div class="form-group">
+
+            <label for="spmsTypeId">
+              SPMS Type
+            </label>
+
+            <select
+              id="spmsTypeId"
+              formControlName="spmsTypeId">
+
+              <option [ngValue]="null">
+                Select SPMS Type
+              </option>
+
+              @for (spms of spmsTypes; track spms.id) {
+
+                <option [ngValue]="spms.id">
+                  {{ spms.spmsName }}
+                </option>
+
+              }
+
+            </select>
+
+          </div>
+
+
+          <!-- REQUESTING OFFICE -->
+
+          <div class="form-group">
+
+            <label for="requestingOfficeId">
+              Requesting Office
+            </label>
+
+            <select
+              id="requestingOfficeId"
+              formControlName="requestingOfficeId">
+
+              <option [ngValue]="null">
+                Select Requesting Office
+              </option>
+
+              @for (office of offices; track office.id) {
+
+                <option [ngValue]="office.id">
+                  {{ office.officeName }}
+                </option>
+
+              }
+
+            </select>
+
+          </div>
+
+
+          <!-- DOCUMENT TYPE -->
+
+          <div class="form-group">
+
+            <label for="documentTypeId">
+              Document Type
+            </label>
+
+            <select
+              id="documentTypeId"
+              formControlName="documentTypeId">
+
+              <option [ngValue]="null">
+                Select Document Type
+              </option>
+
+              @for (documentType of documentTypes; track documentType.id) {
+
+                <option [ngValue]="documentType.id">
+                  {{ documentType.documentName }}
+                </option>
+
+              }
+
+            </select>
+
+          </div>
+
+
+          <!-- DOCUMENT FORMAT -->
+
+          <div class="form-group">
+
+            <label for="documentFormatId">
+              Document Format
+            </label>
+
+            <select
+              id="documentFormatId"
+              formControlName="documentFormatId">
+
+              <option [ngValue]="null">
+                Select Document Format
+              </option>
+
+              @for (format of documentFormats; track format.id) {
+
+                <option [ngValue]="format.id">
+                  {{ format.formatName }}
+                </option>
+
+              }
+
+            </select>
+
+          </div>
+
+
+          <!-- CURRENT STAGE -->
+
+          <div class="form-group">
+
+            <label for="currentStage">
+              Current Stage
+            </label>
+
+            <select
+              id="currentStage"
+              formControlName="currentStage">
+
+              <option value="RECEIVED">
+                RECEIVED
+              </option>
+
+              <option value="INITIAL_REVIEW">
+                INITIAL REVIEW
+              </option>
+
+              <option value="REVIEW">
+                REVIEW
+              </option>
+
+              <option value="COMPLETED">
+                COMPLETED
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <!-- CONTACT DETAILS -->
+
+          <div class="form-group full-width">
+
+            <label for="contactDetails">
+              Contact Details
+            </label>
+
+            <textarea
+              id="contactDetails"
+              formControlName="contactDetails"
+              placeholder="Enter contact details">
+            </textarea>
+
+          </div>
+
+        </div>
+
+
+        <!-- FORM BUTTONS -->
+
+        <div class="form-actions">
+
+          <button
+            type="button"
+            class="cancel-button"
+            (click)="closeCreateForm()">
+
+            Cancel
+
+          </button>
+
+          <button
+            type="submit"
+            class="save-button">
+
+            Save Legal File
+
+          </button>
+
+        </div>
+
+      </form>
+
+    </div>
+
+  }
+
+
+  <!-- ========================= -->
+  <!-- LEGAL FILE TABLE -->
+  <!-- ========================= -->
+
+  <div class="table-wrapper">
+
+    <table>
+
+      <thead>
+
+        <tr>
+
+          <th>ID</th>
+          <th>Case No.</th>
+          <th>Date Received</th>
+          <th>Time Received</th>
+          <th>Date Completed</th>
+          <th>Status</th>
+          <th>SPMS Type</th>
+          <th>Requesting Office</th>
+          <th>Document Type</th>
+          <th>Document Format</th>
+          <th>Contact Details</th>
+          <th>Current Stage</th>
+          <th>Created By</th>
+          <th>Created At</th>
+          <th>Updated At</th>
+
+        </tr>
+
+      </thead>
+
+
+      <tbody>
+
+        @for (file of legalFiles; track file.id) {
+
+          <tr>
+
+            <!-- ID -->
+
+            <td>
+              {{ file.id }}
+            </td>
+
+
+            <!-- CASE NUMBER -->
+
+            <td>
+              {{ file.caseNo }}
+            </td>
+
+
+            <!-- DATE RECEIVED -->
+
+            <td>
+              {{ file.dateReceived }}
+            </td>
+
+
+            <!-- TIME RECEIVED -->
+
+            <td>
+              {{ file.timeReceived }}
+            </td>
+
+
+            <!-- DATE COMPLETED -->
+
+            <td>
+              {{ file.dateCompleted || 'N/A' }}
+            </td>
+
+
+            <!-- STATUS -->
+
+            <td>
+              {{ file.statusName || 'N/A' }}
+            </td>
+
+
+            <!-- SPMS TYPE -->
+
+            <td>
+              {{ file.spmsTypeName || 'N/A' }}
+            </td>
+
+
+            <!-- REQUESTING OFFICE -->
+
+            <td>
+              {{ file.requestingOfficeName || 'N/A' }}
+            </td>
+
+
+            <!-- DOCUMENT TYPE -->
+
+            <td>
+              {{ file.documentTypeName || 'N/A' }}
+            </td>
+
+
+            <!-- DOCUMENT FORMAT -->
+
+            <td>
+              {{ file.documentFormatName || 'N/A' }}
+            </td>
+
+
+            <!-- CONTACT DETAILS -->
+
+            <td>
+              {{ file.contactDetails || 'N/A' }}
+            </td>
+
+
+            <!-- CURRENT STAGE -->
+
+            <td>
+              {{ file.currentStage || 'N/A' }}
+            </td>
+
+
+            <!-- CREATED BY -->
+
+            <td>
+              {{ file.createdById || 'N/A' }}
+            </td>
+
+
+            <!-- CREATED AT -->
+
+            <td>
+              {{ file.createdAt || 'N/A' }}
+            </td>
+
+
+            <!-- UPDATED AT -->
+
+            <td>
+              {{ file.updatedAt || 'N/A' }}
+            </td>
+
+          </tr>
+
+        }
+
+      </tbody>
+
+    </table>
+
+  </div>
+
+</div>
+

@@ -1,0 +1,61 @@
+<div class="dashboard-layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+
+    <!-- LOGO -->
+    <div class="logo-container">
+      <img src="assets/logo.png" alt="SLSU Legal Office">
+      <!--<span class="logo-text">Legal Office</span>-->
+    </div>
+
+    <!-- NAVIGATION -->
+    <nav>
+
+      <a routerLink="/home"
+         routerLinkActive="active">
+        <span class="nav-icon">🏠</span>
+        <span class="nav-text">Dashboard</span>
+      </a>
+
+      <a routerLink="/dashboard/legal-files"
+         routerLinkActive="active">
+        <span class="nav-icon">▦</span>
+        <span class="nav-text">Legal Files</span>
+      </a>
+
+      <a routerLink="/cases"
+         routerLinkActive="active">
+        <span class="nav-icon">▣</span>
+        <span class="nav-text">Cases</span>
+      </a>
+
+      <a routerLink="/settings"
+         routerLinkActive="active">
+        <span class="nav-icon">⚙</span>
+        <span class="nav-text">Settings</span>
+      </a>
+
+    </nav>
+
+    <!-- LOGOUT -->
+    <div class="logout-container">
+
+      <button class="logout-button" (click)="logout()">
+        <span class="logout-icon">↪</span>
+        <span class="logout-text">Logout</span>
+      </button>
+
+    </div>
+
+  </aside>
+
+
+  <!-- DASHBOARD CONTENT -->
+  <main class="dashboard-content">
+
+     <router-outlet></router-outlet>
+
+  </main>
+
+</div>

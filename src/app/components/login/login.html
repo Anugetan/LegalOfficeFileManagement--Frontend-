@@ -1,0 +1,80 @@
+<div class="login-container">
+
+  <div class="login-card">
+
+    <h1>Legal Office</h1>
+
+    <h2>Login</h2>
+
+    <form (ngSubmit)="login()">
+
+      <div class="form-group">
+
+        <label for="username">
+          Username
+        </label>
+
+        <input
+          id="username"
+          type="text"
+          name="username"
+          [(ngModel)]="loginData.username"
+          placeholder="Enter username"
+          autocomplete="username"
+          required
+        >
+
+      </div>
+
+      <div class="form-group">
+
+        <label for="password">
+          Password
+        </label>
+
+        <input
+          id="password"
+          type="password"
+          name="password"
+          [(ngModel)]="loginData.password"
+          placeholder="Enter password"
+          autocomplete="current-password"
+          required
+        >
+
+      </div>
+
+
+      <!-- ERROR MESSAGE -->
+      @if (errorMessage) {
+
+        <div class="error">
+          {{ errorMessage }}
+        </div>
+
+      }
+
+
+      <button
+        type="submit"
+        [disabled]="loading"
+      >
+
+        {{ loading ? 'Logging in...' : 'Login' }}
+
+      </button>
+
+    </form>
+
+    <p>
+      Don't have an account?
+
+      <a routerLink="/register">
+        Register
+      </a>
+
+    </p>
+
+  </div>
+
+</div>
