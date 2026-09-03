@@ -13,24 +13,37 @@
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
+
       "architect": {
         "build": {
           "builder": "@angular/build:application",
+
           "options": {
             "browser": "src/main.ts",
             "tsConfig": "tsconfig.app.json",
+
             "assets": [
               {
                 "glob": "**/*",
                 "input": "public"
               }
             ],
+
             "styles": [
               "src/styles.css"
             ]
           },
+
           "configurations": {
             "production": {
+
+              "fileReplacements": [
+                {
+                  "replace": "src/app/env/environment.ts",
+                  "with": "src/app/env/environment.prod.ts"
+                }
+              ],
+
               "budgets": [
                 {
                   "type": "initial",
@@ -43,29 +56,36 @@
                   "maximumError": "8kB"
                 }
               ],
+
               "outputHashing": "all"
             },
+
             "development": {
               "optimization": false,
               "extractLicenses": false,
               "sourceMap": true
             }
           },
+
           "defaultConfiguration": "production"
         },
+
         "serve": {
           "builder": "@angular/build:dev-server",
-          "options": {"proxyConfig": "proxy.conf.json"}, 
+
           "configurations": {
-          "production": {
-            "buildTarget": "msWord:build:production"
+            "production": {
+              "buildTarget": "msWord:build:production"
+            },
+
+            "development": {
+              "buildTarget": "msWord:build:development"
+            }
           },
-          "development": {
-            "buildTarget": "msWord:build:development"
-          }
-        },
+
           "defaultConfiguration": "development"
         },
+
         "test": {
           "builder": "@angular/build:unit-test"
         }
