@@ -57,13 +57,13 @@
           "builder": "@angular/build:dev-server",
           "options": {"proxyConfig": "proxy.conf.json"}, 
           "configurations": {
-            "production": {
-              "buildTarget": "msWord:build:production"
-            },
-            "development": {
-              "buildTarget": "msWord:build:development"
-            }
+          "production": {
+            "buildTarget": "msWord:build:production"
           },
+          "development": {
+            "buildTarget": "msWord:build:development"
+          }
+        },
           "defaultConfiguration": "development"
         },
         "test": {
