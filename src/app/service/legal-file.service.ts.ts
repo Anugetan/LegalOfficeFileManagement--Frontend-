@@ -1,4 +1,3 @@
-
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -13,6 +12,9 @@ import {
 } from '../model/legalFiles/legal-files-model';
 
 import { CreateLegalFile } from '../model/legalFiles/create-legal-files';
+import { environment } from '../env/environment';
+
+
 
 
 @Injectable({
@@ -24,9 +26,9 @@ export class LegalFileServiceTs {
   // API URLS
   // =========================================
 
-  private apiUrl = '/api/legal-files';
+  private apiUrl = `${environment.apiUrl}/legal-files`;
 
-  private lookupUrl = '/api/legal-file-options';
+  private lookupUrl = `${environment.apiUrl}/legal-file-options`;
 
 
   constructor(
@@ -194,4 +196,3 @@ export class LegalFileServiceTs {
   }
 
 }
-

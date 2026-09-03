@@ -1,9 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
+
 import { LoginRequest } from '../model/auth/login-request.model.ts';
 import { AuthResponse } from '../model/auth/auth-response.model.ts.js';
 import { RegisterRequest } from '../model/auth/register-request.model.ts.js';
+import { environment } from '../env/environment.js';
+
 
 
 @Injectable({
@@ -11,15 +14,15 @@ import { RegisterRequest } from '../model/auth/register-request.model.ts.js';
 })
 export class AuthService {
 
-  private apiUrl = '/api/auth';
+  private apiUrl = `${environment.apiUrl}/auth`;
 
   constructor(
     private http: HttpClient
   ) {}
 
-  // =========================
+  // =========================================
   // LOGIN
-  // =========================
+  // =========================================
 
   login(
     request: LoginRequest
@@ -31,38 +34,22 @@ export class AuthService {
         request
       )
       .pipe(
-
         tap(response => {
 
           console.log('Login response:', response);
 
-          localStorage.setItem(
-            'token',
-            response.token
-          );
-
-          localStorage.setItem(
-            'username',
-            response.username
-          );
-
-          localStorage.setItem(
-            'fullName',
-            response.fullName
-          );
-
-          localStorage.setItem(
-            'role',
-            response.role
-          );
+          localStorage.setItem('token', response.token);
+          localStorage.setItem('username', response.username);
+          localStorage.setItem('fullName', response.fullName);
+          localStorage.setItem('role', response.role);
 
         })
       );
   }
 
-  // =========================
+  // =========================================
   // REGISTER
-  // =========================
+  // =========================================
 
   register(
     request: RegisterRequest
@@ -74,9 +61,9 @@ export class AuthService {
     );
   }
 
-  // =========================
+  // =========================================
   // LOGOUT
-  // =========================
+  // =========================================
 
   logout(): void {
 
@@ -84,23 +71,27 @@ export class AuthService {
     localStorage.removeItem('username');
     localStorage.removeItem('fullName');
     localStorage.removeItem('role');
+
   }
 
-  // =========================
+  // =========================================
   // GET TOKEN
-  // =========================
+  // =========================================
 
   getToken(): string | null {
 
     return localStorage.getItem('token');
+
   }
 
-  // =========================
+  // =========================================
   // CHECK LOGIN
-  // =========================
+  // =========================================
 
   isLoggedIn(): boolean {
 
     return !!this.getToken();
+
   }
+
 }
