@@ -1,6 +1,6 @@
 {
   "/api": {
-    "target": "http://legaloffice-backend-production.up.railway.app",
+    "target": "http://legaloffice-backend-production.up.railway.app/api",
     "secure": false,
     "changeOrigin": true,
     "logLevel": "debug"
