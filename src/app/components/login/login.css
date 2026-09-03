@@ -1,26 +1,229 @@
 /* =========================================
-   LEGAL OFFICE LOGIN PAGE
+   LEGAL FILE OFFICE MANAGEMENT
+   LOGIN PAGE
 ========================================= */
 
-.login-container {
+
+/* =========================================
+   PAGE
+========================================= */
+
+.login-page {
   min-height: 100vh;
   width: 100%;
 
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  background: #ffffff;
 
-  padding: 20px;
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
 
   box-sizing: border-box;
+}
+
+
+/* =========================================
+   HEADER
+========================================= */
+
+.system-header {
+  width: 100%;
+
+  min-height: 100px;
 
   background:
     linear-gradient(
-      135deg,
-      #0f172a 0%,
-      #172554 50%,
-      #1e3a5f 100%
+      90deg,
+      #123b63 0%,
+      #1d5b87 55%,
+      #5ba9d6 100%
     );
+
+  border-bottom: 4px solid #c9a227;
+
+  box-sizing: border-box;
+}
+
+
+/* =========================================
+   HEADER CONTENT
+========================================= */
+
+.header-content {
+  width: 100%;
+
+  max-width: 1400px;
+
+  margin: 0 auto;
+
+  padding: 15px 30px;
+
+  box-sizing: border-box;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 18px;
+}
+
+
+/* =========================================
+   HEADER LOGO
+========================================= */
+
+.header-logo {
+  width: 70px;
+
+  height: 70px;
+
+  flex-shrink: 0;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+}
+
+
+/* =========================================
+   LOGO IMAGE
+========================================= */
+
+.header-logo img {
+  width: 68px;
+
+  height: 68px;
+
+  object-fit: cover;
+
+  display: block;
+
+  /*
+   * Makes the logo circular
+   */
+  border-radius: 50%;
+
+  /*
+   * White background around logo
+   */
+  background: #ffffff;
+
+  padding: 3px;
+
+  box-sizing: border-box;
+
+  /*
+   * Slight white border
+   */
+  border: 2px solid rgba(255, 255, 255, 0.9);
+
+  /*
+   * Small shadow
+   */
+  box-shadow:
+    0 2px 6px rgba(0, 0, 0, 0.20);
+}
+
+
+/* =========================================
+   SYSTEM TITLE
+========================================= */
+
+.system-title {
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: center;
+
+  min-width: 0;
+}
+
+
+/* =========================================
+   UNIVERSITY NAME
+========================================= */
+
+.university-name {
+  color: #ffffff;
+
+  font-size: 15px;
+
+  font-weight: 600;
+
+  letter-spacing: 0.7px;
+
+  margin-bottom: 2px;
+
+  line-height: 1.2;
+}
+
+
+/* =========================================
+   MAIN SYSTEM NAME
+========================================= */
+
+.office-name {
+  color: #ffffff;
+
+  font-size: 27px;
+
+  font-weight: 600;
+
+  letter-spacing: 0.8px;
+
+  text-transform: uppercase;
+
+  line-height: 1.2;
+}
+
+
+/* =========================================
+   PAGE LABEL
+========================================= */
+
+.page-label {
+  height: 28px;
+
+  display: flex;
+
+  align-items: center;
+
+  padding-left: 18px;
+
+  box-sizing: border-box;
+
+  background: #f3f4f6;
+
+  border-bottom: 1px solid #d1d5db;
+
+  color: #4b5563;
+
+  font-size: 12px;
+}
+
+
+/* =========================================
+   LOGIN CONTENT
+========================================= */
+
+.login-content {
+  min-height: calc(100vh - 114px);
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: flex-start;
+
+  padding-top: 200px;
+
+  box-sizing: border-box;
+
+  background: #ffffff;
 }
 
 
@@ -30,23 +233,26 @@
 
 .login-card {
   width: 100%;
-  max-width: 420px;
 
-  padding: 42px 40px;
+  max-width: 380px;
+
+  padding: 25px 28px 26px;
 
   box-sizing: border-box;
 
   background: #ffffff;
 
-  border-radius: 14px;
+  border: 2px solid #8ebcda;
+
+  border-radius: 24px;
 
   box-shadow:
-    0 20px 50px rgba(0, 0, 0, 0.30);
+    4px 7px 0 rgba(18, 59, 99, 0.22);
 }
 
 
 /* =========================================
-   LEGAL OFFICE TITLE
+   WELCOME
 ========================================= */
 
 .login-card h1 {
@@ -54,28 +260,33 @@
 
   text-align: center;
 
-  color: #b08d57;
+  color: #123b63;
 
-  font-size: 28px;
-  font-weight: 700;
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
 
-  letter-spacing: 0.5px;
+  font-size: 27px;
+
+  font-weight: 600;
 }
 
 
 /* =========================================
-   LOGIN TITLE
+   SIGN IN
 ========================================= */
 
-.login-card h2 {
-  margin: 8px 0 30px;
+.sign-in-text {
+  margin: 4px 0 21px;
 
   text-align: center;
 
-  color: #172033;
+  color: #555555;
 
-  font-size: 23px;
-  font-weight: 600;
+  font-size: 11px;
+
+  font-weight: 400;
 }
 
 
@@ -84,7 +295,7 @@
 ========================================= */
 
 .form-group {
-  margin-bottom: 20px;
+  margin-bottom: 13px;
 }
 
 
@@ -95,11 +306,17 @@
 .form-group label {
   display: block;
 
-  margin-bottom: 7px;
+  margin-bottom: 4px;
 
-  color: #374151;
+  color: #26384a;
 
-  font-size: 14px;
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  font-size: 13px;
+
   font-weight: 600;
 }
 
@@ -111,66 +328,117 @@
 .form-group input {
   width: 100%;
 
-  padding: 13px 14px;
+  height: 35px;
+
+  padding: 7px 9px;
 
   box-sizing: border-box;
 
-  border: 1px solid #d1d5db;
+  border: 1px solid #cfd6dc;
 
-  border-radius: 8px;
+  border-radius: 3px;
 
-  background: #f9fafb;
+  background: #fafafa;
 
-  color: #111827;
+  color: #222222;
 
-  font-size: 15px;
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  font-size: 12px;
 
   outline: none;
 
   transition:
     border-color 0.2s ease,
-    box-shadow 0.2s ease,
-    background 0.2s ease;
-}
-
-
-/* Placeholder */
-
-.form-group input::placeholder {
-  color: #9ca3af;
-}
-
-
-/* Input focus */
-
-.form-group input:focus {
-  background: #ffffff;
-
-  border-color: #b08d57;
-
-  box-shadow:
-    0 0 0 3px rgba(176, 141, 87, 0.15);
+    box-shadow 0.2s ease;
 }
 
 
 /* =========================================
-   ERROR MESSAGE
+   PLACEHOLDER
+========================================= */
+
+.form-group input::placeholder {
+  color: #a1a8ae;
+}
+
+
+/* =========================================
+   INPUT FOCUS
+========================================= */
+
+.form-group input:focus {
+  border-color: #5ba9d6;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 0 0 2px rgba(91, 169, 214, 0.15);
+}
+
+
+/* =========================================
+   LOGIN OPTIONS
+========================================= */
+
+.login-options {
+  margin-top: 2px;
+
+  margin-bottom: 10px;
+}
+
+
+.checkbox-option {
+  display: flex;
+
+  align-items: center;
+
+  gap: 5px;
+
+  color: #555555;
+
+  font-size: 11px;
+
+  cursor: pointer;
+}
+
+
+.checkbox-option input {
+  width: 12px;
+
+  height: 12px;
+
+  margin: 0;
+
+  accent-color: #123b63;
+
+  cursor: pointer;
+}
+
+
+/* =========================================
+   ERROR
 ========================================= */
 
 .error {
-  margin-bottom: 18px;
+  margin-bottom: 12px;
 
-  padding: 11px 13px;
+  padding: 8px 10px;
 
-  border-radius: 7px;
+  border: 1px solid #e5a6a6;
 
-  border: 1px solid #fecaca;
+  border-radius: 3px;
 
-  background: #fef2f2;
+  background: #fff4f4;
 
-  color: #b91c1c;
+  color: #a32222;
 
-  font-size: 14px;
+  font-size: 11px;
+
+  line-height: 1.4;
 }
 
 
@@ -179,54 +447,78 @@
 ========================================= */
 
 .login-card button {
-  width: 100%;
+  display: block;
 
-  padding: 13px;
+  width: 90px;
 
-  margin-top: 5px;
+  height: 31px;
 
-  border: none;
+  margin: 8px auto 0;
 
-  border-radius: 8px;
+  border: 1px solid #0e3152;
 
-  background: #172554;
+  border-radius: 3px;
+
+  background:
+    linear-gradient(
+      to bottom,
+      #5ba9d6,
+      #123b63
+    );
 
   color: #ffffff;
 
-  font-size: 15px;
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  font-size: 11px;
 
   font-weight: 600;
 
   cursor: pointer;
 
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.25);
+
   transition:
     background 0.2s ease,
-    transform 0.1s ease,
-    box-shadow 0.2s ease;
+    transform 0.1s ease;
 }
 
 
-/* Button hover */
+/* =========================================
+   LOGIN BUTTON HOVER
+========================================= */
 
 .login-card button:hover:not(:disabled) {
-  background: #1e3a8a;
-
-  box-shadow:
-    0 5px 15px rgba(23, 37, 84, 0.25);
+  background:
+    linear-gradient(
+      to bottom,
+      #70b8df,
+      #194d77
+    );
 }
 
 
-/* Button click */
+/* =========================================
+   LOGIN BUTTON CLICK
+========================================= */
 
 .login-card button:active:not(:disabled) {
   transform: translateY(1px);
 }
 
 
-/* Disabled / Loading */
+/* =========================================
+   LOGIN BUTTON DISABLED
+========================================= */
 
 .login-card button:disabled {
   background: #9ca3af;
+
+  border-color: #8b9299;
 
   cursor: not-allowed;
 
@@ -235,37 +527,31 @@
 
 
 /* =========================================
-   REGISTER TEXT
+   REGISTER
 ========================================= */
 
-.login-card p {
-  margin: 22px 0 0;
+.register-text {
+  margin: 17px 0 0;
 
   text-align: center;
 
-  color: #6b7280;
+  color: #777777;
 
-  font-size: 14px;
+  font-size: 11px;
 }
 
 
-/* =========================================
-   REGISTER LINK
-========================================= */
-
-.login-card a {
-  color: #b08d57;
+.register-text a {
+  color: #123b63;
 
   font-weight: 600;
 
   text-decoration: none;
-
-  transition: color 0.2s ease;
 }
 
 
-.login-card a:hover {
-  color: #8a6a3f;
+.register-text a:hover {
+  color: #5ba9d6;
 
   text-decoration: underline;
 }
@@ -277,14 +563,39 @@
 
 @media (max-width: 768px) {
 
-  .login-container {
-    padding: 25px 18px;
+  .header-content {
+    padding: 13px 20px;
+
+    gap: 14px;
   }
 
-  .login-card {
-    max-width: 450px;
 
-    padding: 36px 30px;
+  .header-logo {
+    width: 56px;
+
+    height: 56px;
+  }
+
+
+  .header-logo img {
+    width: 54px;
+
+    height: 54px;
+  }
+
+
+  .office-name {
+    font-size: 22px;
+  }
+
+
+  .university-name {
+    font-size: 13px;
+  }
+
+
+  .login-content {
+    padding-top: 45px;
   }
 
 }
@@ -296,130 +607,73 @@
 
 @media (max-width: 480px) {
 
-  .login-container {
-    min-height: 100vh;
+  .system-header {
+    min-height: 76px;
+  }
 
-    width: 100%;
 
-    padding: 20px 12px;
+  .header-content {
+    padding: 10px 15px;
 
-    /*
-      Allow scrolling if the phone keyboard
-      makes the screen shorter.
-    */
+    gap: 10px;
+  }
+
+
+  .header-logo {
+    width: 43px;
+
+    height: 43px;
+  }
+
+
+  .header-logo img {
+    width: 41px;
+
+    height: 41px;
+
+    padding: 2px;
+  }
+
+
+  .university-name {
+    font-size: 11px;
+
+    letter-spacing: 0.4px;
+  }
+
+
+  .office-name {
+    font-size: 18px;
+
+    line-height: 1.2;
+  }
+
+
+  .login-content {
+    min-height: calc(100vh - 104px);
+
+    padding: 35px 15px 30px;
+
     align-items: flex-start;
-
-    overflow-y: auto;
   }
 
 
   .login-card {
-    width: 100%;
+    max-width: 380px;
 
-    max-width: none;
+    padding: 25px 22px;
 
-    margin: 20px 0;
-
-    padding: 30px 20px;
-
-    border-radius: 12px;
-
-    box-shadow:
-      0 10px 30px rgba(0, 0, 0, 0.25);
+    border-radius: 20px;
   }
 
-
-  /* Legal Office */
 
   .login-card h1 {
-    font-size: 24px;
-
-    line-height: 1.3;
+    font-size: 25px;
   }
 
 
-  /* Login */
-
-  .login-card h2 {
-    font-size: 20px;
-
-    margin-top: 5px;
-
-    margin-bottom: 24px;
-  }
-
-
-  /* Form */
-
-  .form-group {
-    margin-bottom: 18px;
-  }
-
-
-  /* Labels */
-
-  .form-group label {
-    font-size: 13px;
-
-    margin-bottom: 6px;
-  }
-
-
-  /* Inputs */
-
-  .form-group input {
-    width: 100%;
-
-    height: 46px;
-
-    padding: 10px 12px;
-
-    /*
-      16px prevents automatic zoom
-      on iPhone Safari.
-    */
-    font-size: 16px;
-
-    border-radius: 7px;
-  }
-
-
-  /* Error */
-
-  .error {
-    margin-bottom: 16px;
-
-    padding: 10px 11px;
-
-    font-size: 13px;
-
-    line-height: 1.4;
-  }
-
-
-  /* Login button */
-
-  .login-card button {
-    width: 100%;
-
-    height: 46px;
-
-    padding: 10px;
-
-    font-size: 15px;
-
-    border-radius: 7px;
-  }
-
-
-  /* Register text */
-
-  .login-card p {
-    margin-top: 18px;
-
-    font-size: 13px;
-
-    line-height: 1.5;
+  .sign-in-text {
+    margin-bottom: 20px;
   }
 
 }
@@ -431,53 +685,44 @@
 
 @media (max-width: 360px) {
 
-  .login-container {
-    padding: 15px 10px;
+  .header-logo {
+    width: 38px;
+
+    height: 38px;
   }
 
 
-  .login-card {
-    margin: 10px 0;
+  .header-logo img {
+    width: 36px;
 
-    padding: 25px 16px;
-
-    border-radius: 10px;
+    height: 36px;
   }
 
 
-  .login-card h1 {
-    font-size: 22px;
-  }
-
-
-  .login-card h2 {
-    font-size: 18px;
-
-    margin-bottom: 20px;
-  }
-
-
-  .form-group {
-    margin-bottom: 15px;
-  }
-
-
-  .form-group input {
-    height: 44px;
-
+  .office-name {
     font-size: 16px;
   }
 
 
-  .login-card button {
-    height: 44px;
-
-    font-size: 14px;
+  .university-name {
+    font-size: 10px;
   }
 
 
-  .login-card p {
-    font-size: 12px;
+  .login-content {
+    padding: 25px 10px;
+  }
+
+
+  .login-card {
+    padding: 22px 18px;
+
+    border-radius: 17px;
+  }
+
+
+  .login-card h1 {
+    font-size: 23px;
   }
 
 }

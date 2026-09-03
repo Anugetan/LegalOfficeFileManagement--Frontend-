@@ -1,4 +1,3 @@
-
 <div class="legal-files">
 
   <!-- ========================= -->
@@ -52,7 +51,9 @@
         <div class="form-grid">
 
 
+          <!-- ========================= -->
           <!-- CASE NUMBER -->
+          <!-- ========================= -->
 
           <div class="form-group">
 
@@ -69,7 +70,9 @@
           </div>
 
 
+          <!-- ========================= -->
           <!-- DATE RECEIVED -->
+          <!-- ========================= -->
 
           <div class="form-group">
 
@@ -85,7 +88,9 @@
           </div>
 
 
+          <!-- ========================= -->
           <!-- TIME RECEIVED -->
+          <!-- ========================= -->
 
           <div class="form-group">
 
@@ -101,7 +106,9 @@
           </div>
 
 
+          <!-- ========================= -->
           <!-- DATE COMPLETED -->
+          <!-- ========================= -->
 
           <div class="form-group">
 
@@ -117,7 +124,9 @@
           </div>
 
 
+          <!-- ========================= -->
           <!-- STATUS -->
+          <!-- ========================= -->
 
           <div class="form-group">
 
@@ -136,7 +145,9 @@
               @for (status of statuses; track status.id) {
 
                 <option [ngValue]="status.id">
+
                   {{ status.statusName }}
+
                 </option>
 
               }
@@ -146,7 +157,9 @@
           </div>
 
 
+          <!-- ========================= -->
           <!-- SPMS TYPE -->
+          <!-- ========================= -->
 
           <div class="form-group">
 
@@ -165,7 +178,9 @@
               @for (spms of spmsTypes; track spms.id) {
 
                 <option [ngValue]="spms.id">
+
                   {{ spms.spmsName }}
+
                 </option>
 
               }
@@ -175,7 +190,9 @@
           </div>
 
 
+          <!-- ========================= -->
           <!-- REQUESTING OFFICE -->
+          <!-- ========================= -->
 
           <div class="form-group">
 
@@ -194,7 +211,9 @@
               @for (office of offices; track office.id) {
 
                 <option [ngValue]="office.id">
+
                   {{ office.officeName }}
+
                 </option>
 
               }
@@ -204,7 +223,9 @@
           </div>
 
 
+          <!-- ========================= -->
           <!-- DOCUMENT TYPE -->
+          <!-- ========================= -->
 
           <div class="form-group">
 
@@ -220,10 +241,15 @@
                 Select Document Type
               </option>
 
-              @for (documentType of documentTypes; track documentType.id) {
+              @for (
+                documentType of documentTypes;
+                track documentType.id
+              ) {
 
                 <option [ngValue]="documentType.id">
+
                   {{ documentType.documentName }}
+
                 </option>
 
               }
@@ -233,7 +259,9 @@
           </div>
 
 
+          <!-- ========================= -->
           <!-- DOCUMENT FORMAT -->
+          <!-- ========================= -->
 
           <div class="form-group">
 
@@ -249,10 +277,15 @@
                 Select Document Format
               </option>
 
-              @for (format of documentFormats; track format.id) {
+              @for (
+                format of documentFormats;
+                track format.id
+              ) {
 
                 <option [ngValue]="format.id">
+
                   {{ format.formatName }}
+
                 </option>
 
               }
@@ -262,7 +295,9 @@
           </div>
 
 
+          <!-- ========================= -->
           <!-- CURRENT STAGE -->
+          <!-- ========================= -->
 
           <div class="form-group">
 
@@ -295,7 +330,9 @@
           </div>
 
 
+          <!-- ========================= -->
           <!-- CONTACT DETAILS -->
+          <!-- ========================= -->
 
           <div class="form-group full-width">
 
@@ -314,7 +351,9 @@
         </div>
 
 
+        <!-- ========================= -->
         <!-- FORM BUTTONS -->
+        <!-- ========================= -->
 
         <div class="form-actions">
 
@@ -356,21 +395,115 @@
 
         <tr>
 
-          <th>ID</th>
-          <th>Case No.</th>
-          <th>Date Received</th>
-          <th>Time Received</th>
-          <th>Date Completed</th>
-          <th>Status</th>
-          <th>SPMS Type</th>
-          <th>Requesting Office</th>
-          <th>Document Type</th>
-          <th>Document Format</th>
-          <th>Contact Details</th>
-          <th>Current Stage</th>
-          <th>Created By</th>
-          <th>Created At</th>
-          <th>Updated At</th>
+          <!-- CHECKBOX -->
+
+          <th class="checkbox-column">
+
+            <input
+              type="checkbox"
+              [checked]="allSelected"
+              (change)="toggleSelectAll($event)"
+              title="Select all">
+
+          </th>
+
+
+          <!-- STATUS -->
+
+          <th class="status-column">
+            Status
+          </th>
+
+
+          <!-- CASE NO -->
+
+          <th>
+            Case No.
+          </th>
+
+
+          <!-- DATE RECEIVED -->
+
+          <th>
+            Date Received
+          </th>
+
+
+          <!-- TIME RECEIVED -->
+
+          <th>
+            Time Received
+          </th>
+
+
+          <!-- DATE COMPLETED -->
+
+          <th>
+            Date Completed
+          </th>
+
+
+          <!-- SPMS TYPE -->
+
+          <th>
+            SPMS Type
+          </th>
+
+
+          <!-- REQUESTING OFFICE -->
+
+          <th>
+            Requesting Office
+          </th>
+
+
+          <!-- DOCUMENT TYPE -->
+
+          <th>
+            Document Type
+          </th>
+
+
+          <!-- DOCUMENT FORMAT -->
+
+          <th>
+            Document Format
+          </th>
+
+
+          <!-- CONTACT DETAILS -->
+
+          <th>
+            Contact Details
+          </th>
+
+
+          <!-- CURRENT STAGE -->
+
+          <th>
+            Current Stage
+          </th>
+
+
+          <!-- CREATED BY -->
+
+          <th>
+            Created By
+          </th>
+
+
+          <!-- CREATED AT -->
+
+          <th>
+            Created At
+          </th>
+
+
+          <!-- UPDATED AT -->
+
+          <th>
+            Updated At
+          </th>
 
         </tr>
 
@@ -383,105 +516,165 @@
 
           <tr>
 
-            <!-- ID -->
 
-            <td>
-              {{ file.id }}
+            <!-- ========================= -->
+            <!-- CHECKBOX -->
+            <!-- ========================= -->
+
+            <td class="checkbox-cell">
+
+              <input
+                type="checkbox"
+                [checked]="isSelected(file.id)"
+                (change)="toggleSelection(file.id, $event)"
+              >
+
             </td>
 
 
+            <!-- ========================= -->
+            <!-- STATUS -->
+            <!-- ========================= -->
+
+            <td class="status-cell">
+
+              <select
+                class="status-select"
+                [ngClass]="getStatusClass(file.statusId)"
+                [ngModel]="file.statusId"
+                (ngModelChange)="onStatusChange(file, $event)"
+              >
+
+                @for (
+                  status of statuses;
+                  track status.id
+                ) {
+
+                  <option
+                    [ngValue]="status.id">
+
+                    {{ status.statusName }}
+
+                  </option>
+
+                }
+
+              </select>
+
+            </td>
+
+
+            <!-- ========================= -->
             <!-- CASE NUMBER -->
+            <!-- ========================= -->
 
             <td>
               {{ file.caseNo }}
             </td>
 
 
+            <!-- ========================= -->
             <!-- DATE RECEIVED -->
+            <!-- ========================= -->
 
             <td>
               {{ file.dateReceived }}
             </td>
 
 
+            <!-- ========================= -->
             <!-- TIME RECEIVED -->
+            <!-- ========================= -->
 
             <td>
-              {{ file.timeReceived }}
+              {{ file.timeReceived || 'N/A' }}
             </td>
 
 
+            <!-- ========================= -->
             <!-- DATE COMPLETED -->
+            <!-- ========================= -->
 
             <td>
               {{ file.dateCompleted || 'N/A' }}
             </td>
 
 
-            <!-- STATUS -->
-
-            <td>
-              {{ file.statusName || 'N/A' }}
-            </td>
-
-
+            <!-- ========================= -->
             <!-- SPMS TYPE -->
+            <!-- ========================= -->
 
             <td>
               {{ file.spmsTypeName || 'N/A' }}
             </td>
 
 
+            <!-- ========================= -->
             <!-- REQUESTING OFFICE -->
+            <!-- ========================= -->
 
             <td>
               {{ file.requestingOfficeName || 'N/A' }}
             </td>
 
 
+            <!-- ========================= -->
             <!-- DOCUMENT TYPE -->
+            <!-- ========================= -->
 
             <td>
               {{ file.documentTypeName || 'N/A' }}
             </td>
 
 
+            <!-- ========================= -->
             <!-- DOCUMENT FORMAT -->
+            <!-- ========================= -->
 
             <td>
               {{ file.documentFormatName || 'N/A' }}
             </td>
 
 
+            <!-- ========================= -->
             <!-- CONTACT DETAILS -->
+            <!-- ========================= -->
 
             <td>
               {{ file.contactDetails || 'N/A' }}
             </td>
 
 
+            <!-- ========================= -->
             <!-- CURRENT STAGE -->
+            <!-- ========================= -->
 
             <td>
               {{ file.currentStage || 'N/A' }}
             </td>
 
 
+            <!-- ========================= -->
             <!-- CREATED BY -->
+            <!-- ========================= -->
 
             <td>
               {{ file.createdById || 'N/A' }}
             </td>
 
 
+            <!-- ========================= -->
             <!-- CREATED AT -->
+            <!-- ========================= -->
 
             <td>
               {{ file.createdAt || 'N/A' }}
             </td>
 
 
+            <!-- ========================= -->
             <!-- UPDATED AT -->
+            <!-- ========================= -->
 
             <td>
               {{ file.updatedAt || 'N/A' }}
@@ -497,5 +690,39 @@
 
   </div>
 
-</div>
 
+  <!-- ========================= -->
+  <!-- TABLE ACTIONS -->
+  <!-- ========================= -->
+
+  <div class="update-actions">
+
+    <!-- UPDATE -->
+
+    <button
+      type="button"
+      class="update-button"
+      [class.has-changes]="hasStatusChanges()"
+      [disabled]="!hasStatusChanges()"
+      (click)="updateChangedStatuses()">
+
+      Update
+
+    </button>
+
+
+    <!-- DELETE -->
+
+    <button
+      type="button"
+      class="delete-button"
+      [disabled]="selectedFiles.size === 0"
+      (click)="deleteSelectedFiles()">
+
+      Delete
+
+    </button>
+
+  </div>
+
+</div>

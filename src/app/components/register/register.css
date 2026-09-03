@@ -1,26 +1,197 @@
 /* =========================================
-   LEGAL OFFICE REGISTER PAGE
+   LEGAL FILE OFFICE MANAGEMENT
+   REGISTER PAGE
 ========================================= */
 
-.register-container {
+
+/* =========================================
+   PAGE
+========================================= */
+
+.register-page {
   min-height: 100vh;
+
   width: 100%;
 
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  background: #ffffff;
 
-  padding: 30px 20px;
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
 
   box-sizing: border-box;
+}
+
+
+/* =========================================
+   HEADER
+========================================= */
+
+.system-header {
+  width: 100%;
+
+  min-height: 100px;
 
   background:
     linear-gradient(
-      135deg,
-      #0f172a 0%,
-      #172554 50%,
-      #1e3a5f 100%
+      90deg,
+      #123b63 0%,
+      #1d5b87 55%,
+      #5ba9d6 100%
     );
+
+  border-bottom: 4px solid #c9a227;
+
+  box-sizing: border-box;
+}
+
+
+/* =========================================
+   HEADER CONTENT
+========================================= */
+
+.header-content {
+  width: 100%;
+
+  max-width: 1400px;
+
+  margin: 0 auto;
+
+  padding: 15px 30px;
+
+  box-sizing: border-box;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 18px;
+}
+
+
+/* =========================================
+   HEADER LOGO
+========================================= */
+
+.header-logo {
+  width: 70px;
+
+  height: 70px;
+
+  flex-shrink: 0;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+}
+
+
+/* =========================================
+   LOGO
+========================================= */
+
+.header-logo img {
+  width: 68px;
+
+  height: 68px;
+
+  object-fit: cover;
+
+  display: block;
+
+  border-radius: 50%;
+
+  background: #ffffff;
+
+  padding: 3px;
+
+  box-sizing: border-box;
+
+  border: 2px solid rgba(255, 255, 255, 0.9);
+
+  box-shadow:
+    0 2px 6px rgba(0, 0, 0, 0.20);
+}
+
+
+/* =========================================
+   SYSTEM TITLE
+========================================= */
+
+.system-title {
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: center;
+
+  min-width: 0;
+}
+
+
+/* =========================================
+   UNIVERSITY NAME
+========================================= */
+
+.university-name {
+  color: #ffffff;
+
+  font-size: 15px;
+
+  font-weight: 600;
+
+  letter-spacing: 0.7px;
+
+  margin-bottom: 2px;
+
+  line-height: 1.2;
+}
+
+
+/* =========================================
+   OFFICE NAME
+========================================= */
+
+.office-name {
+  color: #ffffff;
+
+  font-size: 27px;
+
+  font-weight: 600;
+
+  letter-spacing: 0.8px;
+
+  text-transform: uppercase;
+
+  line-height: 1.2;
+}
+
+
+/* =========================================
+   REGISTER CONTENT
+========================================= */
+
+.register-content {
+  min-height: calc(100vh - 104px);
+
+  width: 100%;
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: flex-start;
+
+  padding-top: 45px;
+
+  padding-bottom: 40px;
+
+  box-sizing: border-box;
+
+  background: #ffffff;
 }
 
 
@@ -30,36 +201,21 @@
 
 .register-card {
   width: 100%;
-  max-width: 460px;
 
-  padding: 40px;
+  max-width: 380px;
+
+  padding: 25px 28px 26px;
 
   box-sizing: border-box;
 
   background: #ffffff;
 
-  border-radius: 14px;
+  border: 2px solid #8ebcda;
+
+  border-radius: 24px;
 
   box-shadow:
-    0 20px 50px rgba(0, 0, 0, 0.30);
-}
-
-
-/* =========================================
-   LEGAL OFFICE TITLE
-========================================= */
-
-.register-card h1 {
-  margin: 0;
-
-  text-align: center;
-
-  color: #b08d57;
-
-  font-size: 28px;
-  font-weight: 700;
-
-  letter-spacing: 0.5px;
+    4px 7px 0 rgba(18, 59, 99, 0.22);
 }
 
 
@@ -67,15 +223,40 @@
    CREATE ACCOUNT TITLE
 ========================================= */
 
-.register-card h2 {
-  margin: 8px 0 28px;
+.register-card h1 {
+  margin: 0;
 
   text-align: center;
 
-  color: #172033;
+  color: #123b63;
 
-  font-size: 23px;
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  font-size: 27px;
+
   font-weight: 600;
+
+  line-height: 1.2;
+}
+
+
+/* =========================================
+   SUBTITLE
+========================================= */
+
+.register-subtitle {
+  margin: 5px 0 21px;
+
+  text-align: center;
+
+  color: #555555;
+
+  font-size: 11px;
+
+  font-weight: 400;
 }
 
 
@@ -84,7 +265,7 @@
 ========================================= */
 
 .form-group {
-  margin-bottom: 17px;
+  margin-bottom: 13px;
 }
 
 
@@ -95,11 +276,17 @@
 .form-group label {
   display: block;
 
-  margin-bottom: 7px;
+  margin-bottom: 4px;
 
-  color: #374151;
+  color: #26384a;
 
-  font-size: 14px;
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  font-size: 13px;
+
   font-weight: 600;
 }
 
@@ -111,19 +298,26 @@
 .form-group input {
   width: 100%;
 
-  padding: 12px 14px;
+  height: 35px;
+
+  padding: 7px 9px;
 
   box-sizing: border-box;
 
-  border: 1px solid #d1d5db;
+  border: 1px solid #cfd6dc;
 
-  border-radius: 8px;
+  border-radius: 3px;
 
-  background: #f9fafb;
+  background: #fafafa;
 
-  color: #111827;
+  color: #222222;
 
-  font-size: 15px;
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  font-size: 12px;
 
   outline: none;
 
@@ -134,22 +328,26 @@
 }
 
 
-/* Placeholder */
+/* =========================================
+   PLACEHOLDER
+========================================= */
 
 .form-group input::placeholder {
-  color: #9ca3af;
+  color: #a1a8ae;
 }
 
 
-/* Focus */
+/* =========================================
+   INPUT FOCUS
+========================================= */
 
 .form-group input:focus {
+  border-color: #5ba9d6;
+
   background: #ffffff;
 
-  border-color: #b08d57;
-
   box-shadow:
-    0 0 0 3px rgba(176, 141, 87, 0.15);
+    0 0 0 2px rgba(91, 169, 214, 0.15);
 }
 
 
@@ -158,19 +356,21 @@
 ========================================= */
 
 .error-message {
-  margin-bottom: 16px;
+  margin-bottom: 12px;
 
-  padding: 11px 13px;
+  padding: 8px 10px;
 
-  border: 1px solid #fecaca;
+  border: 1px solid #e5a6a6;
 
-  border-radius: 7px;
+  border-radius: 3px;
 
-  background: #fef2f2;
+  background: #fff4f4;
 
-  color: #b91c1c;
+  color: #a32222;
 
-  font-size: 14px;
+  font-size: 11px;
+
+  line-height: 1.4;
 }
 
 
@@ -179,19 +379,21 @@
 ========================================= */
 
 .success-message {
-  margin-bottom: 16px;
+  margin-bottom: 12px;
 
-  padding: 11px 13px;
+  padding: 8px 10px;
 
-  border: 1px solid #bbf7d0;
+  border: 1px solid #a8d5b5;
 
-  border-radius: 7px;
+  border-radius: 3px;
 
-  background: #f0fdf4;
+  background: #f3fff5;
 
-  color: #15803d;
+  color: #287a3d;
 
-  font-size: 14px;
+  font-size: 11px;
+
+  line-height: 1.4;
 }
 
 
@@ -200,53 +402,78 @@
 ========================================= */
 
 .register-card button {
-  width: 100%;
+  display: block;
 
-  padding: 13px;
+  width: 90px;
 
-  margin-top: 3px;
+  height: 31px;
 
-  border: none;
+  margin: 8px auto 0;
 
-  border-radius: 8px;
+  border: 1px solid #0e3152;
 
-  background: #172554;
+  border-radius: 3px;
+
+  background:
+    linear-gradient(
+      to bottom,
+      #5ba9d6,
+      #123b63
+    );
 
   color: #ffffff;
 
-  font-size: 15px;
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  font-size: 11px;
+
   font-weight: 600;
 
   cursor: pointer;
 
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.25);
+
   transition:
     background 0.2s ease,
-    transform 0.1s ease,
-    box-shadow 0.2s ease;
+    transform 0.1s ease;
 }
 
 
-/* Hover */
+/* =========================================
+   REGISTER BUTTON HOVER
+========================================= */
 
 .register-card button:hover:not(:disabled) {
-  background: #1e3a8a;
-
-  box-shadow:
-    0 5px 15px rgba(23, 37, 84, 0.25);
+  background:
+    linear-gradient(
+      to bottom,
+      #70b8df,
+      #194d77
+    );
 }
 
 
-/* Click */
+/* =========================================
+   REGISTER BUTTON CLICK
+========================================= */
 
 .register-card button:active:not(:disabled) {
   transform: translateY(1px);
 }
 
 
-/* Disabled / Loading */
+/* =========================================
+   REGISTER BUTTON DISABLED
+========================================= */
 
 .register-card button:disabled {
   background: #9ca3af;
+
+  border-color: #8b9299;
 
   cursor: not-allowed;
 
@@ -259,22 +486,24 @@
 ========================================= */
 
 .register-card .login-link {
-  margin: 20px 0 0;
+  margin: 17px 0 0;
 
   text-align: center;
 
-  color: #6b7280;
+  color: #777777;
 
-  font-size: 14px;
+  font-size: 11px;
+
+  line-height: 1.4;
 }
 
 
 /* =========================================
-   LOGIN LINK - ANCHOR
+   LOGIN LINK
 ========================================= */
 
 .register-card .login-link a {
-  color: #b08d57;
+  color: #123b63;
 
   font-weight: 600;
 
@@ -285,50 +514,110 @@
 
 
 .register-card .login-link a:hover {
-  color: #8a6a3f;
+  color: #5ba9d6;
 
   text-decoration: underline;
 }
 
 
 /* =========================================
-   MOBILE
-========================================= */
-/* =========================================
-   RESPONSIVE - TABLET
+   TABLET
 ========================================= */
 
 @media (max-width: 768px) {
 
-  .register-container {
-    min-height: 100vh;
+  .header-content {
+    padding: 13px 20px;
 
-    padding: 25px 18px;
-
-    align-items: center;
+    gap: 14px;
   }
 
-  .register-card {
-    max-width: 500px;
 
-    padding: 35px 30px;
+  .header-logo {
+    width: 56px;
+
+    height: 56px;
+  }
+
+
+  .header-logo img {
+    width: 54px;
+
+    height: 54px;
+  }
+
+
+  .office-name {
+    font-size: 22px;
+  }
+
+
+  .university-name {
+    font-size: 13px;
+  }
+
+
+  .register-content {
+    min-height: calc(100vh - 104px);
+
+    padding: 45px 20px 35px;
   }
 
 }
 
 
 /* =========================================
-   RESPONSIVE - MOBILE
+   MOBILE
 ========================================= */
 
 @media (max-width: 480px) {
 
-  .register-container {
-    min-height: 100vh;
+  .system-header {
+    min-height: 76px;
+  }
 
-    width: 100%;
 
-    padding: 20px 12px;
+  .header-content {
+    padding: 10px 15px;
+
+    gap: 10px;
+  }
+
+
+  .header-logo {
+    width: 43px;
+
+    height: 43px;
+  }
+
+
+  .header-logo img {
+    width: 41px;
+
+    height: 41px;
+
+    padding: 2px;
+  }
+
+
+  .university-name {
+    font-size: 11px;
+
+    letter-spacing: 0.4px;
+  }
+
+
+  .office-name {
+    font-size: 18px;
+
+    line-height: 1.2;
+  }
+
+
+  .register-content {
+    min-height: calc(100vh - 76px);
+
+    padding: 30px 15px 30px;
 
     align-items: flex-start;
 
@@ -339,47 +628,28 @@
   .register-card {
     width: 100%;
 
-    max-width: none;
+    max-width: 380px;
 
-    margin: 20px 0;
+    padding: 25px 22px 26px;
 
-    padding: 28px 20px;
-
-    border-radius: 12px;
-
-    box-shadow:
-      0 10px 30px rgba(0, 0, 0, 0.25);
+    border-radius: 20px;
   }
 
-
-  /* Legal Office */
 
   .register-card h1 {
-    font-size: 24px;
-
-    margin-bottom: 4px;
+    font-size: 25px;
   }
 
 
-  /* Create Account */
-
-  .register-card h2 {
-    font-size: 20px;
-
-    margin-top: 5px;
-
-    margin-bottom: 24px;
+  .register-subtitle {
+    margin-bottom: 20px;
   }
 
-
-  /* Form */
 
   .form-group {
     margin-bottom: 16px;
   }
 
-
-  /* Labels */
 
   .form-group label {
     font-size: 13px;
@@ -388,66 +658,34 @@
   }
 
 
-  /* Inputs */
-
   .form-group input {
-    width: 100%;
+    height: 35px;
 
-    height: 46px;
-
-    padding: 10px 12px;
-
-    font-size: 16px;
-
-    border-radius: 7px;
-  }
-
-
-  /* Error */
-
-  .error-message {
-    padding: 10px 11px;
+    padding: 7px 9px;
 
     font-size: 13px;
-
-    margin-bottom: 15px;
   }
 
 
-  /* Success */
-
+  .error-message,
   .success-message {
-    padding: 10px 11px;
+    padding: 8px 10px;
 
-    font-size: 13px;
-
-    margin-bottom: 15px;
+    font-size: 11px;
   }
 
-
-  /* Register button */
 
   .register-card button {
-    width: 100%;
+    height: 31px;
 
-    height: 46px;
-
-    padding: 10px;
-
-    font-size: 15px;
-
-    border-radius: 7px;
+    font-size: 11px;
   }
 
-
-  /* Login text */
 
   .register-card .login-link {
     margin-top: 18px;
 
-    font-size: 13px;
-
-    line-height: 1.5;
+    font-size: 11px;
   }
 
 }
@@ -459,29 +697,49 @@
 
 @media (max-width: 360px) {
 
-  .register-container {
-    padding: 15px 10px;
+  .header-logo {
+    width: 38px;
+
+    height: 38px;
+  }
+
+
+  .header-logo img {
+    width: 36px;
+
+    height: 36px;
+  }
+
+
+  .office-name {
+    font-size: 16px;
+  }
+
+
+  .university-name {
+    font-size: 10px;
+  }
+
+
+  .register-content {
+    padding: 25px 10px 30px;
   }
 
 
   .register-card {
-    margin: 10px 0;
+    padding: 22px 18px 24px;
 
-    padding: 24px 16px;
-
-    border-radius: 10px;
+    border-radius: 17px;
   }
 
 
   .register-card h1 {
-    font-size: 22px;
+    font-size: 23px;
   }
 
 
-  .register-card h2 {
-    font-size: 18px;
-
-    margin-bottom: 20px;
+  .register-subtitle {
+    margin-bottom: 18px;
   }
 
 
@@ -491,16 +749,9 @@
 
 
   .form-group input {
-    height: 44px;
+    height: 34px;
 
-    font-size: 16px;
-  }
-
-
-  .register-card button {
-    height: 44px;
-
-    font-size: 14px;
+    font-size: 12px;
   }
 
 }

@@ -1,82 +1,141 @@
-/* =========================
-   MAIN CONTAINER
-   ========================= */
+/* =========================================================
+   GLOBAL
+   ========================================================= */
 
-.legal-files {
-  width: 100%;
-  padding: 24px;
+* {
   box-sizing: border-box;
-  background: #f5f6f8;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+
+  width: 100%;
+  height: 100vh;
+
+  overflow: hidden;
+
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+app-root {
+  display: block;
+
+  width: 100%;
+  height: 100vh;
+
+  overflow: hidden;
 }
 
 
-/* =========================
+/* =========================================================
+   MAIN CONTAINER
+   ========================================================= */
+
+.legal-files {
+  width: 100%;
+  height: 90vh;
+
+  padding: 24px;
+
+  background: #f5f6f8;
+
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
+}
+
+
+/* =========================================================
    PAGE HEADER
-   ========================= */
+   ========================================================= */
 
 .page-header {
+  flex: 0 0 auto;
+
   display: flex;
   justify-content: space-between;
   align-items: center;
 
-  margin-bottom: 18px;
+  margin-bottom: 14px;
+  padding: 0;
 }
 
 .page-header h2 {
   margin: 0;
 
-  font-size: 24px;
-  font-weight: 600;
+  font-size: 28px;
+  font-weight: 700;
+
+  color: #111827;
+
+  line-height: 1.2;
 }
 
 
-/* =========================
+/* =========================================================
    ADD BUTTON
-   ========================= */
+   ========================================================= */
 
 .add-button {
-  padding: 9px 16px;
+  padding: 11px 18px;
 
-  border: 1px solid #1f4e78;
+  border: 1px solid #003b73;
+
   border-radius: 4px;
 
-  background: #1f4e78;
-  color: white;
+  background: #003b73;
 
-  font-size: 13px;
-  font-weight: 600;
+  color: #ffffff;
+
+  font-size: 15px;
+  font-weight: 700;
 
   cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    transform 0.1s ease;
 }
 
 .add-button:hover {
-  background: #173a5c;
+  background: #002f5f;
+}
+
+.add-button:active {
+  transform: translateY(1px);
 }
 
 
-/* =========================
+/* =========================================================
    CREATE FORM
-   ========================= */
+   ========================================================= */
 
 .form-container {
   width: 100%;
+
+  margin-top: 0;
   margin-bottom: 20px;
 
-  background: white;
+  background: #ffffff;
 
   border: 1px solid #c8c8c8;
+
   border-radius: 4px;
 
-  box-sizing: border-box;
+  flex: 0 0 auto;
 }
 
 
-/* =========================
+/* =========================================================
    FORM HEADER
-   ========================= */
+   ========================================================= */
 
 .form-header {
   display: flex;
+
   justify-content: space-between;
   align-items: center;
 
@@ -90,45 +149,52 @@
 .form-header h3 {
   margin: 0;
 
-  font-size: 17px;
-  font-weight: 600;
+  font-size: 20px;
+  font-weight: 700;
+
+  color: #222222;
 }
 
 
-/* CLOSE BUTTON */
+/* =========================================================
+   CLOSE BUTTON
+   ========================================================= */
 
 .close-button {
-  width: 30px;
-  height: 30px;
+  width: 32px;
+  height: 32px;
 
   border: none;
+
   border-radius: 3px;
 
   background: transparent;
 
-  font-size: 22px;
+  font-size: 24px;
+  font-weight: 600;
+
   line-height: 1;
 
   cursor: pointer;
 }
 
 .close-button:hover {
-  background: #ddd;
+  background: #dddddd;
 }
 
 
-/* =========================
+/* =========================================================
    FORM
-   ========================= */
+   ========================================================= */
 
 form {
   padding: 20px;
 }
 
 
-/* =========================
+/* =========================================================
    FORM GRID
-   ========================= */
+   ========================================================= */
 
 .form-grid {
   display: grid;
@@ -140,12 +206,13 @@ form {
 }
 
 
-/* =========================
+/* =========================================================
    FORM GROUP
-   ========================= */
+   ========================================================= */
 
 .form-group {
   display: flex;
+
   flex-direction: column;
 
   min-width: 0;
@@ -154,35 +221,35 @@ form {
 .form-group label {
   margin-bottom: 6px;
 
-  font-size: 13px;
-  font-weight: 600;
+  font-size: 15px;
+  font-weight: 700;
 
-  color: #333;
+  color: #333333;
 }
 
 
-/* =========================
-   INPUTS
-   ========================= */
+/* =========================================================
+   FORM INPUTS
+   ========================================================= */
 
 .form-group input,
 .form-group select,
 .form-group textarea {
   width: 100%;
 
-  padding: 9px 10px;
-
-  box-sizing: border-box;
+  padding: 10px 11px;
 
   border: 1px solid #bcbcbc;
+
   border-radius: 3px;
 
-  background: white;
+  background: #ffffff;
 
   font-family: inherit;
-  font-size: 13px;
 
-  color: #333;
+  font-size: 15px;
+
+  color: #333333;
 }
 
 .form-group input:focus,
@@ -190,187 +257,653 @@ form {
 .form-group textarea:focus {
   outline: none;
 
-  border-color: #1f4e78;
+  border-color: #003b73;
 
-  box-shadow: 0 0 0 1px #1f4e78;
+  box-shadow:
+    0 0 0 1px #003b73;
 }
 
 
-/* =========================
+/* =========================================================
    TEXTAREA
-   ========================= */
+   ========================================================= */
 
 .form-group textarea {
-  min-height: 80px;
+  min-height: 90px;
 
   resize: vertical;
 }
 
 
-/* CONTACT DETAILS FULL WIDTH */
+/* =========================================================
+   FULL WIDTH
+   ========================================================= */
 
 .full-width {
   grid-column: 1 / -1;
 }
 
 
-/* =========================
-   FORM BUTTONS
-   ========================= */
+/* =========================================================
+   FORM ACTIONS
+   ========================================================= */
 
 .form-actions {
   display: flex;
+
   justify-content: flex-end;
 
   gap: 10px;
 
   margin-top: 20px;
+
   padding-top: 16px;
 
-  border-top: 1px solid #ddd;
+  border-top: 1px solid #dddddd;
 }
 
 
-/* CANCEL */
+/* =========================================================
+   CANCEL BUTTON
+   ========================================================= */
 
 .cancel-button {
-  padding: 9px 18px;
+  padding: 10px 20px;
 
-  border: 1px solid #aaa;
+  border: 1px solid #aaaaaa;
+
   border-radius: 4px;
 
-  background: white;
+  background: #ffffff;
 
-  color: #333;
+  color: #333333;
 
-  font-size: 13px;
-
-  cursor: pointer;
-}
-
-.cancel-button:hover {
-  background: #eee;
-}
-
-
-/* SAVE */
-
-.save-button {
-  padding: 9px 18px;
-
-  border: 1px solid #1f4e78;
-  border-radius: 4px;
-
-  background: #1f4e78;
-
-  color: white;
-
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 600;
 
   cursor: pointer;
 }
 
-.save-button:hover {
-  background: #173a5c;
+.cancel-button:hover {
+  background: #eeeeee;
 }
 
 
-/* =========================
+/* =========================================================
+   SAVE BUTTON
+   ========================================================= */
+
+.save-button {
+  padding: 10px 20px;
+
+  border: 1px solid #003b73;
+
+  border-radius: 4px;
+
+  background: #003b73;
+
+  color: #ffffff;
+
+  font-size: 15px;
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+.save-button:hover {
+  background: #002f5f;
+}
+
+
+/* =========================================================
    TABLE WRAPPER
-   ========================= */
+   ========================================================= */
 
 .table-wrapper {
   width: 100%;
 
-  overflow-x: auto;
+  height: 75vh;
 
-  background: white;
+  min-height: 0;
+
+  margin: 0;
+  padding: 0;
+
+  overflow-x: auto;
+  overflow-y: auto;
+
+  background: #ffffff;
 
   border: 1px solid #c8c8c8;
+
+  flex: 0 0 75vh;
+
+  position: relative;
 }
 
 
-/* =========================
+/* =========================================================
    TABLE
-   ========================= */
+   ========================================================= */
+
+/*
+   IMPORTANT:
+   Using separate instead of collapse prevents the body
+   row borders from appearing through the sticky header
+   while scrolling.
+*/
 
 table {
   width: 100%;
 
   min-width: 1500px;
 
-  border-collapse: collapse;
+  margin: 0;
+  padding: 0;
+
+  border-collapse: separate;
+
+  border-spacing: 0;
 
   table-layout: auto;
 
-  font-size: 12px;
+  font-size: 14px;
 }
 
 
-/* =========================
+/* =========================================================
    TABLE HEADER
-   ========================= */
+   ========================================================= */
+
+thead {
+  margin: 0;
+  padding: 0;
+
+  position: relative;
+
+  z-index: 20;
+}
+
+thead tr {
+  margin: 0;
+  padding: 0;
+}
+
+
+/*
+   STICKY HEADER FIX
+
+   The header has its own solid background and no
+   collapsing borders, so row lines cannot show
+   through when scrolling.
+*/
 
 thead th {
-  padding: 9px 10px;
+  padding: 16px 12px;
 
-  background: #e7e6e6;
+  margin: 0;
 
-  border: 1px solid #b7b7b7;
+  background: #003b73;
 
-  color: #222;
+  color: #ffffff;
 
-  font-weight: 600;
+  font-weight: 700;
+
+  font-size: 14px;
+
+  line-height: 1.2;
 
   text-align: left;
 
   white-space: nowrap;
+
+  position: sticky;
+
+  top: 0;
+
+  z-index: 30;
+
+  height: 48px;
+
+  vertical-align: middle;
+
+  /*
+     Remove normal table borders from sticky header
+     to prevent the scrolling line effect.
+  */
+  border: none;
+
+  /*
+     Create only a clean bottom separator.
+  */
+  box-shadow: inset 0 -1px #003b73;
 }
 
 
-/* =========================
+/* =========================================================
+   TABLE HEADER CHECKBOX
+   ========================================================= */
+
+thead th.checkbox-column {
+  text-align: center !important;
+}
+
+
+/* =========================================================
    TABLE BODY
-   ========================= */
+   ========================================================= */
+
+tbody {
+  margin: 0;
+  padding: 0;
+}
+
+tbody tr {
+  margin: 0;
+  padding: 0;
+}
 
 tbody td {
-  padding: 8px 10px;
+  padding: 10px 12px;
 
-  border: 1px solid #d0d0d0;
+  background: #ffffff;
 
-  background: white;
+  color: #222222;
 
-  color: #333;
+  font-size: 14px;
 
   white-space: nowrap;
+
+  vertical-align: middle;
+
+  /*
+     Borders are applied only to the body.
+     This prevents them from interfering with
+     the sticky header.
+  */
+  border-right: 1px solid #d0d0d0;
+  border-bottom: 1px solid #d0d0d0;
+
+  border-top: none;
+  border-left: none;
 }
 
 
-/* =========================
-   EXCEL-LIKE ROW HOVER
-   ========================= */
+/* =========================================================
+   FIRST BODY COLUMN BORDER
+   ========================================================= */
+
+tbody td:first-child {
+  border-left: none;
+}
+
+
+/* =========================================================
+   ROW HOVER
+   ========================================================= */
 
 tbody tr:hover td {
   background: #f3f6fa;
 }
 
 
-/* =========================
-   ALTERNATING ROWS
-   ========================= */
+/* =========================================================
+   CHECKBOX COLUMN
+   ========================================================= */
 
-tbody tr:nth-child(even) td {
-  background: #fafafa;
+.checkbox-column {
+  width: 45px;
+
+  min-width: 45px;
+
+  max-width: 45px;
+
+  text-align: center !important;
 }
 
-tbody tr:nth-child(even):hover td {
-  background: #f3f6fa;
+.checkbox-cell {
+  width: 45px;
+
+  min-width: 45px;
+
+  max-width: 45px;
+
+  text-align: center;
 }
 
 
-/* =========================
-   RESPONSIVE FORM
-   ========================= */
+/* =========================================================
+   CHECKBOX
+   ========================================================= */
+
+.checkbox-cell input[type="checkbox"],
+.checkbox-column input[type="checkbox"] {
+  width: 17px;
+
+  height: 17px;
+
+  margin: 0;
+
+  cursor: pointer;
+
+  accent-color: #003b73;
+}
+
+
+/* =========================================================
+   STATUS COLUMN
+   ========================================================= */
+
+.status-column {
+  width: 135px;
+
+  min-width: 135px;
+
+  max-width: 135px;
+}
+
+.status-cell {
+  width: 135px;
+
+  min-width: 135px;
+
+  max-width: 135px;
+
+  padding: 6px 8px;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+
+/* =========================================================
+   STATUS DROPDOWN
+   ========================================================= */
+
+.status-select {
+  width: 100%;
+
+  min-width: 120px;
+
+  padding: 7px 9px;
+
+  border: 1px solid #999999;
+
+  border-radius: 4px;
+
+  background: #ffffff;
+
+  color: #222222;
+
+  font-family: inherit;
+
+  font-size: 14px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  box-sizing: border-box;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.status-select:hover {
+  border-color: #003b73;
+}
+
+.status-select:focus {
+  outline: none;
+
+  box-shadow:
+    0 0 0 2px rgba(0, 59, 115, 0.20);
+}
+
+
+/* =========================================================
+   STATUS COLORS
+   ========================================================= */
+
+
+/* -------------------------
+   PENDING
+   ------------------------- */
+
+.status-select.status-pending {
+  background: #fff3cd;
+
+  border-color: #e0b100;
+
+  color: #856404;
+}
+
+
+/* -------------------------
+   OUT
+   ------------------------- */
+
+.status-select.status-out {
+  background: #dbeafe;
+
+  border-color: #3b82f6;
+
+  color: #1e40af;
+}
+
+
+/* -------------------------
+   ARCHIVED
+   ------------------------- */
+
+.status-select.status-archived {
+  background: #e5e7eb;
+
+  border-color: #9ca3af;
+
+  color: #374151;
+}
+
+
+/* -------------------------
+   RESOLVED
+   ------------------------- */
+
+.status-select.status-resolved {
+  background: #dcfce7;
+
+  border-color: #22c55e;
+
+  color: #166534;
+}
+
+
+/* -------------------------
+   CANCELLED
+   ------------------------- */
+
+.status-select.status-cancelled {
+  background: #fee2e2;
+
+  border-color: #ef4444;
+
+  color: #991b1b;
+}
+
+
+/* =========================================================
+   STATUS CELL BACKGROUND
+   ========================================================= */
+
+.status-cell:has(.status-select.status-pending) {
+  background: #fff3cd;
+}
+
+.status-cell:has(.status-select.status-out) {
+  background: #dbeafe;
+}
+
+.status-cell:has(.status-select.status-archived) {
+  background: #e5e7eb;
+}
+
+.status-cell:has(.status-select.status-resolved) {
+  background: #dcfce7;
+}
+
+.status-cell:has(.status-select.status-cancelled) {
+  background: #fee2e2;
+}
+
+
+/* =========================================================
+   STATUS CELL HOVER
+   ========================================================= */
+
+tbody tr:hover .status-cell:has(.status-select.status-pending) {
+  background: #ffefb5;
+}
+
+tbody tr:hover .status-cell:has(.status-select.status-out) {
+  background: #c7ddfa;
+}
+
+tbody tr:hover .status-cell:has(.status-select.status-archived) {
+  background: #d9dce0;
+}
+
+tbody tr:hover .status-cell:has(.status-select.status-resolved) {
+  background: #c8f4d5;
+}
+
+tbody tr:hover .status-cell:has(.status-select.status-cancelled) {
+  background: #fecaca;
+}
+
+
+/* =========================================================
+   TABLE ACTIONS
+   ========================================================= */
+
+.update-actions {
+  flex: 0 0 auto;
+
+  display: flex;
+
+  justify-content: flex-end;
+
+  align-items: center;
+
+  gap: 10px;
+
+  margin-top: 12px;
+}
+
+
+/* =========================================================
+   UPDATE BUTTON
+   ========================================================= */
+
+.update-button {
+  min-width: 120px;
+
+  padding: 11px 22px;
+
+  border: 1px solid #999999;
+
+  border-radius: 4px;
+
+  background: #d6d6d6;
+
+  color: #777777;
+
+  font-size: 15px;
+
+  font-weight: 700;
+
+  cursor: not-allowed;
+
+  transition:
+    background 0.25s ease,
+    box-shadow 0.25s ease,
+    transform 0.15s ease;
+}
+
+.update-button.has-changes {
+  background: #003b73;
+
+  border-color: #003b73;
+
+  color: #ffffff;
+
+  cursor: pointer;
+}
+
+.update-button.has-changes:hover {
+  background: #002f5f;
+
+  transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   DELETE BUTTON
+   ========================================================= */
+
+.delete-button {
+  min-width: 120px;
+
+  padding: 11px 22px;
+
+  border: 1px solid #b91c1c;
+
+  border-radius: 4px;
+
+  background: #dc2626;
+
+  color: #ffffff;
+
+  font-size: 15px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    transform 0.1s ease;
+}
+
+.delete-button:hover:not(:disabled) {
+  background: #b91c1c;
+
+  transform: translateY(-1px);
+}
+
+.delete-button:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.delete-button:disabled {
+  background: #d6d6d6;
+
+  border-color: #999999;
+
+  color: #777777;
+
+  cursor: not-allowed;
+
+  transform: none;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
 
 @media (max-width: 1000px) {
 
@@ -390,8 +923,12 @@ tbody tr:nth-child(even):hover td {
 
   .page-header {
     align-items: flex-start;
+
     gap: 12px;
+
     flex-direction: column;
+
+    margin-bottom: 14px;
   }
 
   .form-grid {
@@ -408,6 +945,17 @@ tbody tr:nth-child(even):hover td {
 
   .cancel-button,
   .save-button {
+    width: 100%;
+  }
+
+  .update-actions {
+    justify-content: stretch;
+
+    flex-direction: column;
+  }
+
+  .update-button,
+  .delete-button {
     width: 100%;
   }
 

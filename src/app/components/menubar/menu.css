@@ -1,0 +1,610 @@
+/* =========================================
+   SLSU COLOR PALETTE
+========================================= */
+
+:root {
+  /* Main SLSU-style Navy Blue */
+  --slsu-navy: #003b73;
+
+  /* Darker Navy */
+  --slsu-dark-blue: #002f5f;
+
+  /* Secondary Blue */
+  --slsu-blue: #1f5f95;
+
+  /* Light Blue */
+  --slsu-light-blue: #eaf3fa;
+
+  /* Hover Blue */
+  --slsu-hover-blue: #dcecf8;
+
+  /* White */
+  --white: #ffffff;
+
+  /* Text */
+  --text-dark: #1f2937;
+  --text-gray: #64748b;
+
+  /* Borders */
+  --border: #e2e5e9;
+
+  /* Main Background */
+  --background: #f4f6f9;
+}
+
+
+/* =========================================
+   GLOBAL
+========================================= */
+
+:host {
+  display: block;
+
+  width: 100%;
+  min-height: 100vh;
+}
+
+.dashboard-layout {
+  width: 100%;
+  min-height: 100vh;
+
+  display: flex;
+
+  background: var(--background);
+}
+
+
+/* =========================================
+   SIDEBAR
+   MIRROR / GLASS EFFECT
+========================================= */
+
+.sidebar {
+  position: fixed;
+
+  top: 0;
+  left: 0;
+  width: 90px;
+  height: 100vh;
+  background: rgba(255, 255, 255, 0.123);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+  border-right: 1px solid rgba(0, 59, 115, 0.15);
+
+  box-sizing: border-box;
+
+  z-index: 1000;
+
+  overflow: hidden;
+
+  transition:
+    width 0.25s ease;
+
+  /*
+    Slight shadow
+  */
+  box-shadow:
+    2px 0 12px rgba(0, 0, 0, 0.08);
+}
+
+
+/* =========================================
+   SIDEBAR HOVER / EXPAND
+========================================= */
+
+.sidebar:hover {
+  width: 240px;
+}
+
+
+/* =========================================
+   LOGO
+========================================= */
+
+
+.logo-container {
+  width: 100%;
+  height: 90px;
+
+  display: flex;
+  align-items: center;
+
+  justify-content: flex-start;
+
+  border-bottom: 1px solid rgba(0, 59, 115, 0.10);
+
+  box-sizing: border-box;
+
+  padding: 0 16px;
+
+  flex-shrink: 0;
+
+  background: rgba(219, 223, 255, 0.301);
+
+  overflow: hidden;
+}
+
+
+.logo-container img {
+  width: 58px;
+  height: 58px;
+
+  object-fit: contain;
+
+  display: block;
+
+  flex-shrink: 0;
+}
+
+
+/* =========================================
+   LOGO TEXT
+========================================= */
+
+.logo-title {
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: center;
+
+  margin-left: 12px;
+
+
+  color: var(--slsu-navy);
+
+  font-size: 16px;
+
+  font-weight: 800;
+
+  line-height: 1.25;
+
+  letter-spacing: 0.4px;
+
+  white-space: nowrap;
+
+
+  opacity: 0;
+
+  transform: translateX(-10px);
+
+  pointer-events: none;
+
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+}
+
+
+.sidebar:hover .logo-title {
+  opacity: 1;
+
+  transform: translateX(0);
+
+  pointer-events: auto;
+}
+
+/* =========================================
+   SHOW LOGO TEXT
+========================================= */
+
+.sidebar:hover .logo-text {
+  opacity: 1;
+
+  transform: translateX(0);
+}
+
+
+/* =========================================
+   NAVIGATION
+========================================= */
+
+.sidebar nav {
+  width: 100%;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  gap: 14px;
+
+  margin-top: 30px;
+
+  padding: 0 15px;
+
+  box-sizing: border-box;
+}
+
+
+/* =========================================
+   NAVIGATION LINKS
+========================================= */
+
+.sidebar nav a {
+  width: 100%;
+
+  height: 54px;
+
+  display: flex;
+
+  align-items: center;
+
+  box-sizing: border-box;
+
+  border-radius: 12px;
+
+  text-decoration: none;
+
+  color: var(--text-gray);
+
+  cursor: pointer;
+
+  overflow: hidden;
+
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+
+/* =========================================
+   NAV ICON
+========================================= */
+
+.nav-icon {
+  min-width: 54px;
+
+  width: 54px;
+
+  height: 54px;
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  font-size: 24px;
+
+  flex-shrink: 0;
+}
+
+
+/* =========================================
+   NAV TEXT
+========================================= */
+
+.nav-text {
+  margin-left: 12px;
+
+  font-size: 15px;
+
+  font-weight: 600;
+
+  white-space: nowrap;
+
+  color: inherit;
+
+  opacity: 0;
+
+  transform: translateX(-10px);
+
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+}
+
+
+/* =========================================
+   SHOW NAV TEXT
+========================================= */
+
+.sidebar:hover .nav-text {
+  opacity: 1;
+
+  transform: translateX(0);
+}
+
+
+/* =========================================
+   NAV HOVER
+========================================= */
+
+.sidebar nav a:hover {
+  background: rgba(0, 59, 115, 0.08);
+
+  color: var(--slsu-navy);
+
+  transform: scale(1.01);
+}
+
+
+/* =========================================
+   ACTIVE NAVIGATION
+   SLSU NAVY BLUE
+========================================= */
+
+.sidebar nav a.active {
+  background: var(--slsu-navy);
+
+  color: var(--white);
+
+  box-shadow:
+    0 4px 10px rgba(0, 59, 115, 0.25);
+}
+
+
+/* =========================================
+   ACTIVE NAVIGATION HOVER
+========================================= */
+
+.sidebar nav a.active:hover {
+  background: var(--slsu-dark-blue);
+
+  color: var(--white);
+
+  transform: scale(1.01);
+
+  box-shadow:
+    0 5px 12px rgba(0, 47, 95, 0.30);
+}
+
+
+/* =========================================
+   LOGOUT CONTAINER
+========================================= */
+
+
+.logout-container {
+  width: 100%;
+
+  margin-top: auto;
+
+  margin-bottom: 25px;
+
+  padding: 20px 15px 0;
+
+  display: flex;
+
+  justify-content: center;
+
+  box-sizing: border-box;
+
+  /* Separator line */
+  border-top: 1px solid rgba(0, 59, 115, 0.15);
+}
+
+
+/* =========================================
+   LOGOUT BUTTON
+========================================= */
+
+.logout-button {
+  width: 100%;
+
+  height: 54px;
+
+  border: none;
+
+  border-radius: 12px;
+
+  background: transparent;
+
+  color: #dc2626;
+
+  display: flex;
+
+  align-items: center;
+
+  cursor: pointer;
+
+  overflow: hidden;
+
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+
+/* =========================================
+   LOGOUT ICON
+========================================= */
+
+.logout-icon {
+  min-width: 54px;
+
+  width: 54px;
+
+  height: 54px;
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  font-size: 24px;
+
+  flex-shrink: 0;
+}
+
+
+/* =========================================
+   LOGOUT TEXT
+========================================= */
+
+.logout-text {
+  margin-left: 12px;
+
+  font-size: 15px;
+
+  font-weight: 600;
+
+  white-space: nowrap;
+
+  opacity: 0;
+
+  transform: translateX(-10px);
+
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+}
+
+
+/* =========================================
+   SHOW LOGOUT TEXT
+========================================= */
+
+.sidebar:hover .logout-text {
+  opacity: 1;
+
+  transform: translateX(0);
+}
+
+
+/* =========================================
+   LOGOUT HOVER
+========================================= */
+
+.logout-button:hover {
+  background: rgba(220, 38, 38, 0.08);
+
+  color: #b91c1c;
+
+  transform: scale(1.01);
+}
+
+
+/* =========================================
+   DASHBOARD CONTENT
+========================================= */
+
+.dashboard-content {
+  width: calc(100% - 90px);
+
+  min-height: 100vh;
+
+  margin-left: 90px;
+
+  padding: 30px;
+
+  box-sizing: border-box;
+
+  background: var(--background);
+
+  transition:
+    margin-left 0.25s ease,
+    width 0.25s ease;
+}
+
+
+/* =========================================
+   BODY
+========================================= */
+
+body {
+  margin: 0;
+
+  padding: 0;
+}
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 768px) {
+
+  /* -----------------------------------------
+     SIDEBAR
+  ----------------------------------------- */
+
+  .sidebar {
+    width: 70px;
+  }
+
+
+  .sidebar:hover {
+    width: 220px;
+  }
+
+
+  /* -----------------------------------------
+     LOGO
+  ----------------------------------------- */
+
+  .logo-container {
+    height: 75px;
+  }
+
+
+  .logo-container img {
+    width: 48px;
+
+    height: 48px;
+  }
+
+
+  /* -----------------------------------------
+     NAVIGATION
+  ----------------------------------------- */
+
+  .sidebar nav {
+    margin-top: 20px;
+
+    gap: 10px;
+  }
+
+
+  .sidebar nav a,
+  .logout-button {
+    height: 48px;
+  }
+
+
+  /* -----------------------------------------
+     ICON
+  ----------------------------------------- */
+
+  .nav-icon,
+  .logout-icon {
+    min-width: 48px;
+
+    width: 48px;
+
+    height: 48px;
+
+    font-size: 21px;
+  }
+
+
+  /* -----------------------------------------
+     CONTENT
+  ----------------------------------------- */
+
+  .dashboard-content {
+    width: calc(100% - 70px);
+
+    margin-left: 70px;
+
+    padding: 0;
+  }
+
+  /* =========================================
+   LOGOUT CONTAINER
+========================================= */
+
+
+}

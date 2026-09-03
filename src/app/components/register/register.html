@@ -1,146 +1,240 @@
-<div class="register-container">
+<div class="register-page">
 
-  <div class="register-card">
+  <!-- =========================================
+       HEADER
+  ========================================== -->
 
-    <h1>Legal Office</h1>
+  <header class="system-header">
 
-    <h2>Create Account</h2>
+    <div class="header-content">
 
-    <form (ngSubmit)="register()">
+      <!-- LOGO -->
 
-      <!-- Full Name -->
-      <div class="form-group">
+      <div class="header-logo">
 
-        <label for="fullName">
-          Full Name
-        </label>
-
-        <input
-          id="fullName"
-          type="text"
-          name="fullName"
-          [(ngModel)]="registerData.fullName"
-          placeholder="Enter full name"
-          required
+        <img
+          src="assets/logo.webp"
+          alt="Southern Leyte State University Logo"
         >
 
       </div>
 
-      <!-- Username -->
-      <div class="form-group">
 
-        <label for="username">
-          Username
-        </label>
+      <!-- SYSTEM TITLE -->
 
-        <input
-          id="username"
-          type="text"
-          name="username"
-          [(ngModel)]="registerData.username"
-          placeholder="Enter username"
-          autocomplete="username"
-          required
+      <div class="system-title">
+
+        <div class="university-name">
+          SOUTHERN LEYTE STATE UNIVERSITY
+        </div>
+
+        <div class="office-name">
+          LEGAL FILE OFFICE MANAGEMENT
+        </div>
+
+      </div>
+
+    </div>
+
+  </header>
+
+
+  <!-- =========================================
+       REGISTER CONTENT
+  ========================================== -->
+
+  <main class="register-content">
+
+    <div class="register-card">
+
+      <!-- =====================================
+           TITLE
+      ====================================== -->
+
+      <h1>
+        Create Account
+      </h1>
+
+      <p class="register-subtitle">
+        Please fill in the details below
+      </p>
+
+
+      <!-- =====================================
+           FORM
+      ====================================== -->
+
+      <form (ngSubmit)="register()">
+
+
+        <!-- FULL NAME -->
+
+        <div class="form-group">
+
+          <label for="fullName">
+            Full Name
+          </label>
+
+          <input
+            id="fullName"
+            type="text"
+            name="fullName"
+            [(ngModel)]="registerData.fullName"
+            placeholder="Enter full name"
+            autocomplete="name"
+            required
+          >
+
+        </div>
+
+
+        <!-- USERNAME -->
+
+        <div class="form-group">
+
+          <label for="username">
+            User Name
+          </label>
+
+          <input
+            id="username"
+            type="text"
+            name="username"
+            [(ngModel)]="registerData.username"
+            placeholder="Enter user name"
+            autocomplete="username"
+            required
+          >
+
+        </div>
+
+
+        <!-- EMAIL -->
+
+        <div class="form-group">
+
+          <label for="email">
+            Email
+          </label>
+
+          <input
+            id="email"
+            type="email"
+            name="email"
+            [(ngModel)]="registerData.email"
+            placeholder="Enter email"
+            autocomplete="email"
+            required
+          >
+
+        </div>
+
+
+        <!-- PASSWORD -->
+
+        <div class="form-group">
+
+          <label for="password">
+            Password
+          </label>
+
+          <input
+            id="password"
+            type="password"
+            name="password"
+            [(ngModel)]="registerData.password"
+            placeholder="Enter password"
+            autocomplete="new-password"
+            required
+          >
+
+        </div>
+
+
+        <!-- CONFIRM PASSWORD -->
+
+        <div class="form-group">
+
+          <label for="confirmPassword">
+            Confirm Password
+          </label>
+
+          <input
+            id="confirmPassword"
+            type="password"
+            name="confirmPassword"
+            [(ngModel)]="confirmPassword"
+            placeholder="Confirm password"
+            autocomplete="new-password"
+            required
+          >
+
+        </div>
+
+
+        <!-- =====================================
+             ERROR
+        ====================================== -->
+
+        @if (errorMessage) {
+
+          <div class="error-message">
+
+            {{ errorMessage }}
+
+          </div>
+
+        }
+
+
+        <!-- =====================================
+             SUCCESS
+        ====================================== -->
+
+        @if (successMessage) {
+
+          <div class="success-message">
+
+            {{ successMessage }}
+
+          </div>
+
+        }
+
+
+        <!-- =====================================
+             REGISTER BUTTON
+        ====================================== -->
+
+        <button
+          type="submit"
+          [disabled]="loading"
         >
 
-      </div>
+          {{ loading ? 'Creating Account...' : 'Register' }}
 
-      <!-- Email -->
-      <div class="form-group">
+        </button>
 
-        <label for="email">
-          Email
-        </label>
 
-        <input
-          id="email"
-          type="email"
-          name="email"
-          [(ngModel)]="registerData.email"
-          placeholder="Enter email"
-          autocomplete="email"
-          required
-        >
+      </form>
 
-      </div>
 
-      <!-- Password -->
-      <div class="form-group">
+      <!-- =====================================
+           LOGIN LINK
+      ====================================== -->
 
-        <label for="password">
-          Password
-        </label>
+      <p class="login-link">
 
-        <input
-          id="password"
-          type="password"
-          name="password"
-          [(ngModel)]="registerData.password"
-          placeholder="Enter password"
-          autocomplete="new-password"
-          required
-        >
+        Already have an account?
 
-      </div>
+        <a routerLink="/login">
+          Login
+        </a>
 
-      <!-- Confirm Password -->
-      <div class="form-group">
+      </p>
 
-        <label for="confirmPassword">
-          Confirm Password
-        </label>
+    </div>
 
-        <input
-          id="confirmPassword"
-          type="password"
-          name="confirmPassword"
-          [(ngModel)]="confirmPassword"
-          placeholder="Confirm password"
-          autocomplete="new-password"
-          required
-        >
-
-      </div>
-
-      <!-- Error -->
-      <div
-        class="error-message"
-        *ngIf="errorMessage"
-      >
-        {{ errorMessage }}
-      </div>
-
-      <!-- Success -->
-      <div
-        class="success-message"
-        *ngIf="successMessage"
-      >
-        {{ successMessage }}
-      </div>
-
-      <!-- Register Button -->
-      <button
-        type="submit"
-        [disabled]="loading"
-      >
-
-        {{ loading ? 'Creating Account...' : 'Register' }}
-
-      </button>
-
-    </form>
-
-    <!-- Login Link -->
-    <p class="login-link">
-
-      Already have an account?
-
-      <a routerLink="/login">
-        Login
-      </a>
-
-    </p>
-
-  </div>
+  </main>
 
 </div>

@@ -16,13 +16,35 @@ import { AuthService } from '../../service/auth.service.ts.js';
 })
 export class Login {
 
+  // =========================================
+  // LOGIN DATA
+  // =========================================
+
   loginData: LoginRequest = {
     username: '',
     password: ''
   };
 
+
+  // =========================================
+  // REMEMBER USERNAME
+  // =========================================
+
+  rememberUsername = false;
+
+
+  // =========================================
+  // LOGIN STATE
+  // =========================================
+
   errorMessage = '';
+
   loading = false;
+
+
+  // =========================================
+  // CONSTRUCTOR
+  // =========================================
 
   constructor(
     private authService: AuthService,
@@ -30,9 +52,20 @@ export class Login {
     private cdr: ChangeDetectorRef
   ) {}
 
+
+  // =========================================
+  // LOGIN
+  // =========================================
+
   login(): void {
 
+    // Clear previous error
     this.errorMessage = '';
+
+
+    // =======================================
+    // VALIDATE INPUT
+    // =======================================
 
     if (
       !this.loginData.username ||
@@ -47,13 +80,27 @@ export class Login {
       return;
     }
 
+
+    // =======================================
+    // LOADING
+    // =======================================
+
     this.loading = true;
 
     this.cdr.detectChanges();
 
+
+    // =======================================
+    // CALL BACKEND LOGIN API
+    // =======================================
+
     this.authService
       .login(this.loginData)
       .subscribe({
+
+        // ===================================
+        // SUCCESS
+        // ===================================
 
         next: (response) => {
 
@@ -62,14 +109,45 @@ export class Login {
             response
           );
 
+
           this.loading = false;
 
           this.cdr.detectChanges();
 
+
+          // =================================
+          // SAVE USERNAME
+          // =================================
+
+          if (this.rememberUsername) {
+
+            localStorage.setItem(
+              'rememberedUsername',
+              this.loginData.username
+            );
+
+          } else {
+
+            localStorage.removeItem(
+              'rememberedUsername'
+            );
+
+          }
+
+
+          // =================================
+          // GO TO MENU BAR
+          // =================================
+
           this.router.navigate([
-            '/dashboard'
+            '/menubar'
           ]);
         },
+
+
+        // ===================================
+        // ERROR
+        // ===================================
 
         error: (error) => {
 
@@ -78,17 +156,33 @@ export class Login {
             error
           );
 
+
           this.loading = false;
+
+
+          // =================================
+          // 401 - INVALID LOGIN
+          // =================================
 
           if (error.status === 401) {
 
             this.errorMessage =
               'Invalid username or password.';
 
+
+          // =================================
+          // 403 - FORBIDDEN
+          // =================================
+
           } else if (error.status === 403) {
 
             this.errorMessage =
               'Access forbidden. Check your Spring Security configuration.';
+
+
+          // =================================
+          // OTHER ERROR
+          // =================================
 
           } else {
 
@@ -96,6 +190,7 @@ export class Login {
               error.error?.message ||
               'Login failed. Please try again.';
           }
+
 
           this.cdr.detectChanges();
         }

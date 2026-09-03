@@ -1,80 +1,175 @@
-<div class="login-container">
+<div class="login-page">
 
-  <div class="login-card">
+  <!-- =========================================
+       HEADER
+  ========================================== -->
 
-    <h1>Legal Office</h1>
+  <header class="system-header">
 
-    <h2>Login</h2>
+    <div class="header-content">
 
-    <form (ngSubmit)="login()">
+      <!-- LOGO -->
 
-      <div class="form-group">
+      <div class="header-logo">
 
-        <label for="username">
-          Username
-        </label>
-
-        <input
-          id="username"
-          type="text"
-          name="username"
-          [(ngModel)]="loginData.username"
-          placeholder="Enter username"
-          autocomplete="username"
-          required
-        >
-
-      </div>
-
-      <div class="form-group">
-
-        <label for="password">
-          Password
-        </label>
-
-        <input
-          id="password"
-          type="password"
-          name="password"
-          [(ngModel)]="loginData.password"
-          placeholder="Enter password"
-          autocomplete="current-password"
-          required
+        <img
+          src="assets/logo.webp"
+          alt="Southern Leyte State University Logo"
         >
 
       </div>
 
 
-      <!-- ERROR MESSAGE -->
-      @if (errorMessage) {
+      <!-- SYSTEM TITLE -->
 
-        <div class="error">
-          {{ errorMessage }}
+      <div class="system-title">
+
+        <div class="university-name">
+          SOUTHERN LEYTE STATE UNIVERSITY
         </div>
 
-      }
+        <div class="office-name">
+          LEGAL FILE OFFICE MANAGEMENT
+        </div>
+
+      </div>
+
+    </div>
+
+  </header>
 
 
-      <button
-        type="submit"
-        [disabled]="loading"
-      >
+  <!-- =========================================
+       LOGIN AREA
+  ========================================== -->
 
-        {{ loading ? 'Logging in...' : 'Login' }}
+  <main class="login-content">
 
-      </button>
+    <div class="login-card">
 
-    </form>
+      <!-- Welcome -->
 
-    <p>
-      Don't have an account?
+      <h1>Welcome!</h1>
 
-      <a routerLink="/register">
-        Register
-      </a>
+      <p class="sign-in-text">
+        Please Sign In
+      </p>
 
-    </p>
 
-  </div>
+      <!-- =====================================
+           FORM
+      ====================================== -->
+
+      <form (ngSubmit)="login()">
+
+        <!-- Username -->
+
+        <div class="form-group">
+
+          <label for="username">
+            User Name
+          </label>
+
+          <input
+            id="username"
+            type="text"
+            name="username"
+            [(ngModel)]="loginData.username"
+            placeholder="User Name"
+            autocomplete="username"
+            required
+          >
+
+        </div>
+
+
+        <!-- Password -->
+
+        <div class="form-group">
+
+          <label for="password">
+            Password
+          </label>
+
+          <input
+            id="password"
+            type="password"
+            name="password"
+            [(ngModel)]="loginData.password"
+            placeholder="Password"
+            autocomplete="current-password"
+            required
+          >
+
+        </div>
+
+
+        <!-- =====================================
+             OPTIONS
+        ====================================== -->
+
+        <div class="login-options">
+
+          <label class="checkbox-option">
+
+            <input
+              type="checkbox"
+              [(ngModel)]="rememberUsername"
+              name="rememberUsername"
+            >
+
+            <span>Save my user name</span>
+
+          </label>
+
+        </div>
+
+
+        <!-- =====================================
+             ERROR
+        ====================================== -->
+
+        @if (errorMessage) {
+
+          <div class="error">
+            {{ errorMessage }}
+          </div>
+
+        }
+
+
+        <!-- =====================================
+             LOGIN BUTTON
+        ====================================== -->
+
+        <button
+          type="submit"
+          [disabled]="loading"
+        >
+
+          {{ loading ? 'Logging in...' : 'Login' }}
+
+        </button>
+
+      </form>
+
+
+      <!-- =====================================
+           REGISTER
+      ====================================== -->
+
+      <p class="register-text">
+
+        Don't have an account?
+
+        <a routerLink="/register">
+          Register
+        </a>
+
+      </p>
+
+    </div>
+
+  </main>
 
 </div>

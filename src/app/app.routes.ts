@@ -2,8 +2,9 @@ import { Routes } from '@angular/router';
 
 import { Login } from './components/login/login';
 import { Register } from './components/register/register';
-import { Dashboard } from './components/dashboard/dashboard';
+import { MenuBar } from './components/menubar/menu';
 import { LegalFiles } from './components/legal-files/legal-files';
+import { Dashboard } from './components/dashboard/dashboard';
 // import { Home } from './components/home/home';
 // import { Cases } from './components/cases/cases';
 // import { Settings } from './components/settings/settings';
@@ -27,14 +28,21 @@ export const routes: Routes = [
   },
 
   {
-    path: 'dashboard',
-    component: Dashboard,
+    path: 'menubar',
+    component: MenuBar,
     children: [
 
-      // {
-      //   path: 'home',
-      //   component: Home
-      // },
+       // DEFAULT PAGE INSIDE MENUBAR
+      {
+        path: '',
+        redirectTo: 'dashboard',
+        pathMatch: 'full'
+      },
+
+      {
+        path: 'dashboard',
+        component: Dashboard
+      },
 
       {
         path: 'legal-files',
@@ -46,10 +54,6 @@ export const routes: Routes = [
       //   component: Cases
       // },
 
-      // {
-      //   path: 'settings',
-      //   component: Settings
-      // },
 
     ]
   },
