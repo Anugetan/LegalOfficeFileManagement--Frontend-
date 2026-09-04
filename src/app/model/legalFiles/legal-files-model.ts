@@ -1,14 +1,11 @@
+import { FileUploadResponse } from "../fileupload/file-upload";
 
 export interface LegalFile {
 
   id: number;
-
   caseNo: string;
-
   dateReceived: string;
-
   timeReceived: string | null;
-
   dateCompleted: string | null;
 
 
@@ -17,7 +14,6 @@ export interface LegalFile {
   // =========================================
 
   statusId: number | null;
-
   statusName: string | null;
 
 
@@ -26,7 +22,6 @@ export interface LegalFile {
   // =========================================
 
   spmsTypeId: number | null;
-
   spmsTypeName: string | null;
 
 
@@ -35,7 +30,6 @@ export interface LegalFile {
   // =========================================
 
   requestingOfficeId: number | null;
-
   requestingOfficeName: string | null;
 
 
@@ -44,7 +38,6 @@ export interface LegalFile {
   // =========================================
 
   documentTypeId: number | null;
-
   documentTypeName: string | null;
 
 
@@ -53,7 +46,6 @@ export interface LegalFile {
   // =========================================
 
   documentFormatId: number | null;
-
   documentFormatName: string | null;
 
 
@@ -62,14 +54,12 @@ export interface LegalFile {
   // =========================================
 
   contactDetails: string | null;
-
   currentStage: string;
-
   createdById: number | null;
-
   createdAt: string;
-
   updatedAt: string;
+
+  documents?: FileUploadResponse[];
 }
 
 

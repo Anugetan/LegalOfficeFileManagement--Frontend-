@@ -45,6 +45,8 @@ app-root {
 
   display: flex;
   flex-direction: column;
+
+  position: relative;
 }
 
 
@@ -66,7 +68,7 @@ app-root {
 .page-header h2 {
   margin: 0;
 
-  font-size: 28px;
+  font-size: 30px;
   font-weight: 700;
 
   color: #111827;
@@ -110,20 +112,52 @@ app-root {
 
 
 /* =========================================================
-   CREATE FORM
+   CREATE FORM OVERLAY
+   ========================================================= */
+
+.form-overlay {
+  position: absolute;
+
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  z-index: 100;
+
+  display: flex;
+
+  justify-content: center;
+  align-items: flex-start;
+
+  padding: 20px;
+
+  background: rgba(0, 0, 0, 0.35);
+
+  overflow-y: auto;
+}
+
+
+/* =========================================================
+   CREATE FORM CONTAINER
    ========================================================= */
 
 .form-container {
   width: 100%;
+  max-width: 1200px;
 
-  margin-top: 0;
-  margin-bottom: 20px;
+  max-height: calc(90vh - 40px);
 
   background: #ffffff;
 
   border: 1px solid #c8c8c8;
 
-  border-radius: 4px;
+  border-radius: 5px;
+
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.25);
+
+  overflow-y: auto;
 
   flex: 0 0 auto;
 }
@@ -144,6 +178,11 @@ app-root {
   background: #f2f2f2;
 
   border-bottom: 1px solid #c8c8c8;
+
+  position: sticky;
+  top: 0;
+
+  z-index: 10;
 }
 
 .form-header h3 {
@@ -285,6 +324,49 @@ form {
 
 
 /* =========================================================
+   SELECTED FILE
+   ========================================================= */
+
+.selected-file {
+  margin-top: 8px;
+
+  padding: 8px 10px;
+
+  border: 1px solid #dcdcdc;
+
+  border-radius: 6px;
+
+  background: #f8f9fa;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 6px;
+
+  flex-wrap: wrap;
+}
+
+.selected-file-label {
+  font-size: 13px;
+
+  font-weight: 600;
+}
+
+.selected-file-name {
+  font-size: 13px;
+
+  word-break: break-all;
+}
+
+.selected-file-size {
+  font-size: 12px;
+
+  color: #777;
+}
+
+
+/* =========================================================
    FORM ACTIONS
    ========================================================= */
 
@@ -319,6 +401,7 @@ form {
   color: #333333;
 
   font-size: 15px;
+
   font-weight: 600;
 
   cursor: pointer;
@@ -345,6 +428,7 @@ form {
   color: #ffffff;
 
   font-size: 15px;
+
   font-weight: 700;
 
   cursor: pointer;
@@ -386,13 +470,6 @@ form {
    TABLE
    ========================================================= */
 
-/*
-   IMPORTANT:
-   Using separate instead of collapse prevents the body
-   row borders from appearing through the sticky header
-   while scrolling.
-*/
-
 table {
   width: 100%;
 
@@ -429,15 +506,6 @@ thead tr {
   padding: 0;
 }
 
-
-/*
-   STICKY HEADER FIX
-
-   The header has its own solid background and no
-   collapsing borders, so row lines cannot show
-   through when scrolling.
-*/
-
 thead th {
   padding: 16px 12px;
 
@@ -449,7 +517,7 @@ thead th {
 
   font-weight: 700;
 
-  font-size: 14px;
+  font-size: 18px;
 
   line-height: 1.2;
 
@@ -467,15 +535,8 @@ thead th {
 
   vertical-align: middle;
 
-  /*
-     Remove normal table borders from sticky header
-     to prevent the scrolling line effect.
-  */
   border: none;
 
-  /*
-     Create only a clean bottom separator.
-  */
   box-shadow: inset 0 -1px #003b73;
 }
 
@@ -510,30 +571,18 @@ tbody td {
 
   color: #222222;
 
-  font-size: 14px;
+  font-size: 16px;
 
   white-space: nowrap;
 
   vertical-align: middle;
 
-  /*
-     Borders are applied only to the body.
-     This prevents them from interfering with
-     the sticky header.
-  */
   border-right: 1px solid #d0d0d0;
+
   border-bottom: 1px solid #d0d0d0;
 
   border-top: none;
-  border-left: none;
-}
 
-
-/* =========================================================
-   FIRST BODY COLUMN BORDER
-   ========================================================= */
-
-tbody td:first-child {
   border-left: none;
 }
 
@@ -570,11 +619,6 @@ tbody tr:hover td {
 
   text-align: center;
 }
-
-
-/* =========================================================
-   CHECKBOX
-   ========================================================= */
 
 .checkbox-cell input[type="checkbox"],
 .checkbox-column input[type="checkbox"] {
@@ -669,11 +713,6 @@ tbody tr:hover td {
    STATUS COLORS
    ========================================================= */
 
-
-/* -------------------------
-   PENDING
-   ------------------------- */
-
 .status-select.status-pending {
   background: #fff3cd;
 
@@ -681,11 +720,6 @@ tbody tr:hover td {
 
   color: #856404;
 }
-
-
-/* -------------------------
-   OUT
-   ------------------------- */
 
 .status-select.status-out {
   background: #dbeafe;
@@ -695,11 +729,6 @@ tbody tr:hover td {
   color: #1e40af;
 }
 
-
-/* -------------------------
-   ARCHIVED
-   ------------------------- */
-
 .status-select.status-archived {
   background: #e5e7eb;
 
@@ -708,11 +737,6 @@ tbody tr:hover td {
   color: #374151;
 }
 
-
-/* -------------------------
-   RESOLVED
-   ------------------------- */
-
 .status-select.status-resolved {
   background: #dcfce7;
 
@@ -720,11 +744,6 @@ tbody tr:hover td {
 
   color: #166534;
 }
-
-
-/* -------------------------
-   CANCELLED
-   ------------------------- */
 
 .status-select.status-cancelled {
   background: #fee2e2;
@@ -782,6 +801,55 @@ tbody tr:hover .status-cell:has(.status-select.status-resolved) {
 
 tbody tr:hover .status-cell:has(.status-select.status-cancelled) {
   background: #fecaca;
+}
+
+
+/* =========================================================
+   FILE COLUMN
+   ========================================================= */
+
+.file-column {
+  min-width: 180px;
+
+  max-width: 250px;
+}
+
+.file-item {
+  display: flex;
+
+  align-items: center;
+
+  gap: 6px;
+}
+
+.file-icon {
+  flex-shrink: 0;
+}
+
+.file-name {
+  display: inline-block;
+
+  max-width: 200px;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+
+  cursor: pointer;
+
+  text-decoration: underline;
+}
+
+.file-name:hover {
+  opacity: 0.7;
+}
+
+.no-file {
+  color: #999;
+
+  font-style: italic;
 }
 
 
@@ -929,6 +997,10 @@ tbody tr:hover .status-cell:has(.status-select.status-cancelled) {
     flex-direction: column;
 
     margin-bottom: 14px;
+  }
+
+  .form-overlay {
+    padding: 10px;
   }
 
   .form-grid {

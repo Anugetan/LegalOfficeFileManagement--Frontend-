@@ -27,6 +27,8 @@ import {
 import { LegalFileServiceTs } from '../../service/legal-file.service.ts';
 
 import { CreateLegalFile } from '../../model/legalFiles/create-legal-files';
+import { FileDocumentService } from '../../service/FileDocumentService';
+import { FileUploadResponse } from '../../model/fileupload/file-upload';
 
 
 @Component({
@@ -53,6 +55,7 @@ export class LegalFiles implements OnInit {
 
   legalFiles: LegalFile[] = [];
 
+  selectedDocumentFile: File | null = null;
 
   // =====================================================
   // SELECTED FILES
@@ -67,26 +70,7 @@ export class LegalFiles implements OnInit {
   // STATUS CHANGES
   // =====================================================
 
-  /*
-   * Stores:
-   *
-   * legalFileId -> new statusId
-   *
-   * Example:
-   *
-   * 5 -> 2
-   * 8 -> 4
-   */
-
   statusChanges = new Map<number, number>();
-
-
-  /*
-   * Stores the original status before the user
-   * changes the dropdown.
-   *
-   * legalFileId -> original statusId
-   */
 
   originalStatusIds =
     new Map<number, number | null>();
@@ -97,16 +81,11 @@ export class LegalFiles implements OnInit {
   // =====================================================
 
   statuses: Status[] = [];
-
   spmsTypes: SpmsType[] = [];
-
   offices: Office[] = [];
-
   documentTypes: DocumentType[] = [];
-
   documentFormats: DocumentFormat[] = [];
-
-
+  
   // =====================================================
   // FORM VISIBILITY
   // =====================================================
@@ -128,9 +107,8 @@ export class LegalFiles implements OnInit {
   constructor(
 
     private fb: FormBuilder,
-
     private legalFileServiceTs: LegalFileServiceTs,
-
+    private fileDocumentService: FileDocumentService,
     private cdr: ChangeDetectorRef
 
   ) {
@@ -217,25 +195,6 @@ export class LegalFiles implements OnInit {
   // GET STATUS CSS CLASS
   // =====================================================
 
-  /*
-   * This method is used by the HTML:
-   *
-   * [ngClass]="getStatusClass(file.statusId)"
-   *
-   * It finds the status name using the status ID
-   * and returns the CSS class.
-   *
-   * Example:
-   *
-   * statusId = 1
-   *
-   * statusName = "PENDING"
-   *
-   * returns:
-   *
-   * "status-select status-pending"
-   */
-
   getStatusClass(
     statusId: number | null
   ): string {
@@ -245,7 +204,6 @@ export class LegalFiles implements OnInit {
       return 'status-select';
 
     }
-
 
     const status =
       this.statuses.find(
@@ -259,7 +217,6 @@ export class LegalFiles implements OnInit {
       return 'status-select';
 
     }
-
 
     const statusName =
       (status.statusName ?? '')
@@ -314,13 +271,9 @@ export class LegalFiles implements OnInit {
     const priority: Record<string, number> = {
 
       pending: 1,
-
       out: 2,
-
       archived: 3,
-
       resolved: 4,
-
       cancelled: 5
 
     };
@@ -356,7 +309,6 @@ export class LegalFiles implements OnInit {
 
   }
 
-
   // =====================================================
   // CHECKBOX
   // =====================================================
@@ -368,7 +320,6 @@ export class LegalFiles implements OnInit {
     return this.selectedFiles.has(id);
 
   }
-
 
   // =====================================================
   // TOGGLE SINGLE CHECKBOX
@@ -402,7 +353,6 @@ export class LegalFiles implements OnInit {
 
   }
 
-
   // =====================================================
   // SELECT / DESELECT ALL
   // =====================================================
@@ -413,7 +363,6 @@ export class LegalFiles implements OnInit {
 
     const checkbox =
       event.target as HTMLInputElement;
-
 
     if (checkbox.checked) {
 
@@ -435,7 +384,6 @@ export class LegalFiles implements OnInit {
 
     }
 
-
     this.allSelected =
       checkbox.checked;
 
@@ -443,7 +391,6 @@ export class LegalFiles implements OnInit {
     this.cdr.detectChanges();
 
   }
-
 
   // =====================================================
   // UPDATE SELECT ALL STATE
@@ -568,114 +515,219 @@ export class LegalFiles implements OnInit {
 
   }
 
+  onDocumentFileSelected(event: Event): void {
 
+  const input = event.target as HTMLInputElement;
+
+  if (!input.files || input.files.length === 0) {
+
+    this.selectedDocumentFile = null;
+
+    return;
+
+  }
+
+  this.selectedDocumentFile = input.files[0];
+
+  console.log(
+    'SELECTED FILE:',
+    this.selectedDocumentFile
+  );
+
+}
+
+uploadDocument(legalFileId: number): void {
+
+  if (!this.selectedDocumentFile) {
+    return;
+  }
+
+  const documentFormatId =
+    this.legalFileForm
+      .get('documentFormatId')
+      ?.value;
+
+  this.fileDocumentService
+    .uploadFile(
+      legalFileId,
+      this.selectedDocumentFile,
+      documentFormatId
+    )
+    .subscribe({
+
+      next: (response: FileUploadResponse) => {
+
+        console.log(
+          'FILE UPLOADED:',
+          response
+        );
+
+        this.selectedDocumentFile = null;
+
+      },
+
+      error: (error: unknown) => {
+
+        console.error(
+          'FILE UPLOAD ERROR:',
+          error
+        );
+
+      }
+
+    });
+
+}
   // =====================================================
   // LOAD LEGAL FILES
   // =====================================================
 
   loadLegalFiles(): void {
 
-    this.legalFileServiceTs
-      .getAllLegalFiles()
-      .subscribe({
+  this.legalFileServiceTs
+    .getAllLegalFiles()
+    .subscribe({
 
-        next: (data: LegalFile[]) => {
+      next: (data: LegalFile[]) => {
 
-          console.log(
-            'LEGAL FILES FROM DATABASE:',
+        console.log(
+          'LEGAL FILES FROM DATABASE:',
+          data
+        );
+
+
+        // ---------------------------------------------
+        // Save original status IDs
+        // ---------------------------------------------
+
+        this.originalStatusIds.clear();
+
+
+        data.forEach(
+          file => {
+
+            this.originalStatusIds.set(
+
+              file.id,
+
+              file.statusId ?? null
+
+            );
+
+          }
+        );
+
+
+        // ---------------------------------------------
+        // Clear unsaved status changes
+        // ---------------------------------------------
+
+        this.statusChanges.clear();
+
+
+        // ---------------------------------------------
+        // Sort and display
+        // ---------------------------------------------
+
+        this.legalFiles =
+          this.sortLegalFiles(
             data
           );
 
 
-          // ---------------------------------------------
-          // Save original status IDs
-          // ---------------------------------------------
+        // ---------------------------------------------
+        // Remove selections that no longer exist
+        // ---------------------------------------------
 
-          this.originalStatusIds.clear();
-
-
-          data.forEach(
-            file => {
-
-              this.originalStatusIds.set(
-
-                file.id,
-
-                file.statusId ?? null
-
-              );
-
-            }
+        const existingIds =
+          new Set(
+            data.map(
+              file => file.id
+            )
           );
 
 
-          // ---------------------------------------------
-          // Clear unsaved status changes
-          // ---------------------------------------------
-
-          this.statusChanges.clear();
-
-
-          // ---------------------------------------------
-          // Sort and display
-          // ---------------------------------------------
-
-          this.legalFiles =
-            this.sortLegalFiles(
-              data
-            );
-
-
-          // ---------------------------------------------
-          // Remove selections that no longer exist
-          // ---------------------------------------------
-
-          const existingIds =
-            new Set(
-              data.map(
-                file => file.id
+        this.selectedFiles =
+          new Set(
+            [...this.selectedFiles]
+              .filter(
+                id =>
+                  existingIds.has(id)
               )
-            );
-
-
-          this.selectedFiles =
-            new Set(
-              [...this.selectedFiles]
-                .filter(
-                  id =>
-                    existingIds.has(id)
-                )
-            );
-
-
-          // ---------------------------------------------
-          // Update select-all checkbox
-          // ---------------------------------------------
-
-          this.updateAllSelected();
-
-
-          // ---------------------------------------------
-          // Force UI update
-          // ---------------------------------------------
-
-          this.cdr.detectChanges();
-
-        },
-
-
-        error: (error: unknown) => {
-
-          console.error(
-            'ERROR LOADING LEGAL FILES:',
-            error
           );
 
-        }
 
-      });
+        // ---------------------------------------------
+        // Update select-all checkbox
+        // ---------------------------------------------
 
-  }
+        this.updateAllSelected();
+
+
+        // ---------------------------------------------
+        // Load documents for each legal file
+        // ---------------------------------------------
+
+        this.legalFiles.forEach(
+          file => {
+
+            this.fileDocumentService
+              .getDocumentsByFileId(file.id)
+              .subscribe({
+
+                next: (documents: FileUploadResponse[]) => {
+
+                  file.documents = documents;
+
+                  console.log(
+                    'DOCUMENTS FOR CASE:',
+                    file.caseNo,
+                    documents
+                  );
+
+                  this.cdr.detectChanges();
+
+                },
+
+                error: (error: unknown) => {
+
+                  console.error(
+                    'ERROR LOADING DOCUMENTS FOR CASE:',
+                    file.caseNo,
+                    error
+                  );
+
+                  file.documents = [];
+
+                }
+
+              });
+
+          }
+        );
+
+
+        // ---------------------------------------------
+        // Force UI update
+        // ---------------------------------------------
+
+        this.cdr.detectChanges();
+
+      },
+
+
+      error: (error: unknown) => {
+
+        console.error(
+          'ERROR LOADING LEGAL FILES:',
+          error
+        );
+
+      }
+
+    });
+
+}
 
 
   // =====================================================
@@ -877,6 +929,88 @@ export class LegalFiles implements OnInit {
 
   }
 
+    // =====================================================
+  // LOAD DOCUMENT ForLegalFile
+  // =====================================================
+
+  loadDocumentsForLegalFile(
+  legalFile: LegalFile
+): void {
+
+  this.fileDocumentService
+    .getDocumentsByFileId(legalFile.id)
+    .subscribe({
+
+      next: (documents: FileUploadResponse[]) => {
+
+        legalFile.documents = documents;
+
+        console.log(
+          'DOCUMENTS FOR CASE:',
+          legalFile.caseNo,
+          documents
+        );
+
+      },
+
+      error: (error: unknown) => {
+
+        console.error(
+          'ERROR LOADING DOCUMENTS:',
+          error
+        );
+
+        legalFile.documents = [];
+
+      }
+
+    });
+}
+
+
+downloadDocument(
+  document: FileUploadResponse
+): void {
+
+  console.log(
+    'DOWNLOADING DOCUMENT:',
+    document
+  );
+
+  this.fileDocumentService
+    .downloadFile(document.id)
+    .subscribe({
+
+      next: (blob: Blob) => {
+
+        const url =
+          window.URL.createObjectURL(blob);
+
+        const link =
+          window.document.createElement('a');
+
+        link.href = url;
+
+        link.download =
+          document.documentName;
+
+        link.click();
+
+        window.URL.revokeObjectURL(url);
+
+      },
+
+      error: (error: unknown) => {
+
+        console.error(
+          'ERROR DOWNLOADING DOCUMENT:',
+          error
+        );
+
+      }
+
+    });
+}
 
   // =====================================================
   // OPEN CREATE FORM
@@ -1359,162 +1493,204 @@ export class LegalFiles implements OnInit {
   // =====================================================
   // CREATE LEGAL FILE
   // =====================================================
+saveLegalFile(): void {
 
-  saveLegalFile(): void {
+  // =====================================================
+  // VALIDATE FORM
+  // =====================================================
 
-    // ---------------------------------------------
-    // Validate
-    // ---------------------------------------------
+  if (this.legalFileForm.invalid) {
 
-    if (
-      this.legalFileForm.invalid
-    ) {
-
-      this.legalFileForm
-        .markAllAsTouched();
-
-      console.log(
-        'FORM INVALID:',
-        this.legalFileForm.getRawValue()
-      );
-
-      return;
-
-    }
-
-
-    // ---------------------------------------------
-    // Get form values
-    // ---------------------------------------------
-
-    const formValue =
-      this.legalFileForm.getRawValue();
-
-
-    // ---------------------------------------------
-    // Build request
-    // ---------------------------------------------
-
-    const legalFile:
-      CreateLegalFile = {
-
-      caseNo:
-        formValue.caseNo!,
-
-      dateReceived:
-        formValue.dateReceived!,
-
-      timeReceived:
-        formValue.timeReceived || '',
-
-      dateCompleted:
-        formValue.dateCompleted || null,
-
-      statusId:
-        formValue.statusId,
-
-      spmsTypeId:
-        formValue.spmsTypeId,
-
-      requestingOfficeId:
-        formValue.requestingOfficeId,
-
-      documentTypeId:
-        formValue.documentTypeId,
-
-      documentFormatId:
-        formValue.documentFormatId,
-
-      contactDetails:
-        formValue.contactDetails || '',
-
-      currentStage:
-        formValue.currentStage!
-
-    };
-
+    this.legalFileForm.markAllAsTouched();
 
     console.log(
-      'SENDING LEGAL FILE:',
-      JSON.stringify(
-        legalFile,
-        null,
-        2
-      )
+      'FORM INVALID:',
+      this.legalFileForm.getRawValue()
     );
 
+    return;
 
-    // ---------------------------------------------
-    // Send POST request
-    // ---------------------------------------------
+  }
 
-    this.legalFileServiceTs
-      .createLegalFile(
-        legalFile
-      )
-      .subscribe({
 
-        next: (
-          data: LegalFile
-        ) => {
+  // =====================================================
+  // GET FORM VALUES
+  // =====================================================
+
+  const formValue =
+    this.legalFileForm.getRawValue();
+
+
+  // =====================================================
+  // BUILD LEGAL FILE REQUEST
+  // =====================================================
+
+  const legalFile: CreateLegalFile = {
+
+    caseNo:
+      formValue.caseNo!,
+
+    dateReceived:
+      formValue.dateReceived!,
+
+    timeReceived:
+      formValue.timeReceived || '',
+
+    dateCompleted:
+      formValue.dateCompleted || null,
+
+    statusId:
+      formValue.statusId,
+
+    spmsTypeId:
+      formValue.spmsTypeId,
+
+    requestingOfficeId:
+      formValue.requestingOfficeId,
+
+    documentTypeId:
+      formValue.documentTypeId,
+
+    documentFormatId:
+      formValue.documentFormatId,
+
+    contactDetails:
+      formValue.contactDetails || '',
+
+    currentStage:
+      formValue.currentStage!
+
+  };
+
+
+  // =====================================================
+  // DEBUG
+  // =====================================================
+
+  console.log(
+    'SENDING LEGAL FILE:',
+    JSON.stringify(
+      legalFile,
+      null,
+      2
+    )
+  );
+
+
+  console.log(
+    'SELECTED DOCUMENT:',
+    this.selectedDocumentFile
+  );
+
+
+  // =====================================================
+  // CREATE LEGAL FILE
+  // =====================================================
+
+  this.legalFileServiceTs
+    .createLegalFile(legalFile)
+    .subscribe({
+
+      // =================================================
+      // SUCCESS
+      // =================================================
+
+      next: (
+        data: LegalFile
+      ) => {
+
+        console.log(
+          'LEGAL FILE CREATED:',
+          data
+        );
+
+
+        console.log(
+          'NEW LEGAL FILE ID:',
+          data.id
+        );
+
+
+        console.log(
+          'RETURNED STATUS ID:',
+          data.statusId
+        );
+
+
+        console.log(
+          'RETURNED STATUS NAME:',
+          data.statusName
+        );
+
+
+        // =================================================
+        // UPLOAD DOCUMENT IF SELECTED
+        // =================================================
+
+        if (
+          this.selectedDocumentFile &&
+          data.id
+        ) {
 
           console.log(
-            'LEGAL FILE CREATED:',
-            data
+            'UPLOADING DOCUMENT...'
           );
 
 
-          console.log(
-            'RETURNED STATUS ID:',
-            data.statusId
-          );
-
-
-          console.log(
-            'RETURNED STATUS NAME:',
-            data.statusName
-          );
-
-
-          // ---------------------------------------------
-          // Close form
-          // ---------------------------------------------
-
-          this.showForm = false;
-
-
-          // ---------------------------------------------
-          // Reset form
-          // ---------------------------------------------
-
-          this.resetForm();
-
-
-          // ---------------------------------------------
-          // Reload data
-          // ---------------------------------------------
-
-          this.loadLegalFiles();
-
-
-          this.cdr.detectChanges();
-
-        },
-
-
-        error: (
-          error: unknown
-        ) => {
-
-          console.error(
-            'ERROR CREATING LEGAL FILE:',
-            error
+          this.uploadDocument(
+            data.id
           );
 
         }
 
-      });
 
-  }
+        // =================================================
+        // CLOSE FORM
+        // =================================================
+
+        this.showForm = false;
+
+
+        // =================================================
+        // RESET FORM
+        // =================================================
+
+        this.resetForm();
+
+
+        // =================================================
+        // RELOAD LEGAL FILES
+        // =================================================
+
+        this.loadLegalFiles();
+
+
+        // =================================================
+        // UPDATE UI
+        // =================================================
+
+        this.cdr.detectChanges();
+
+      },
+
+
+      // =================================================
+      // ERROR
+      // =================================================
+
+      error: (
+        error: unknown
+      ) => {
+
+        console.error(
+          'ERROR CREATING LEGAL FILE:',
+          error
+        );
+
+      }
+
+    });
+
+}
 
 }
