@@ -1,37 +1,6 @@
-/* =========================================================
-   GLOBAL
-   ========================================================= */
-
-* {
-  box-sizing: border-box;
-}
-
-html,
-body {
-  margin: 0;
-  padding: 0;
-
-  width: 100%;
-  height: 100vh;
-
-  overflow: hidden;
-
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-app-root {
-  display: block;
-
-  width: 100%;
-  height: 100vh;
-
-  overflow: hidden;
-}
-
-
-/* =========================================================
-   MAIN CONTAINER
-   ========================================================= */
+/* ===================================================== */
+/* MAIN LEGAL FILES CONTAINER */
+/* ===================================================== */
 
 .legal-files {
   width: 100%;
@@ -47,73 +16,63 @@ app-root {
   flex-direction: column;
 
   position: relative;
+
+  box-sizing: border-box;
 }
 
 
-/* =========================================================
-   PAGE HEADER
-   ========================================================= */
+/* ===================================================== */
+/* PAGE HEADER */
+/* ===================================================== */
 
 .page-header {
-  flex: 0 0 auto;
-
   display: flex;
+
   justify-content: space-between;
   align-items: center;
 
-  margin-bottom: 14px;
-  padding: 0;
+  margin-bottom: 18px;
+
+  flex-shrink: 0;
 }
 
 .page-header h2 {
   margin: 0;
 
-  font-size: 30px;
+  color: #222222;
+
+  font-size: 24px;
   font-weight: 700;
-
-  color: #111827;
-
-  line-height: 1.2;
 }
 
 
-/* =========================================================
-   ADD BUTTON
-   ========================================================= */
+/* ===================================================== */
+/* ADD BUTTON */
+/* ===================================================== */
 
 .add-button {
-  padding: 11px 18px;
+  padding: 10px 16px;
 
   border: 1px solid #003b73;
-
-  border-radius: 4px;
+  border-radius: 5px;
 
   background: #003b73;
-
   color: #ffffff;
 
   font-size: 15px;
-  font-weight: 700;
+  font-weight: 600;
 
   cursor: pointer;
-
-  transition:
-    background 0.2s ease,
-    transform 0.1s ease;
 }
 
 .add-button:hover {
-  background: #002f5f;
-}
-
-.add-button:active {
-  transform: translateY(1px);
+  background: #002b55;
 }
 
 
-/* =========================================================
-   CREATE FORM OVERLAY
-   ========================================================= */
+/* ===================================================== */
+/* CREATE FORM OVERLAY */
+/* ===================================================== */
 
 .form-overlay {
   position: absolute;
@@ -135,12 +94,14 @@ app-root {
   background: rgba(0, 0, 0, 0.35);
 
   overflow-y: auto;
+
+  box-sizing: border-box;
 }
 
 
-/* =========================================================
-   CREATE FORM CONTAINER
-   ========================================================= */
+/* ===================================================== */
+/* CREATE FORM CONTAINER */
+/* ===================================================== */
 
 .form-container {
   width: 100%;
@@ -151,7 +112,6 @@ app-root {
   background: #ffffff;
 
   border: 1px solid #c8c8c8;
-
   border-radius: 5px;
 
   box-shadow:
@@ -163,9 +123,9 @@ app-root {
 }
 
 
-/* =========================================================
-   FORM HEADER
-   ========================================================= */
+/* ===================================================== */
+/* FORM HEADER */
+/* ===================================================== */
 
 .form-header {
   display: flex;
@@ -180,6 +140,7 @@ app-root {
   border-bottom: 1px solid #c8c8c8;
 
   position: sticky;
+
   top: 0;
 
   z-index: 10;
@@ -188,29 +149,30 @@ app-root {
 .form-header h3 {
   margin: 0;
 
+  color: #222222;
+
   font-size: 20px;
   font-weight: 700;
-
-  color: #222222;
 }
 
 
-/* =========================================================
-   CLOSE BUTTON
-   ========================================================= */
+/* ===================================================== */
+/* CLOSE BUTTON */
+/* ===================================================== */
 
 .close-button {
   width: 32px;
   height: 32px;
 
-  border: none;
+  padding: 0;
 
-  border-radius: 3px;
+  border: none;
 
   background: transparent;
 
-  font-size: 24px;
-  font-weight: 600;
+  color: #555555;
+
+  font-size: 26px;
 
   line-height: 1;
 
@@ -218,77 +180,78 @@ app-root {
 }
 
 .close-button:hover {
-  background: #dddddd;
+  color: #000000;
 }
 
 
-/* =========================================================
-   FORM
-   ========================================================= */
-
-form {
-  padding: 20px;
-}
-
-
-/* =========================================================
-   FORM GRID
-   ========================================================= */
+/* ===================================================== */
+/* FORM GRID */
+/* ===================================================== */
 
 .form-grid {
   display: grid;
 
   grid-template-columns:
-    repeat(3, minmax(0, 1fr));
+    repeat(2, minmax(0, 1fr));
 
-  gap: 16px 18px;
+  gap: 18px;
+
+  padding: 20px;
 }
 
 
-/* =========================================================
-   FORM GROUP
-   ========================================================= */
+/* ===================================================== */
+/* FORM GROUP */
+/* ===================================================== */
 
 .form-group {
   display: flex;
 
   flex-direction: column;
 
-  min-width: 0;
+  gap: 6px;
 }
+
+.form-group.full-width {
+  grid-column: 1 / -1;
+}
+
+
+/* ===================================================== */
+/* FORM LABEL */
+/* ===================================================== */
 
 .form-group label {
-  margin-bottom: 6px;
-
-  font-size: 15px;
-  font-weight: 700;
-
   color: #333333;
+
+  font-size: 14px;
+
+  font-weight: 600;
 }
 
 
-/* =========================================================
-   FORM INPUTS
-   ========================================================= */
+/* ===================================================== */
+/* FORM INPUTS */
+/* ===================================================== */
 
 .form-group input,
 .form-group select,
 .form-group textarea {
   width: 100%;
 
-  padding: 10px 11px;
+  padding: 9px 10px;
 
-  border: 1px solid #bcbcbc;
+  border: 1px solid #c8c8c8;
 
-  border-radius: 3px;
+  border-radius: 4px;
 
   background: #ffffff;
 
-  font-family: inherit;
+  color: #222222;
 
-  font-size: 15px;
+  font-size: 14px;
 
-  color: #333333;
+  box-sizing: border-box;
 }
 
 .form-group input:focus,
@@ -299,13 +262,8 @@ form {
   border-color: #003b73;
 
   box-shadow:
-    0 0 0 1px #003b73;
+    0 0 0 2px rgba(0, 59, 115, 0.08);
 }
-
-
-/* =========================================================
-   TEXTAREA
-   ========================================================= */
 
 .form-group textarea {
   min-height: 90px;
@@ -314,61 +272,66 @@ form {
 }
 
 
-/* =========================================================
-   FULL WIDTH
-   ========================================================= */
-
-.full-width {
-  grid-column: 1 / -1;
-}
-
-
-/* =========================================================
-   SELECTED FILE
-   ========================================================= */
+/* ===================================================== */
+/* SELECTED FILE */
+/* ===================================================== */
 
 .selected-file {
-  margin-top: 8px;
-
-  padding: 8px 10px;
-
-  border: 1px solid #dcdcdc;
-
-  border-radius: 6px;
-
-  background: #f8f9fa;
-
   display: flex;
 
   align-items: center;
 
-  gap: 6px;
+  gap: 8px;
 
-  flex-wrap: wrap;
+  margin-top: 5px;
+
+  padding: 9px 10px;
+
+  background: #f5f9fd;
+
+  border: 1px solid #c5d8e8;
+
+  border-radius: 4px;
+
+  overflow: hidden;
 }
 
 .selected-file-label {
+  flex-shrink: 0;
+
+  color: #555555;
+
   font-size: 13px;
 
   font-weight: 600;
 }
 
 .selected-file-name {
+  min-width: 0;
+
+  overflow: hidden;
+
+  color: #003b73;
+
   font-size: 13px;
 
-  word-break: break-all;
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
 }
 
 .selected-file-size {
-  font-size: 12px;
+  flex-shrink: 0;
 
-  color: #777;
+  color: #777777;
+
+  font-size: 12px;
 }
 
 
-/* =========================================================
-   FORM ACTIONS
-   ========================================================= */
+/* ===================================================== */
+/* FORM ACTIONS */
+/* ===================================================== */
 
 .form-actions {
   display: flex;
@@ -377,22 +340,22 @@ form {
 
   gap: 10px;
 
-  margin-top: 20px;
+  padding: 14px 20px;
 
-  padding-top: 16px;
+  background: #f7f7f7;
 
-  border-top: 1px solid #dddddd;
+  border-top: 1px solid #d0d0d0;
 }
 
 
-/* =========================================================
-   CANCEL BUTTON
-   ========================================================= */
+/* ===================================================== */
+/* CANCEL BUTTON */
+/* ===================================================== */
 
 .cancel-button {
-  padding: 10px 20px;
+  padding: 9px 16px;
 
-  border: 1px solid #aaaaaa;
+  border: 1px solid #bdbdbd;
 
   border-radius: 4px;
 
@@ -400,9 +363,7 @@ form {
 
   color: #333333;
 
-  font-size: 15px;
-
-  font-weight: 600;
+  font-size: 14px;
 
   cursor: pointer;
 }
@@ -412,12 +373,12 @@ form {
 }
 
 
-/* =========================================================
-   SAVE BUTTON
-   ========================================================= */
+/* ===================================================== */
+/* SAVE BUTTON */
+/* ===================================================== */
 
 .save-button {
-  padding: 10px 20px;
+  padding: 9px 16px;
 
   border: 1px solid #003b73;
 
@@ -427,84 +388,57 @@ form {
 
   color: #ffffff;
 
-  font-size: 15px;
+  font-size: 14px;
 
-  font-weight: 700;
+  font-weight: 600;
 
   cursor: pointer;
 }
 
 .save-button:hover {
-  background: #002f5f;
+  background: #002b55;
 }
 
 
-/* =========================================================
-   TABLE WRAPPER
-   ========================================================= */
+/* ===================================================== */
+/* TABLE WRAPPER */
+/* ===================================================== */
 
 .table-wrapper {
-  width: 100%;
-
-  height: 75vh;
+  flex: 1;
 
   min-height: 0;
 
-  margin: 0;
-  padding: 0;
-
-  overflow-x: auto;
-  overflow-y: auto;
+  overflow: auto;
 
   background: #ffffff;
 
   border: 1px solid #c8c8c8;
 
-  flex: 0 0 75vh;
-
-  position: relative;
+  box-sizing: border-box;
 }
 
 
-/* =========================================================
-   TABLE
-   ========================================================= */
+/* ===================================================== */
+/* TABLE */
+/* ===================================================== */
 
 table {
   width: 100%;
 
-  min-width: 1500px;
-
-  margin: 0;
-  padding: 0;
+  min-width: 1700px;
 
   border-collapse: separate;
 
   border-spacing: 0;
 
-  table-layout: auto;
-
-  font-size: 14px;
+  background: #ffffff;
 }
 
 
-/* =========================================================
-   TABLE HEADER
-   ========================================================= */
-
-thead {
-  margin: 0;
-  padding: 0;
-
-  position: relative;
-
-  z-index: 20;
-}
-
-thead tr {
-  margin: 0;
-  padding: 0;
-}
+/* ===================================================== */
+/* TABLE HEADER */
+/* ===================================================== */
 
 thead th {
   padding: 16px 12px;
@@ -517,7 +451,7 @@ thead th {
 
   font-weight: 700;
 
-  font-size: 18px;
+  font-size: 16px;
 
   line-height: 1.2;
 
@@ -537,32 +471,16 @@ thead th {
 
   border: none;
 
-  box-shadow: inset 0 -1px #003b73;
+  box-shadow:
+    inset 0 -1px #003b73;
+
+  box-sizing: border-box;
 }
 
 
-/* =========================================================
-   TABLE HEADER CHECKBOX
-   ========================================================= */
-
-thead th.checkbox-column {
-  text-align: center !important;
-}
-
-
-/* =========================================================
-   TABLE BODY
-   ========================================================= */
-
-tbody {
-  margin: 0;
-  padding: 0;
-}
-
-tbody tr {
-  margin: 0;
-  padding: 0;
-}
+/* ===================================================== */
+/* TABLE BODY */
+/* ===================================================== */
 
 tbody td {
   padding: 10px 12px;
@@ -584,33 +502,20 @@ tbody td {
   border-top: none;
 
   border-left: none;
+
+  box-sizing: border-box;
 }
-
-
-/* =========================================================
-   ROW HOVER
-   ========================================================= */
 
 tbody tr:hover td {
-  background: #f3f6fa;
+  background: #f7f9fb;
 }
 
 
-/* =========================================================
-   CHECKBOX COLUMN
-   ========================================================= */
+/* ===================================================== */
+/* CHECKBOX COLUMN */
+/* ===================================================== */
 
 .checkbox-column {
-  width: 45px;
-
-  min-width: 45px;
-
-  max-width: 45px;
-
-  text-align: center !important;
-}
-
-.checkbox-cell {
   width: 45px;
 
   min-width: 45px;
@@ -620,59 +525,48 @@ tbody tr:hover td {
   text-align: center;
 }
 
-.checkbox-cell input[type="checkbox"],
-.checkbox-column input[type="checkbox"] {
-  width: 17px;
+.checkbox-cell {
+  width: 45px;
 
-  height: 17px;
+  min-width: 45px;
 
-  margin: 0;
+  text-align: center;
+}
+
+.checkbox-cell input,
+.checkbox-column input {
+  width: 16px;
+  height: 16px;
 
   cursor: pointer;
-
-  accent-color: #003b73;
 }
 
 
-/* =========================================================
-   STATUS COLUMN
-   ========================================================= */
+/* ===================================================== */
+/* STATUS COLUMN */
+/* ===================================================== */
 
 .status-column {
-  width: 135px;
+  min-width: 150px;
 
-  min-width: 135px;
-
-  max-width: 135px;
+  width: 150px;
 }
 
 .status-cell {
-  width: 135px;
-
-  min-width: 135px;
-
-  max-width: 135px;
-
-  padding: 6px 8px;
-
-  transition:
-    background 0.2s ease,
-    color 0.2s ease;
+  min-width: 150px;
 }
 
 
-/* =========================================================
-   STATUS DROPDOWN
-   ========================================================= */
+/* ===================================================== */
+/* STATUS SELECT */
+/* ===================================================== */
 
 .status-select {
-  width: 100%;
-
-  min-width: 120px;
+  width: 135px;
 
   padding: 7px 9px;
 
-  border: 1px solid #999999;
+  border: 1px solid #c8c8c8;
 
   border-radius: 4px;
 
@@ -680,186 +574,213 @@ tbody tr:hover td {
 
   color: #222222;
 
-  font-family: inherit;
+  font-size: 16px;
 
-  font-size: 14px;
-
-  font-weight: 700;
+  font-weight: 600;
 
   cursor: pointer;
 
   box-sizing: border-box;
-
-  transition:
-    background 0.2s ease,
-    border-color 0.2s ease,
-    color 0.2s ease,
-    box-shadow 0.2s ease;
-}
-
-.status-select:hover {
-  border-color: #003b73;
 }
 
 .status-select:focus {
   outline: none;
 
-  box-shadow:
-    0 0 0 2px rgba(0, 59, 115, 0.20);
+  border-color: #003b73;
 }
 
 
-/* =========================================================
-   STATUS COLORS
-   ========================================================= */
+/* ===================================================== */
+/* STATUS COLORS */
+/* ===================================================== */
 
-.status-select.status-pending {
-  background: #fff3cd;
+.status-pending {
+  background: #fff8dc;
 
-  border-color: #e0b100;
+  color: #795d00;
 
-  color: #856404;
+  border-color: #e3cc72;
 }
 
-.status-select.status-out {
-  background: #dbeafe;
+.status-out {
+  background: #e9f2ff;
 
-  border-color: #3b82f6;
+  color: #15528a;
 
-  color: #1e40af;
+  border-color: #a9c9e8;
 }
 
-.status-select.status-archived {
-  background: #e5e7eb;
+.status-archived {
+  background: #eeeeee;
 
-  border-color: #9ca3af;
+  color: #555555;
 
-  color: #374151;
+  border-color: #cccccc;
 }
 
-.status-select.status-resolved {
-  background: #dcfce7;
+.status-resolved {
+  background: #e9f7ee;
 
-  border-color: #22c55e;
+  color: #26733e;
 
-  color: #166534;
+  border-color: #a9d5b5;
 }
 
-.status-select.status-cancelled {
-  background: #fee2e2;
+.status-cancelled {
+  background: #fdeeee;
 
-  border-color: #ef4444;
+  color: #9a3030;
 
-  color: #991b1b;
-}
-
-
-/* =========================================================
-   STATUS CELL BACKGROUND
-   ========================================================= */
-
-.status-cell:has(.status-select.status-pending) {
-  background: #fff3cd;
-}
-
-.status-cell:has(.status-select.status-out) {
-  background: #dbeafe;
-}
-
-.status-cell:has(.status-select.status-archived) {
-  background: #e5e7eb;
-}
-
-.status-cell:has(.status-select.status-resolved) {
-  background: #dcfce7;
-}
-
-.status-cell:has(.status-select.status-cancelled) {
-  background: #fee2e2;
+  border-color: #e0aaaa;
 }
 
 
-/* =========================================================
-   STATUS CELL HOVER
-   ========================================================= */
-
-tbody tr:hover .status-cell:has(.status-select.status-pending) {
-  background: #ffefb5;
-}
-
-tbody tr:hover .status-cell:has(.status-select.status-out) {
-  background: #c7ddfa;
-}
-
-tbody tr:hover .status-cell:has(.status-select.status-archived) {
-  background: #d9dce0;
-}
-
-tbody tr:hover .status-cell:has(.status-select.status-resolved) {
-  background: #c8f4d5;
-}
-
-tbody tr:hover .status-cell:has(.status-select.status-cancelled) {
-  background: #fecaca;
-}
-
-
-/* =========================================================
-   FILE COLUMN
-   ========================================================= */
+/* ===================================================== */
+/* FILE COLUMN */
+/* ===================================================== */
 
 .file-column {
-  min-width: 180px;
+  min-width: 280px;
 
-  max-width: 250px;
+  max-width: 340px;
 }
+
+
+/* ===================================================== */
+/* FILE ITEM */
+/* ===================================================== */
 
 .file-item {
   display: flex;
 
   align-items: center;
 
-  gap: 6px;
+  gap: 7px;
+
+  min-width: 0;
+
+  padding: 4px 0;
 }
+
+
+/* ===================================================== */
+/* FILE ICON */
+/* ===================================================== */
 
 .file-icon {
   flex-shrink: 0;
+
+  font-size: 17px;
 }
+
+
+/* ===================================================== */
+/* FILE NAME */
+/* ===================================================== */
 
 .file-name {
   display: inline-block;
 
-  max-width: 200px;
+  max-width: 180px;
 
   overflow: hidden;
 
-  text-overflow: ellipsis;
+  color: #003b73;
 
-  white-space: nowrap;
+  font-size: 16px;
 
   cursor: pointer;
 
   text-decoration: underline;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
 }
 
 .file-name:hover {
   opacity: 0.7;
 }
 
+
+/* ===================================================== */
+/* FILE VERSION */
+/* ===================================================== */
+
+.file-version {
+  flex-shrink: 0;
+
+  padding: 2px 6px;
+
+  background: #eeeeee;
+
+  border: 1px solid #d0d0d0;
+
+  border-radius: 4px;
+
+  color: #555555;
+
+  font-size: 12px;
+
+  font-weight: 600;
+}
+
+
+/* ===================================================== */
+/* EDIT FILE BUTTON */
+/* ===================================================== */
+
+.edit-file-button {
+  flex-shrink: 0;
+
+  width: 28px;
+
+  height: 28px;
+
+  padding: 0;
+
+  border: 1px solid #c8c8c8;
+
+  border-radius: 4px;
+
+  background: #ffffff;
+
+  color: #003b73;
+
+  font-size: 16px;
+
+  line-height: 1;
+
+  cursor: pointer;
+}
+
+.edit-file-button:hover {
+  background: #003b73;
+
+  color: #ffffff;
+
+  border-color: #003b73;
+}
+
+
+/* ===================================================== */
+/* NO FILE */
+/* ===================================================== */
+
 .no-file {
-  color: #999;
+  color: #999999;
+
+  font-size: 16px;
 
   font-style: italic;
 }
 
 
-/* =========================================================
-   TABLE ACTIONS
-   ========================================================= */
+/* ===================================================== */
+/* UPDATE / DELETE ACTIONS */
+/* ===================================================== */
 
 .update-actions {
-  flex: 0 0 auto;
-
   display: flex;
 
   justify-content: flex-end;
@@ -868,37 +789,32 @@ tbody tr:hover .status-cell:has(.status-select.status-cancelled) {
 
   gap: 10px;
 
-  margin-top: 12px;
+  padding-top: 14px;
+
+  flex-shrink: 0;
 }
 
 
-/* =========================================================
-   UPDATE BUTTON
-   ========================================================= */
+/* ===================================================== */
+/* UPDATE BUTTON */
+/* ===================================================== */
 
 .update-button {
-  min-width: 120px;
-
-  padding: 11px 22px;
+  padding: 9px 18px;
 
   border: 1px solid #999999;
 
   border-radius: 4px;
 
-  background: #d6d6d6;
+  background: #cccccc;
 
-  color: #777777;
+  color: #666666;
 
-  font-size: 15px;
+  font-size: 14px;
 
-  font-weight: 700;
+  font-weight: 600;
 
   cursor: not-allowed;
-
-  transition:
-    background 0.25s ease,
-    box-shadow 0.25s ease,
-    transform 0.15s ease;
 }
 
 .update-button.has-changes {
@@ -912,72 +828,503 @@ tbody tr:hover .status-cell:has(.status-select.status-cancelled) {
 }
 
 .update-button.has-changes:hover {
-  background: #002f5f;
-
-  transform: translateY(-1px);
+  background: #002b55;
 }
 
 
-/* =========================================================
-   DELETE BUTTON
-   ========================================================= */
+/* ===================================================== */
+/* DELETE BUTTON */
+/* ===================================================== */
 
 .delete-button {
-  min-width: 120px;
+  padding: 9px 18px;
 
-  padding: 11px 22px;
-
-  border: 1px solid #b91c1c;
+  border: 1px solid #9a3030;
 
   border-radius: 4px;
 
-  background: #dc2626;
+  background: #ffffff;
 
-  color: #ffffff;
+  color: #9a3030;
 
-  font-size: 15px;
+  font-size: 14px;
 
-  font-weight: 700;
+  font-weight: 600;
 
   cursor: pointer;
-
-  transition:
-    background 0.2s ease,
-    transform 0.1s ease;
 }
 
 .delete-button:hover:not(:disabled) {
-  background: #b91c1c;
+  background: #9a3030;
 
-  transform: translateY(-1px);
-}
-
-.delete-button:active:not(:disabled) {
-  transform: translateY(1px);
+  color: #ffffff;
 }
 
 .delete-button:disabled {
-  background: #d6d6d6;
-
-  border-color: #999999;
-
-  color: #777777;
+  opacity: 0.5;
 
   cursor: not-allowed;
-
-  transform: none;
 }
 
 
-/* =========================================================
-   RESPONSIVE
-   ========================================================= */
+/* ===================================================== */
+/* REPLACE DOCUMENT OVERLAY */
+/* ===================================================== */
 
-@media (max-width: 1000px) {
+.replace-overlay {
+  position: fixed;
+
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  z-index: 1000;
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  padding: 20px;
+
+  background: rgba(0, 0, 0, 0.45);
+
+  overflow-y: auto;
+
+  box-sizing: border-box;
+}
+
+
+/* ===================================================== */
+/* REPLACE DOCUMENT MODAL */
+/* ===================================================== */
+
+.replace-modal {
+  width: 100%;
+
+  max-width: 520px;
+
+  background: #ffffff;
+
+  border: 1px solid #c8c8c8;
+
+  border-radius: 6px;
+
+  box-shadow:
+    0 12px 35px rgba(0, 0, 0, 0.30);
+
+  overflow: hidden;
+}
+
+
+/* ===================================================== */
+/* REPLACE MODAL HEADER */
+/* ===================================================== */
+
+.replace-modal-header {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  padding: 15px 18px;
+
+  background: #f2f2f2;
+
+  border-bottom: 1px solid #c8c8c8;
+}
+
+.replace-modal-header h3 {
+  margin: 0;
+
+  color: #222222;
+
+  font-size: 19px;
+
+  font-weight: 700;
+}
+
+
+/* ===================================================== */
+/* REPLACE CLOSE BUTTON */
+/* ===================================================== */
+
+.replace-close-button {
+  width: 32px;
+
+  height: 32px;
+
+  padding: 0;
+
+  border: none;
+
+  background: transparent;
+
+  color: #555555;
+
+  font-size: 25px;
+
+  line-height: 1;
+
+  cursor: pointer;
+}
+
+.replace-close-button:hover {
+  color: #000000;
+}
+
+
+/* ===================================================== */
+/* REPLACE MODAL BODY */
+/* ===================================================== */
+
+.replace-modal-body {
+  padding: 20px;
+}
+
+
+/* ===================================================== */
+/* CURRENT DOCUMENT */
+/* ===================================================== */
+
+.current-document {
+  margin-bottom: 22px;
+}
+
+.current-document > label,
+.new-document > label {
+  display: block;
+
+  margin-bottom: 8px;
+
+  color: #333333;
+
+  font-size: 15px;
+
+  font-weight: 600;
+}
+
+
+/* ===================================================== */
+/* CURRENT FILE */
+/* ===================================================== */
+
+.current-file {
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 12px;
+
+  background: #f7f7f7;
+
+  border: 1px solid #d5d5d5;
+
+  border-radius: 5px;
+}
+
+.current-file-icon {
+  flex-shrink: 0;
+
+  font-size: 24px;
+}
+
+.current-file-info {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 3px;
+
+  min-width: 0;
+}
+
+.current-file-name {
+  overflow: hidden;
+
+  color: #222222;
+
+  font-size: 15px;
+
+  font-weight: 600;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+.current-file-version {
+  color: #777777;
+
+  font-size: 13px;
+}
+
+
+/* ===================================================== */
+/* NEW DOCUMENT */
+/* ===================================================== */
+
+.new-document {
+  margin-bottom: 18px;
+}
+
+.new-document input[type="file"] {
+  width: 100%;
+
+  padding: 9px;
+
+  border: 1px solid #c8c8c8;
+
+  border-radius: 4px;
+
+  background: #ffffff;
+
+  font-size: 14px;
+
+  box-sizing: border-box;
+}
+
+.new-document input[type="file"]:focus {
+  outline: none;
+
+  border-color: #003b73;
+}
+
+
+/* ===================================================== */
+/* REPLACEMENT FILE */
+/* ===================================================== */
+
+.replacement-file {
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  margin-top: 12px;
+
+  padding: 11px;
+
+  background: #f5f9fd;
+
+  border: 1px solid #b8cde0;
+
+  border-radius: 5px;
+}
+
+.replacement-file-icon {
+  flex-shrink: 0;
+
+  font-size: 22px;
+}
+
+.replacement-file-info {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 3px;
+
+  min-width: 0;
+}
+
+.replacement-file-name {
+  overflow: hidden;
+
+  color: #003b73;
+
+  font-size: 14px;
+
+  font-weight: 600;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+.replacement-file-size {
+  color: #777777;
+
+  font-size: 12px;
+}
+
+
+/* ===================================================== */
+/* REPLACE FILE HINT */
+/* ===================================================== */
+
+.replace-file-hint {
+  margin-top: 10px;
+
+  color: #888888;
+
+  font-size: 13px;
+}
+
+
+/* ===================================================== */
+/* REPLACE WARNING */
+/* ===================================================== */
+
+.replace-warning {
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  padding: 10px 12px;
+
+  background: #fff8e6;
+
+  border: 1px solid #ead39a;
+
+  border-radius: 4px;
+
+  color: #705500;
+
+  font-size: 13px;
+}
+
+.warning-icon {
+  flex-shrink: 0;
+
+  font-size: 16px;
+}
+
+
+/* ===================================================== */
+/* REPLACE MODAL ACTIONS */
+/* ===================================================== */
+
+.replace-modal-actions {
+  display: flex;
+
+  justify-content: flex-end;
+
+  gap: 10px;
+
+  padding: 14px 18px;
+
+  background: #f7f7f7;
+
+  border-top: 1px solid #d0d0d0;
+}
+
+
+/* ===================================================== */
+/* REPLACE CANCEL BUTTON */
+/* ===================================================== */
+
+.replace-cancel-button {
+  padding: 9px 16px;
+
+  border: 1px solid #bdbdbd;
+
+  border-radius: 4px;
+
+  background: #ffffff;
+
+  color: #333333;
+
+  font-size: 14px;
+
+  cursor: pointer;
+}
+
+.replace-cancel-button:hover {
+  background: #eeeeee;
+}
+
+
+/* ===================================================== */
+/* REPLACE CONFIRM BUTTON */
+/* ===================================================== */
+
+.replace-confirm-button {
+  padding: 9px 16px;
+
+  border: 1px solid #003b73;
+
+  border-radius: 4px;
+
+  background: #003b73;
+
+  color: #ffffff;
+
+  font-size: 14px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+.replace-confirm-button:hover:not(:disabled) {
+  background: #002b55;
+}
+
+.replace-confirm-button:disabled {
+  background: #aaaaaa;
+
+  border-color: #aaaaaa;
+
+  color: #eeeeee;
+
+  cursor: not-allowed;
+}
+
+
+/* ===================================================== */
+/* SCROLLBAR */
+/* ===================================================== */
+
+.table-wrapper::-webkit-scrollbar,
+.form-container::-webkit-scrollbar,
+.replace-overlay::-webkit-scrollbar {
+  width: 10px;
+
+  height: 10px;
+}
+
+.table-wrapper::-webkit-scrollbar-track,
+.form-container::-webkit-scrollbar-track,
+.replace-overlay::-webkit-scrollbar-track {
+  background: #eeeeee;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb,
+.form-container::-webkit-scrollbar-thumb,
+.replace-overlay::-webkit-scrollbar-thumb {
+  background: #aaaaaa;
+
+  border-radius: 5px;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb:hover,
+.form-container::-webkit-scrollbar-thumb:hover,
+.replace-overlay::-webkit-scrollbar-thumb:hover {
+  background: #888888;
+}
+
+
+/* ===================================================== */
+/* RESPONSIVE */
+/* ===================================================== */
+
+@media (max-width: 900px) {
 
   .form-grid {
-    grid-template-columns:
-      repeat(2, minmax(0, 1fr));
+    grid-template-columns: 1fr;
+  }
+
+  .form-group.full-width {
+    grid-column: auto;
   }
 
 }
@@ -986,49 +1333,248 @@ tbody tr:hover .status-cell:has(.status-select.status-cancelled) {
 @media (max-width: 650px) {
 
   .legal-files {
-    padding: 12px;
+    padding: 15px;
+
+    height: 90vh;
   }
+
 
   .page-header {
     align-items: flex-start;
 
-    gap: 12px;
-
-    flex-direction: column;
-
-    margin-bottom: 14px;
+    gap: 10px;
   }
+
+
+  .page-header h2 {
+    font-size: 21px;
+  }
+
+
+  .add-button {
+    padding: 8px 12px;
+
+    font-size: 13px;
+  }
+
 
   .form-overlay {
     padding: 10px;
   }
 
-  .form-grid {
-    grid-template-columns: 1fr;
+
+  .form-container {
+    max-height: calc(90vh - 20px);
   }
 
-  .full-width {
-    grid-column: auto;
+
+  .form-grid {
+    padding: 15px;
+
+    gap: 14px;
   }
+
 
   .form-actions {
-    flex-direction: column;
+    flex-direction: column-reverse;
   }
+
 
   .cancel-button,
   .save-button {
     width: 100%;
   }
 
-  .update-actions {
-    justify-content: stretch;
 
-    flex-direction: column;
+  .replace-overlay {
+    padding: 10px;
   }
 
-  .update-button,
-  .delete-button {
+
+  .replace-modal {
+    max-width: 100%;
+  }
+
+
+  .replace-modal-actions {
+    flex-direction: column-reverse;
+  }
+
+
+  .replace-cancel-button,
+  .replace-confirm-button {
     width: 100%;
+  }
+
+
+  .file-name {
+    max-width: 120px;
+  }
+
+}
+
+/* =====================================================
+   SAVE NOTIFICATION
+   ===================================================== */
+
+.save-notification {
+  position: fixed;
+
+  top: 25px;
+  right: 25px;
+
+  z-index: 9999;
+
+  min-width: 320px;
+  max-width: 450px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 15px 18px;
+
+  border-radius: 8px;
+
+  box-shadow:
+    0 4px 15px rgba(0, 0, 0, 0.15);
+
+  animation: notification-slide-in 0.3s ease;
+}
+
+
+/* =====================================================
+   SUCCESS
+   ===================================================== */
+
+.success-notification {
+  background: #e8f7ee;
+
+  border-left: 5px solid #28a745;
+
+  color: #155724;
+}
+
+
+/* =====================================================
+   ERROR
+   ===================================================== */
+
+.error-notification {
+  background: #fdecec;
+
+  border-left: 5px solid #dc3545;
+
+  color: #721c24;
+}
+
+
+/* =====================================================
+   ICON
+   ===================================================== */
+
+.notification-icon {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  width: 30px;
+  height: 30px;
+
+  border-radius: 50%;
+
+  font-size: 18px;
+  font-weight: bold;
+
+  flex-shrink: 0;
+}
+
+
+.success-notification .notification-icon {
+  background: #28a745;
+  color: white;
+}
+
+
+.error-notification .notification-icon {
+  background: #dc3545;
+  color: white;
+}
+
+
+/* =====================================================
+   CONTENT
+   ===================================================== */
+
+.notification-content {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 3px;
+
+  flex: 1;
+}
+
+
+.notification-content strong {
+  font-size: 14px;
+}
+
+
+.notification-content span {
+  font-size: 13px;
+}
+
+
+/* =====================================================
+   CLOSE
+   ===================================================== */
+
+.notification-close {
+  border: none;
+
+  background: transparent;
+
+  font-size: 20px;
+
+  cursor: pointer;
+
+  padding: 2px 5px;
+
+  opacity: 0.6;
+}
+
+
+.notification-close:hover {
+  opacity: 1;
+}
+
+
+/* =====================================================
+   ANIMATION
+   ===================================================== */
+
+@keyframes notification-slide-in {
+
+  from {
+
+    opacity: 0;
+
+    transform:
+      translateX(30px);
+
+  }
+
+  to {
+
+    opacity: 1;
+
+    transform:
+      translateX(0);
+
   }
 
 }

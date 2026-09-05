@@ -1,3 +1,4 @@
+
 import {
   Component,
   OnInit,
@@ -24,11 +25,21 @@ import {
   DocumentFormat
 } from '../../model/legalFiles/legal-files-model';
 
-import { LegalFileServiceTs } from '../../service/legal-file.service.ts';
+import {
+  LegalFileServiceTs
+} from '../../service/legal-file.service.ts';
 
-import { CreateLegalFile } from '../../model/legalFiles/create-legal-files';
-import { FileDocumentService } from '../../service/FileDocumentService';
-import { FileUploadResponse } from '../../model/fileupload/file-upload';
+import {
+  CreateLegalFile
+} from '../../model/legalFiles/create-legal-files';
+
+import {
+  FileDocumentService
+} from '../../service/FileDocumentService';
+
+import {
+  FileUploadResponse
+} from '../../model/fileupload/file-upload';
 
 
 @Component({
@@ -57,6 +68,28 @@ export class LegalFiles implements OnInit {
 
   selectedDocumentFile: File | null = null;
 
+  uploadStatus:
+    'idle' |
+    'uploading' |
+    'success' |
+    'error' = 'idle';
+
+  uploadStatusMessage = '';
+
+
+  // =====================================================
+  // SAVE NOTIFICATIONS
+  // =====================================================
+
+  successMessage = '';
+
+  showSuccessNotification = false;
+
+  errorMessage = '';
+
+  showErrorNotification = false;
+
+
   // =====================================================
   // SELECTED FILES
   // =====================================================
@@ -70,7 +103,8 @@ export class LegalFiles implements OnInit {
   // STATUS CHANGES
   // =====================================================
 
-  statusChanges = new Map<number, number>();
+  statusChanges =
+    new Map<number, number>();
 
   originalStatusIds =
     new Map<number, number | null>();
@@ -81,11 +115,16 @@ export class LegalFiles implements OnInit {
   // =====================================================
 
   statuses: Status[] = [];
+
   spmsTypes: SpmsType[] = [];
+
   offices: Office[] = [];
+
   documentTypes: DocumentType[] = [];
+
   documentFormats: DocumentFormat[] = [];
-  
+
+
   // =====================================================
   // FORM VISIBILITY
   // =====================================================
@@ -94,10 +133,24 @@ export class LegalFiles implements OnInit {
 
 
   // =====================================================
+  // REPLACE DOCUMENT MODAL
+  // =====================================================
+
+  showReplaceModal = false;
+
+  selectedReplaceDocument:
+    FileUploadResponse | null = null;
+
+  selectedReplaceFile:
+    File | null = null;
+
+
+  // =====================================================
   // FORM
   // =====================================================
 
-  legalFileForm!: ReturnType<FormBuilder['group']>;
+  legalFileForm!:
+    ReturnType<FormBuilder['group']>;
 
 
   // =====================================================
@@ -107,9 +160,15 @@ export class LegalFiles implements OnInit {
   constructor(
 
     private fb: FormBuilder,
-    private legalFileServiceTs: LegalFileServiceTs,
-    private fileDocumentService: FileDocumentService,
-    private cdr: ChangeDetectorRef
+
+    private legalFileServiceTs:
+      LegalFileServiceTs,
+
+    private fileDocumentService:
+      FileDocumentService,
+
+    private cdr:
+      ChangeDetectorRef
 
   ) {
 
@@ -199,11 +258,15 @@ export class LegalFiles implements OnInit {
     statusId: number | null
   ): string {
 
-    if (statusId === null || statusId === undefined) {
+    if (
+      statusId === null ||
+      statusId === undefined
+    ) {
 
       return 'status-select';
 
     }
+
 
     const status =
       this.statuses.find(
@@ -217,6 +280,7 @@ export class LegalFiles implements OnInit {
       return 'status-select';
 
     }
+
 
     const statusName =
       (status.statusName ?? '')
@@ -268,12 +332,17 @@ export class LegalFiles implements OnInit {
     files: LegalFile[]
   ): LegalFile[] {
 
-    const priority: Record<string, number> = {
+    const priority:
+      Record<string, number> = {
 
       pending: 1,
+
       out: 2,
+
       archived: 3,
+
       resolved: 4,
+
       cancelled: 5
 
     };
@@ -309,6 +378,7 @@ export class LegalFiles implements OnInit {
 
   }
 
+
   // =====================================================
   // CHECKBOX
   // =====================================================
@@ -320,6 +390,7 @@ export class LegalFiles implements OnInit {
     return this.selectedFiles.has(id);
 
   }
+
 
   // =====================================================
   // TOGGLE SINGLE CHECKBOX
@@ -338,9 +409,7 @@ export class LegalFiles implements OnInit {
 
       this.selectedFiles.add(id);
 
-    }
-
-    else {
+    } else {
 
       this.selectedFiles.delete(id);
 
@@ -353,6 +422,7 @@ export class LegalFiles implements OnInit {
 
   }
 
+
   // =====================================================
   // SELECT / DESELECT ALL
   // =====================================================
@@ -363,6 +433,7 @@ export class LegalFiles implements OnInit {
 
     const checkbox =
       event.target as HTMLInputElement;
+
 
     if (checkbox.checked) {
 
@@ -376,13 +447,12 @@ export class LegalFiles implements OnInit {
         }
       );
 
-    }
-
-    else {
+    } else {
 
       this.selectedFiles.clear();
 
     }
+
 
     this.allSelected =
       checkbox.checked;
@@ -391,6 +461,7 @@ export class LegalFiles implements OnInit {
     this.cdr.detectChanges();
 
   }
+
 
   // =====================================================
   // UPDATE SELECT ALL STATE
@@ -438,10 +509,6 @@ export class LegalFiles implements OnInit {
       ) ?? null;
 
 
-    // ---------------------------------------------
-    // Check if changed back to original
-    // ---------------------------------------------
-
     if (
       newStatusId ===
       originalStatusId
@@ -451,9 +518,7 @@ export class LegalFiles implements OnInit {
         file.id
       );
 
-    }
-
-    else {
+    } else {
 
       this.statusChanges.set(
         file.id,
@@ -463,10 +528,6 @@ export class LegalFiles implements OnInit {
     }
 
 
-    // ---------------------------------------------
-    // Find selected status
-    // ---------------------------------------------
-
     const selectedStatus =
       this.statuses.find(
         status =>
@@ -474,31 +535,18 @@ export class LegalFiles implements OnInit {
       );
 
 
-    // ---------------------------------------------
-    // Update table object immediately
-    // ---------------------------------------------
-
     file.statusId =
       newStatusId;
-
 
     file.statusName =
       selectedStatus?.statusName ?? '';
 
-
-    // ---------------------------------------------
-    // Re-sort table
-    // ---------------------------------------------
 
     this.legalFiles =
       this.sortLegalFiles(
         this.legalFiles
       );
 
-
-    // ---------------------------------------------
-    // Force UI update
-    // ---------------------------------------------
 
     this.cdr.detectChanges();
 
@@ -515,219 +563,337 @@ export class LegalFiles implements OnInit {
 
   }
 
-  onDocumentFileSelected(event: Event): void {
 
-  const input = event.target as HTMLInputElement;
+  // =====================================================
+  // SELECT DOCUMENT DURING CREATE
+  // =====================================================
 
-  if (!input.files || input.files.length === 0) {
+  onDocumentFileSelected(
+    event: Event
+  ): void {
 
-    this.selectedDocumentFile = null;
+    const input =
+      event.target as HTMLInputElement;
 
-    return;
+
+    if (
+      !input.files ||
+      input.files.length === 0
+    ) {
+
+      this.selectedDocumentFile =
+        null;
+
+      this.uploadStatus =
+        'idle';
+
+      this.uploadStatusMessage =
+        '';
+
+      return;
+
+    }
+
+
+    this.selectedDocumentFile =
+      input.files[0];
+
+
+    this.uploadStatus =
+      'idle';
+
+    this.uploadStatusMessage =
+      '';
+
+
+    console.log(
+      'SELECTED FILE:',
+      this.selectedDocumentFile
+    );
+
+
+    this.cdr.detectChanges();
 
   }
 
-  this.selectedDocumentFile = input.files[0];
 
-  console.log(
-    'SELECTED FILE:',
-    this.selectedDocumentFile
-  );
+  // =====================================================
+  // UPLOAD DOCUMENT
+  // =====================================================
 
-}
+  uploadDocument(
+    legalFileId: number
+  ): void {
 
-uploadDocument(legalFileId: number): void {
+    if (
+      !this.selectedDocumentFile
+    ) {
 
-  if (!this.selectedDocumentFile) {
-    return;
+      return;
+
+    }
+
+
+    const fileToUpload =
+      this.selectedDocumentFile;
+
+
+    const documentFormatId =
+      this.legalFileForm
+        .get('documentFormatId')
+        ?.value;
+
+
+    // =============================================
+    // UPLOAD STARTED
+    // =============================================
+
+    this.uploadStatus =
+      'uploading';
+
+    this.uploadStatusMessage =
+      'Uploading file...';
+
+
+    this.cdr.detectChanges();
+
+
+    // =============================================
+    // UPLOAD FILE
+    // =============================================
+
+    this.fileDocumentService
+      .uploadFile(
+        legalFileId,
+        fileToUpload,
+        documentFormatId
+      )
+      .subscribe({
+
+        // =========================================
+        // SUCCESS
+        // =========================================
+
+        next: (
+          response: FileUploadResponse
+        ) => {
+
+          console.log(
+            'FILE UPLOADED:',
+            response
+          );
+
+
+          this.uploadStatus =
+            'success';
+
+          this.uploadStatusMessage =
+            'File uploaded successfully ✓';
+
+
+          this.selectedDocumentFile =
+            null;
+
+
+          this.cdr.detectChanges();
+
+        },
+
+
+        // =========================================
+        // ERROR
+        // =========================================
+
+        error: (
+          error: unknown
+        ) => {
+
+          console.error(
+            'FILE UPLOAD ERROR:',
+            error
+          );
+
+
+          this.uploadStatus =
+            'error';
+
+          this.uploadStatusMessage =
+            'File upload failed. Please try again.';
+
+
+          this.cdr.detectChanges();
+
+        }
+
+      });
+
   }
 
-  const documentFormatId =
-    this.legalFileForm
-      .get('documentFormatId')
-      ?.value;
 
-  this.fileDocumentService
-    .uploadFile(
-      legalFileId,
-      this.selectedDocumentFile,
-      documentFormatId
-    )
-    .subscribe({
-
-      next: (response: FileUploadResponse) => {
-
-        console.log(
-          'FILE UPLOADED:',
-          response
-        );
-
-        this.selectedDocumentFile = null;
-
-      },
-
-      error: (error: unknown) => {
-
-        console.error(
-          'FILE UPLOAD ERROR:',
-          error
-        );
-
-      }
-
-    });
-
-}
   // =====================================================
   // LOAD LEGAL FILES
   // =====================================================
 
   loadLegalFiles(): void {
 
-  this.legalFileServiceTs
-    .getAllLegalFiles()
-    .subscribe({
+    this.legalFileServiceTs
+      .getAllLegalFiles()
+      .subscribe({
 
-      next: (data: LegalFile[]) => {
+        next: (
+          data: LegalFile[]
+        ) => {
 
-        console.log(
-          'LEGAL FILES FROM DATABASE:',
-          data
-        );
-
-
-        // ---------------------------------------------
-        // Save original status IDs
-        // ---------------------------------------------
-
-        this.originalStatusIds.clear();
-
-
-        data.forEach(
-          file => {
-
-            this.originalStatusIds.set(
-
-              file.id,
-
-              file.statusId ?? null
-
-            );
-
-          }
-        );
-
-
-        // ---------------------------------------------
-        // Clear unsaved status changes
-        // ---------------------------------------------
-
-        this.statusChanges.clear();
-
-
-        // ---------------------------------------------
-        // Sort and display
-        // ---------------------------------------------
-
-        this.legalFiles =
-          this.sortLegalFiles(
+          console.log(
+            'LEGAL FILES FROM DATABASE:',
             data
           );
 
 
-        // ---------------------------------------------
-        // Remove selections that no longer exist
-        // ---------------------------------------------
+          // ---------------------------------------------
+          // Save original status IDs
+          // ---------------------------------------------
 
-        const existingIds =
-          new Set(
-            data.map(
-              file => file.id
-            )
+          this.originalStatusIds.clear();
+
+
+          data.forEach(
+            file => {
+
+              this.originalStatusIds.set(
+
+                file.id,
+
+                file.statusId ?? null
+
+              );
+
+            }
           );
 
 
-        this.selectedFiles =
-          new Set(
-            [...this.selectedFiles]
-              .filter(
-                id =>
-                  existingIds.has(id)
+          // ---------------------------------------------
+          // Clear unsaved status changes
+          // ---------------------------------------------
+
+          this.statusChanges.clear();
+
+
+          // ---------------------------------------------
+          // Sort and display
+          // ---------------------------------------------
+
+          this.legalFiles =
+            this.sortLegalFiles(
+              data
+            );
+
+
+          // ---------------------------------------------
+          // Remove selections that no longer exist
+          // ---------------------------------------------
+
+          const existingIds =
+            new Set(
+              data.map(
+                file =>
+                  file.id
               )
+            );
+
+
+          this.selectedFiles =
+            new Set(
+              [...this.selectedFiles]
+                .filter(
+                  id =>
+                    existingIds.has(id)
+                )
+            );
+
+
+          // ---------------------------------------------
+          // Update select-all checkbox
+          // ---------------------------------------------
+
+          this.updateAllSelected();
+
+
+          // ---------------------------------------------
+          // Load documents for each legal file
+          // ---------------------------------------------
+
+          this.legalFiles.forEach(
+            file => {
+
+              this.fileDocumentService
+                .getDocumentsByFileId(
+                  file.id
+                )
+                .subscribe({
+
+                  next: (
+                    documents:
+                      FileUploadResponse[]
+                  ) => {
+
+                    file.documents =
+                      documents;
+
+
+                    console.log(
+                      'DOCUMENTS FOR CASE:',
+                      file.caseNo,
+                      documents
+                    );
+
+
+                    this.cdr.detectChanges();
+
+                  },
+
+
+                  error: (
+                    error: unknown
+                  ) => {
+
+                    console.error(
+                      'ERROR LOADING DOCUMENTS FOR CASE:',
+                      file.caseNo,
+                      error
+                    );
+
+
+                    file.documents =
+                      [];
+
+                  }
+
+                });
+
+            }
           );
 
 
-        // ---------------------------------------------
-        // Update select-all checkbox
-        // ---------------------------------------------
+          this.cdr.detectChanges();
 
-        this.updateAllSelected();
+        },
 
 
-        // ---------------------------------------------
-        // Load documents for each legal file
-        // ---------------------------------------------
+        error: (
+          error: unknown
+        ) => {
 
-        this.legalFiles.forEach(
-          file => {
+          console.error(
+            'ERROR LOADING LEGAL FILES:',
+            error
+          );
 
-            this.fileDocumentService
-              .getDocumentsByFileId(file.id)
-              .subscribe({
+        }
 
-                next: (documents: FileUploadResponse[]) => {
+      });
 
-                  file.documents = documents;
-
-                  console.log(
-                    'DOCUMENTS FOR CASE:',
-                    file.caseNo,
-                    documents
-                  );
-
-                  this.cdr.detectChanges();
-
-                },
-
-                error: (error: unknown) => {
-
-                  console.error(
-                    'ERROR LOADING DOCUMENTS FOR CASE:',
-                    file.caseNo,
-                    error
-                  );
-
-                  file.documents = [];
-
-                }
-
-              });
-
-          }
-        );
-
-
-        // ---------------------------------------------
-        // Force UI update
-        // ---------------------------------------------
-
-        this.cdr.detectChanges();
-
-      },
-
-
-      error: (error: unknown) => {
-
-        console.error(
-          'ERROR LOADING LEGAL FILES:',
-          error
-        );
-
-      }
-
-    });
-
-}
+  }
 
 
   // =====================================================
@@ -740,7 +906,9 @@ uploadDocument(legalFileId: number): void {
       .getStatuses()
       .subscribe({
 
-        next: (data: Status[]) => {
+        next: (
+          data: Status[]
+        ) => {
 
           console.log(
             'STATUSES:',
@@ -748,7 +916,8 @@ uploadDocument(legalFileId: number): void {
           );
 
 
-          this.statuses = data;
+          this.statuses =
+            data;
 
 
           this.cdr.detectChanges();
@@ -756,7 +925,9 @@ uploadDocument(legalFileId: number): void {
         },
 
 
-        error: (error: unknown) => {
+        error: (
+          error: unknown
+        ) => {
 
           console.error(
             'ERROR LOADING STATUSES:',
@@ -780,7 +951,9 @@ uploadDocument(legalFileId: number): void {
       .getSpmsTypes()
       .subscribe({
 
-        next: (data: SpmsType[]) => {
+        next: (
+          data: SpmsType[]
+        ) => {
 
           console.log(
             'SPMS TYPES:',
@@ -788,7 +961,8 @@ uploadDocument(legalFileId: number): void {
           );
 
 
-          this.spmsTypes = data;
+          this.spmsTypes =
+            data;
 
 
           this.cdr.detectChanges();
@@ -796,7 +970,9 @@ uploadDocument(legalFileId: number): void {
         },
 
 
-        error: (error: unknown) => {
+        error: (
+          error: unknown
+        ) => {
 
           console.error(
             'ERROR LOADING SPMS TYPES:',
@@ -820,7 +996,9 @@ uploadDocument(legalFileId: number): void {
       .getOffices()
       .subscribe({
 
-        next: (data: Office[]) => {
+        next: (
+          data: Office[]
+        ) => {
 
           console.log(
             'OFFICES:',
@@ -828,7 +1006,8 @@ uploadDocument(legalFileId: number): void {
           );
 
 
-          this.offices = data;
+          this.offices =
+            data;
 
 
           this.cdr.detectChanges();
@@ -836,7 +1015,9 @@ uploadDocument(legalFileId: number): void {
         },
 
 
-        error: (error: unknown) => {
+        error: (
+          error: unknown
+        ) => {
 
           console.error(
             'ERROR LOADING OFFICES:',
@@ -860,7 +1041,9 @@ uploadDocument(legalFileId: number): void {
       .getDocumentTypes()
       .subscribe({
 
-        next: (data: DocumentType[]) => {
+        next: (
+          data: DocumentType[]
+        ) => {
 
           console.log(
             'DOCUMENT TYPES:',
@@ -868,7 +1051,8 @@ uploadDocument(legalFileId: number): void {
           );
 
 
-          this.documentTypes = data;
+          this.documentTypes =
+            data;
 
 
           this.cdr.detectChanges();
@@ -876,7 +1060,9 @@ uploadDocument(legalFileId: number): void {
         },
 
 
-        error: (error: unknown) => {
+        error: (
+          error: unknown
+        ) => {
 
           console.error(
             'ERROR LOADING DOCUMENT TYPES:',
@@ -900,7 +1086,9 @@ uploadDocument(legalFileId: number): void {
       .getDocumentFormats()
       .subscribe({
 
-        next: (data: DocumentFormat[]) => {
+        next: (
+          data: DocumentFormat[]
+        ) => {
 
           console.log(
             'DOCUMENT FORMATS:',
@@ -908,7 +1096,8 @@ uploadDocument(legalFileId: number): void {
           );
 
 
-          this.documentFormats = data;
+          this.documentFormats =
+            data;
 
 
           this.cdr.detectChanges();
@@ -916,7 +1105,9 @@ uploadDocument(legalFileId: number): void {
         },
 
 
-        error: (error: unknown) => {
+        error: (
+          error: unknown
+        ) => {
 
           console.error(
             'ERROR LOADING DOCUMENT FORMATS:',
@@ -929,88 +1120,131 @@ uploadDocument(legalFileId: number): void {
 
   }
 
-    // =====================================================
-  // LOAD DOCUMENT ForLegalFile
+
+  // =====================================================
+  // LOAD DOCUMENTS FOR LEGAL FILE
   // =====================================================
 
   loadDocumentsForLegalFile(
-  legalFile: LegalFile
-): void {
+    legalFile: LegalFile
+  ): void {
 
-  this.fileDocumentService
-    .getDocumentsByFileId(legalFile.id)
-    .subscribe({
+    this.fileDocumentService
+      .getDocumentsByFileId(
+        legalFile.id
+      )
+      .subscribe({
 
-      next: (documents: FileUploadResponse[]) => {
+        next: (
+          documents:
+            FileUploadResponse[]
+        ) => {
 
-        legalFile.documents = documents;
-
-        console.log(
-          'DOCUMENTS FOR CASE:',
-          legalFile.caseNo,
-          documents
-        );
-
-      },
-
-      error: (error: unknown) => {
-
-        console.error(
-          'ERROR LOADING DOCUMENTS:',
-          error
-        );
-
-        legalFile.documents = [];
-
-      }
-
-    });
-}
+          legalFile.documents =
+            documents;
 
 
-downloadDocument(
-  document: FileUploadResponse
-): void {
+          console.log(
+            'DOCUMENTS FOR CASE:',
+            legalFile.caseNo,
+            documents
+          );
 
-  console.log(
-    'DOWNLOADING DOCUMENT:',
-    document
-  );
 
-  this.fileDocumentService
-    .downloadFile(document.id)
-    .subscribe({
+          this.cdr.detectChanges();
 
-      next: (blob: Blob) => {
+        },
 
-        const url =
-          window.URL.createObjectURL(blob);
 
-        const link =
-          window.document.createElement('a');
+        error: (
+          error: unknown
+        ) => {
 
-        link.href = url;
+          console.error(
+            'ERROR LOADING DOCUMENTS:',
+            error
+          );
 
-        link.download =
-          document.documentName;
 
-        link.click();
+          legalFile.documents =
+            [];
 
-        window.URL.revokeObjectURL(url);
+        }
 
-      },
+      });
 
-      error: (error: unknown) => {
+  }
 
-        console.error(
-          'ERROR DOWNLOADING DOCUMENT:',
-          error
-        );
 
-      }
+  // =====================================================
+  // DOWNLOAD DOCUMENT
+  // =====================================================
 
-    });
-}
+  downloadDocument(
+    document: FileUploadResponse
+  ): void {
+
+    console.log(
+      'DOWNLOADING DOCUMENT:',
+      document
+    );
+
+
+    this.fileDocumentService
+      .downloadFile(
+        document.id
+      )
+      .subscribe({
+
+        next: (
+          blob: Blob
+        ) => {
+
+          const url =
+            window.URL.createObjectURL(
+              blob
+            );
+
+
+          const link =
+            window.document.createElement(
+              'a'
+            );
+
+
+          link.href =
+            url;
+
+
+          link.download =
+            document.documentName;
+
+
+          link.click();
+
+
+          window.URL.revokeObjectURL(
+            url
+          );
+
+        },
+
+
+        error: (
+          error: unknown
+        ) => {
+
+          console.error(
+            'ERROR DOWNLOADING DOCUMENT:',
+            error
+          );
+
+        }
+
+      });
+
+  }
+
 
   // =====================================================
   // OPEN CREATE FORM
@@ -1018,9 +1252,19 @@ downloadDocument(
 
   openCreateForm(): void {
 
-    this.showForm = true;
+    this.showForm =
+      true;
+
 
     this.resetForm();
+
+
+    this.uploadStatus =
+      'idle';
+
+    this.uploadStatusMessage =
+      '';
+
 
     this.cdr.detectChanges();
 
@@ -1033,9 +1277,12 @@ downloadDocument(
 
   closeCreateForm(): void {
 
-    this.showForm = false;
+    this.showForm =
+      false;
+
 
     this.resetForm();
+
 
     this.cdr.detectChanges();
 
@@ -1074,6 +1321,210 @@ downloadDocument(
 
     });
 
+
+    this.selectedDocumentFile =
+      null;
+
+
+    this.uploadStatus =
+      'idle';
+
+    this.uploadStatusMessage =
+      '';
+
+  }
+
+
+  // =====================================================
+  // OPEN REPLACE DOCUMENT MODAL
+  // =====================================================
+
+  openReplaceDocument(
+    document: FileUploadResponse
+  ): void {
+
+    console.log(
+      'OPEN REPLACE MODAL:',
+      document
+    );
+
+
+    this.selectedReplaceDocument =
+      document;
+
+
+    this.selectedReplaceFile =
+      null;
+
+
+    this.showReplaceModal =
+      true;
+
+
+    this.cdr.detectChanges();
+
+  }
+
+
+  // =====================================================
+  // CLOSE REPLACE DOCUMENT MODAL
+  // =====================================================
+
+  closeReplaceModal(): void {
+
+    this.showReplaceModal =
+      false;
+
+
+    this.selectedReplaceDocument =
+      null;
+
+
+    this.selectedReplaceFile =
+      null;
+
+
+    this.cdr.detectChanges();
+
+  }
+
+
+  // =====================================================
+  // SELECT REPLACEMENT FILE
+  // =====================================================
+
+  onReplaceFileSelected(
+    event: Event
+  ): void {
+
+    const input =
+      event.target as HTMLInputElement;
+
+
+    if (
+      !input.files ||
+      input.files.length === 0
+    ) {
+
+      this.selectedReplaceFile =
+        null;
+
+      return;
+
+    }
+
+
+    this.selectedReplaceFile =
+      input.files[0];
+
+
+    console.log(
+      'SELECTED REPLACEMENT FILE:',
+      this.selectedReplaceFile
+    );
+
+
+    this.cdr.detectChanges();
+
+  }
+
+
+  // =====================================================
+  // CONFIRM REPLACE DOCUMENT
+  // =====================================================
+
+  confirmReplaceDocument(): void {
+
+    if (
+      !this.selectedReplaceDocument ||
+      !this.selectedReplaceFile
+    ) {
+
+      console.warn(
+        'NO DOCUMENT OR REPLACEMENT FILE SELECTED'
+      );
+
+      return;
+
+    }
+
+
+    const documentId =
+      this.selectedReplaceDocument.id;
+
+
+    const newFile =
+      this.selectedReplaceFile;
+
+
+    console.log(
+      'REPLACING DOCUMENT ID:',
+      documentId
+    );
+
+
+    console.log(
+      'NEW FILE:',
+      newFile.name
+    );
+
+
+    this.fileDocumentService
+      .replaceFile(
+        documentId,
+        newFile
+      )
+      .subscribe({
+
+        next: (
+          response: FileUploadResponse
+        ) => {
+
+          console.log(
+            'FILE REPLACED SUCCESSFULLY:',
+            response
+          );
+
+
+          this.closeReplaceModal();
+
+
+          this.loadLegalFiles();
+
+
+          this.cdr.detectChanges();
+
+        },
+
+
+        error: (
+          error: unknown
+        ) => {
+
+          console.error(
+            'ERROR REPLACING FILE:',
+            error
+          );
+
+        }
+
+      });
+
+  }
+
+
+  // =====================================================
+  // OLD DIRECT REPLACE METHOD
+  // =====================================================
+
+  replaceDocument(
+    document: FileUploadResponse
+  ): void {
+
+    this.openReplaceDocument(
+      document
+    );
+
   }
 
 
@@ -1104,26 +1555,15 @@ downloadDocument(
     );
 
 
-    // ---------------------------------------------
-    // Create copy of changes
-    // ---------------------------------------------
-
     const changes =
       Array.from(
         this.statusChanges.entries()
       );
 
 
-    // ---------------------------------------------
-    // Counter
-    // ---------------------------------------------
+    let completedUpdates =
+      0;
 
-    let completedUpdates = 0;
-
-
-    // ---------------------------------------------
-    // Update each legal file
-    // ---------------------------------------------
 
     changes.forEach(
       ([fileId, newStatusId]) => {
@@ -1146,10 +1586,6 @@ downloadDocument(
 
         }
 
-
-        // ---------------------------------------------
-        // Build request
-        // ---------------------------------------------
 
         const legalFile:
           CreateLegalFile = {
@@ -1185,7 +1621,8 @@ downloadDocument(
             file.contactDetails ?? '',
 
           currentStage:
-            file.currentStage ?? 'RECEIVED'
+            file.currentStage ??
+            'RECEIVED'
 
         };
 
@@ -1201,10 +1638,6 @@ downloadDocument(
           legalFile
         );
 
-
-        // ---------------------------------------------
-        // PUT REQUEST
-        // ---------------------------------------------
 
         this.legalFileServiceTs
           .updateLegalFile(
@@ -1223,22 +1656,15 @@ downloadDocument(
               );
 
 
-              // ---------------------------------------------
-              // Update original status
-              // ---------------------------------------------
-
               this.originalStatusIds.set(
 
                 fileId,
 
-                updatedFile.statusId ?? null
+                updatedFile.statusId ??
+                null
 
               );
 
-
-              // ---------------------------------------------
-              // Update table object
-              // ---------------------------------------------
 
               const index =
                 this.legalFiles.findIndex(
@@ -1255,16 +1681,8 @@ downloadDocument(
               }
 
 
-              // ---------------------------------------------
-              // Count completed updates
-              // ---------------------------------------------
-
               completedUpdates++;
 
-
-              // ---------------------------------------------
-              // When ALL updates finish
-              // ---------------------------------------------
 
               if (
                 completedUpdates ===
@@ -1276,21 +1694,15 @@ downloadDocument(
                 );
 
 
-                // Clear pending changes
-
                 this.statusChanges.clear();
 
-
-                // Reload database
 
                 this.loadLegalFiles();
 
 
                 this.cdr.detectChanges();
 
-              }
-
-              else {
+              } else {
 
                 this.legalFiles =
                   this.sortLegalFiles(
@@ -1322,6 +1734,7 @@ downloadDocument(
           });
 
       }
+
     );
 
   }
@@ -1332,10 +1745,6 @@ downloadDocument(
   // =====================================================
 
   deleteSelectedFiles(): void {
-
-    // ---------------------------------------------
-    // Check selection
-    // ---------------------------------------------
 
     if (
       this.selectedFiles.size === 0
@@ -1350,19 +1759,11 @@ downloadDocument(
     }
 
 
-    // ---------------------------------------------
-    // Convert Set to Array
-    // ---------------------------------------------
-
     const selectedIds =
       Array.from(
         this.selectedFiles
       );
 
-
-    // ---------------------------------------------
-    // Confirmation
-    // ---------------------------------------------
 
     const confirmed =
       window.confirm(
@@ -1385,22 +1786,17 @@ downloadDocument(
     );
 
 
-    // ---------------------------------------------
-    // Counter
-    // ---------------------------------------------
+    let completedDeletes =
+      0;
 
-    let completedDeletes = 0;
-
-
-    // ---------------------------------------------
-    // Delete each selected file
-    // ---------------------------------------------
 
     selectedIds.forEach(
       fileId => {
 
         this.legalFileServiceTs
-          .deleteLegalFile(fileId)
+          .deleteLegalFile(
+            fileId
+          )
           .subscribe({
 
             next: () => {
@@ -1414,18 +1810,10 @@ downloadDocument(
               completedDeletes++;
 
 
-              // ---------------------------------------------
-              // Remove from selected files
-              // ---------------------------------------------
-
               this.selectedFiles.delete(
                 fileId
               );
 
-
-              // ---------------------------------------------
-              // Remove from table immediately
-              // ---------------------------------------------
 
               this.legalFiles =
                 this.legalFiles.filter(
@@ -1433,10 +1821,6 @@ downloadDocument(
                     file.id !== fileId
                 );
 
-
-              // ---------------------------------------------
-              // When all deletes finish
-              // ---------------------------------------------
 
               if (
                 completedDeletes ===
@@ -1450,12 +1834,9 @@ downloadDocument(
 
                 this.selectedFiles.clear();
 
-                this.allSelected = false;
+                this.allSelected =
+                  false;
 
-
-                // ---------------------------------------------
-                // Reload database
-                // ---------------------------------------------
 
                 this.loadLegalFiles();
 
@@ -1493,204 +1874,451 @@ downloadDocument(
   // =====================================================
   // CREATE LEGAL FILE
   // =====================================================
-saveLegalFile(): void {
 
-  // =====================================================
-  // VALIDATE FORM
-  // =====================================================
+  saveLegalFile(): void {
 
-  if (this.legalFileForm.invalid) {
+    // ===================================================
+    // VALIDATE FORM
+    // ===================================================
 
-    this.legalFileForm.markAllAsTouched();
+    if (
+      this.legalFileForm.invalid
+    ) {
+
+      this.legalFileForm.markAllAsTouched();
+
+
+      console.log(
+        'FORM INVALID:',
+        this.legalFileForm.getRawValue()
+      );
+
+
+      return;
+
+    }
+
+
+    // ===================================================
+    // GET FORM VALUES
+    // ===================================================
+
+    const formValue =
+      this.legalFileForm.getRawValue();
+
+
+    // ===================================================
+    // BUILD LEGAL FILE REQUEST
+    // ===================================================
+
+    const legalFile:
+      CreateLegalFile = {
+
+      caseNo:
+        formValue.caseNo!,
+
+      dateReceived:
+        formValue.dateReceived!,
+
+      timeReceived:
+        formValue.timeReceived || '',
+
+      dateCompleted:
+        formValue.dateCompleted || null,
+
+      statusId:
+        formValue.statusId,
+
+      spmsTypeId:
+        formValue.spmsTypeId,
+
+      requestingOfficeId:
+        formValue.requestingOfficeId,
+
+      documentTypeId:
+        formValue.documentTypeId,
+
+      documentFormatId:
+        formValue.documentFormatId,
+
+      contactDetails:
+        formValue.contactDetails || '',
+
+      currentStage:
+        formValue.currentStage!
+
+    };
+
+
+    // ===================================================
+    // IMPORTANT:
+    // Save the selected file in a variable BEFORE
+    // the async request starts.
+    // ===================================================
+
+    const fileToUpload =
+      this.selectedDocumentFile;
+
+
+    const documentFormatId =
+      formValue.documentFormatId;
+
+
+    // ===================================================
+    // RESET NOTIFICATIONS
+    // ===================================================
+
+    this.showSuccessNotification =
+      false;
+
+    this.showErrorNotification =
+      false;
+
+    this.successMessage =
+      '';
+
+    this.errorMessage =
+      '';
+
+
+    // ===================================================
+    // RESET UPLOAD STATUS
+    // ===================================================
+
+    this.uploadStatus =
+      'idle';
+
+    this.uploadStatusMessage =
+      '';
+
+
+    // ===================================================
+    // DEBUG
+    // ===================================================
 
     console.log(
-      'FORM INVALID:',
-      this.legalFileForm.getRawValue()
+      'SENDING LEGAL FILE:',
+      JSON.stringify(
+        legalFile,
+        null,
+        2
+      )
     );
 
-    return;
 
-  }
-
-
-  // =====================================================
-  // GET FORM VALUES
-  // =====================================================
-
-  const formValue =
-    this.legalFileForm.getRawValue();
+    console.log(
+      'SELECTED DOCUMENT:',
+      fileToUpload
+    );
 
 
-  // =====================================================
-  // BUILD LEGAL FILE REQUEST
-  // =====================================================
+    // ===================================================
+    // CREATE LEGAL FILE
+    // ===================================================
 
-  const legalFile: CreateLegalFile = {
+    this.legalFileServiceTs
+      .createLegalFile(
+        legalFile
+      )
+      .subscribe({
 
-    caseNo:
-      formValue.caseNo!,
+        // ===============================================
+        // LEGAL FILE CREATED
+        // ===============================================
 
-    dateReceived:
-      formValue.dateReceived!,
-
-    timeReceived:
-      formValue.timeReceived || '',
-
-    dateCompleted:
-      formValue.dateCompleted || null,
-
-    statusId:
-      formValue.statusId,
-
-    spmsTypeId:
-      formValue.spmsTypeId,
-
-    requestingOfficeId:
-      formValue.requestingOfficeId,
-
-    documentTypeId:
-      formValue.documentTypeId,
-
-    documentFormatId:
-      formValue.documentFormatId,
-
-    contactDetails:
-      formValue.contactDetails || '',
-
-    currentStage:
-      formValue.currentStage!
-
-  };
-
-
-  // =====================================================
-  // DEBUG
-  // =====================================================
-
-  console.log(
-    'SENDING LEGAL FILE:',
-    JSON.stringify(
-      legalFile,
-      null,
-      2
-    )
-  );
-
-
-  console.log(
-    'SELECTED DOCUMENT:',
-    this.selectedDocumentFile
-  );
-
-
-  // =====================================================
-  // CREATE LEGAL FILE
-  // =====================================================
-
-  this.legalFileServiceTs
-    .createLegalFile(legalFile)
-    .subscribe({
-
-      // =================================================
-      // SUCCESS
-      // =================================================
-
-      next: (
-        data: LegalFile
-      ) => {
-
-        console.log(
-          'LEGAL FILE CREATED:',
-          data
-        );
-
-
-        console.log(
-          'NEW LEGAL FILE ID:',
-          data.id
-        );
-
-
-        console.log(
-          'RETURNED STATUS ID:',
-          data.statusId
-        );
-
-
-        console.log(
-          'RETURNED STATUS NAME:',
-          data.statusName
-        );
-
-
-        // =================================================
-        // UPLOAD DOCUMENT IF SELECTED
-        // =================================================
-
-        if (
-          this.selectedDocumentFile &&
-          data.id
-        ) {
+        next: (
+          data: LegalFile
+        ) => {
 
           console.log(
-            'UPLOADING DOCUMENT...'
+            'LEGAL FILE CREATED:',
+            data
           );
 
 
-          this.uploadDocument(
+          console.log(
+            'NEW LEGAL FILE ID:',
             data.id
           );
 
+
+          console.log(
+            'RETURNED STATUS ID:',
+            data.statusId
+          );
+
+
+          console.log(
+            'RETURNED STATUS NAME:',
+            data.statusName
+          );
+
+
+          // =============================================
+          // DOCUMENT WAS SELECTED
+          // =============================================
+
+          if (
+            fileToUpload &&
+            data.id
+          ) {
+
+            console.log(
+              'LEGAL FILE CREATED.'
+            );
+
+            console.log(
+              'NOW UPLOADING DOCUMENT...'
+            );
+
+
+            // -------------------------------------------
+            // Show uploading state
+            // -------------------------------------------
+
+            this.uploadStatus =
+              'uploading';
+
+            this.uploadStatusMessage =
+              'Uploading document...';
+
+
+            this.cdr.detectChanges();
+
+
+            // -------------------------------------------
+            // Upload document
+            // -------------------------------------------
+
+            this.fileDocumentService
+              .uploadFile(
+                data.id,
+                fileToUpload,
+                documentFormatId
+              )
+              .subscribe({
+
+                // =======================================
+                // DOCUMENT UPLOAD SUCCESS
+                // =======================================
+
+                next: (
+                  response: FileUploadResponse
+                ) => {
+
+                  console.log(
+                    'FILE UPLOADED:',
+                    response
+                  );
+
+
+                  this.uploadStatus =
+                    'success';
+
+                  this.uploadStatusMessage =
+                    'Document uploaded successfully ✓';
+
+
+                  // ---------------------------------------
+                  // CLOSE CREATE FORM
+                  // ---------------------------------------
+
+                  this.showForm =
+                    false;
+
+
+                  // ---------------------------------------
+                  // RESET FORM
+                  // ---------------------------------------
+
+                  this.resetForm();
+
+
+                  // ---------------------------------------
+                  // RELOAD DATA
+                  // ---------------------------------------
+
+                  this.loadLegalFiles();
+
+
+                  // ---------------------------------------
+                  // SHOW SUCCESS NOTIFICATION
+                  // ---------------------------------------
+
+                  this.successMessage =
+                    `Legal file ${data.caseNo} and document were saved successfully.`;
+
+                  this.showSuccessNotification =
+                    true;
+
+
+                  this.cdr.detectChanges();
+
+
+                  // ---------------------------------------
+                  // AUTO HIDE NOTIFICATION
+                  // ---------------------------------------
+
+                  setTimeout(() => {
+
+                    this.showSuccessNotification =
+                      false;
+
+                    this.cdr.detectChanges();
+
+                  }, 5000);
+
+                },
+
+
+                // =======================================
+                // DOCUMENT UPLOAD ERROR
+                // =======================================
+
+                error: (
+                  error: unknown
+                ) => {
+
+                  console.error(
+                    'FILE UPLOAD ERROR:',
+                    error
+                  );
+
+
+                  this.uploadStatus =
+                    'error';
+
+                  this.uploadStatusMessage =
+                    'File upload failed. Please try again.';
+
+
+                  // ---------------------------------------
+                  // Legal file exists but document failed
+                  // ---------------------------------------
+
+                  this.errorMessage =
+                    `Legal file ${data.caseNo} was created, but the document upload failed.`;
+
+                  this.showErrorNotification =
+                    true;
+
+
+                  this.cdr.detectChanges();
+
+                }
+
+              });
+
+
+            return;
+
+          }
+
+
+          // =================================================
+          // NO DOCUMENT SELECTED
+          // =================================================
+
+          console.log(
+            'LEGAL FILE SAVED WITHOUT DOCUMENT.'
+          );
+
+
+          // -----------------------------------------------
+          // CLOSE FORM
+          // -----------------------------------------------
+
+          this.showForm =
+            false;
+
+
+          // -----------------------------------------------
+          // RESET FORM
+          // -----------------------------------------------
+
+          this.resetForm();
+
+
+          // -----------------------------------------------
+          // RELOAD DATA
+          // -----------------------------------------------
+
+          this.loadLegalFiles();
+
+
+          // -----------------------------------------------
+          // SUCCESS NOTIFICATION
+          // -----------------------------------------------
+
+          this.successMessage =
+            `Legal file ${data.caseNo} was saved successfully.`;
+
+          this.showSuccessNotification =
+            true;
+
+
+          this.cdr.detectChanges();
+
+
+          // -----------------------------------------------
+          // AUTO HIDE
+          // -----------------------------------------------
+
+          setTimeout(() => {
+
+            this.showSuccessNotification =
+              false;
+
+            this.cdr.detectChanges();
+
+          }, 5000);
+
+        },
+
+
+        // ===============================================
+        // CREATE LEGAL FILE ERROR
+        // ===============================================
+
+        error: (
+          error: unknown
+        ) => {
+
+          console.error(
+            'ERROR CREATING LEGAL FILE:',
+            error
+          );
+
+
+          this.errorMessage =
+            'Unable to save the legal file. Please try again.';
+
+
+          this.showErrorNotification =
+            true;
+
+
+          this.cdr.detectChanges();
+
+
+          // ---------------------------------------------
+          // AUTO HIDE ERROR
+          // ---------------------------------------------
+
+          setTimeout(() => {
+
+            this.showErrorNotification =
+              false;
+
+            this.cdr.detectChanges();
+
+          }, 5000);
+
         }
 
+      });
 
-        // =================================================
-        // CLOSE FORM
-        // =================================================
-
-        this.showForm = false;
-
-
-        // =================================================
-        // RESET FORM
-        // =================================================
-
-        this.resetForm();
-
-
-        // =================================================
-        // RELOAD LEGAL FILES
-        // =================================================
-
-        this.loadLegalFiles();
-
-
-        // =================================================
-        // UPDATE UI
-        // =================================================
-
-        this.cdr.detectChanges();
-
-      },
-
-
-      // =================================================
-      // ERROR
-      // =================================================
-
-      error: (
-        error: unknown
-      ) => {
-
-        console.error(
-          'ERROR CREATING LEGAL FILE:',
-          error
-        );
-
-      }
-
-    });
+  }
 
 }
 
-}

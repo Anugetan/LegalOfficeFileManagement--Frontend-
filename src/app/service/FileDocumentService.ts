@@ -92,4 +92,23 @@ export class FileDocumentService {
     );
   }
 
+
+  // ==========================================
+  // REPLACE DOCUMENT
+  // ==========================================
+  replaceFile(
+  documentId: number,
+  file: File
+): Observable<FileUploadResponse> {
+
+  const formData = new FormData();
+
+  formData.append('file', file);
+
+  return this.http.put<FileUploadResponse>(
+    `${this.apiUrl}/${documentId}/replace`,
+    formData
+  );
+}
+
 }

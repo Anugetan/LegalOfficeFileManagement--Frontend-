@@ -1,8 +1,84 @@
 <div class="legal-files">
 
-  <!-- ========================= -->
+  <!-- ===================================================== -->
+  <!-- SUCCESS NOTIFICATION -->
+  <!-- ===================================================== -->
+
+  @if (showSuccessNotification) {
+
+    <div class="save-notification success-notification">
+
+      <span class="notification-icon">
+        ✓
+      </span>
+
+      <div class="notification-content">
+
+        <strong>
+          Saved Successfully
+        </strong>
+
+        <span>
+          {{ successMessage }}
+        </span>
+
+      </div>
+
+      <button
+        type="button"
+        class="notification-close"
+        (click)="showSuccessNotification = false">
+
+        ×
+
+      </button>
+
+    </div>
+
+  }
+
+
+  <!-- ===================================================== -->
+  <!-- ERROR NOTIFICATION -->
+  <!-- ===================================================== -->
+
+  @if (showErrorNotification) {
+
+    <div class="save-notification error-notification">
+
+      <span class="notification-icon">
+        ✕
+      </span>
+
+      <div class="notification-content">
+
+        <strong>
+          Save Failed
+        </strong>
+
+        <span>
+          {{ errorMessage }}
+        </span>
+
+      </div>
+
+      <button
+        type="button"
+        class="notification-close"
+        (click)="showErrorNotification = false">
+
+        ×
+
+      </button>
+
+    </div>
+
+  }
+
+
+  <!-- ===================================================== -->
   <!-- PAGE HEADER -->
-  <!-- ========================= -->
+  <!-- ===================================================== -->
 
   <div class="page-header">
 
@@ -20,9 +96,9 @@
   </div>
 
 
-  <!-- ========================= -->
+  <!-- ===================================================== -->
   <!-- CREATE FORM OVERLAY -->
-  <!-- ========================= -->
+  <!-- ===================================================== -->
 
   @if (showForm) {
 
@@ -34,11 +110,15 @@
         class="form-container"
         (click)="$event.stopPropagation()">
 
+        <!-- ================================================= -->
         <!-- FORM HEADER -->
+        <!-- ================================================= -->
 
         <div class="form-header">
 
-          <h3>Create Legal File</h3>
+          <h3>
+            Create Legal File
+          </h3>
 
           <button
             type="button"
@@ -52,7 +132,9 @@
         </div>
 
 
+        <!-- ================================================= -->
         <!-- FORM -->
+        <!-- ================================================= -->
 
         <form
           [formGroup]="legalFileForm"
@@ -61,7 +143,9 @@
           <div class="form-grid">
 
 
+            <!-- ============================================= -->
             <!-- CASE NUMBER -->
+            <!-- ============================================= -->
 
             <div class="form-group">
 
@@ -78,7 +162,9 @@
             </div>
 
 
+            <!-- ============================================= -->
             <!-- DATE RECEIVED -->
+            <!-- ============================================= -->
 
             <div class="form-group">
 
@@ -94,7 +180,9 @@
             </div>
 
 
+            <!-- ============================================= -->
             <!-- TIME RECEIVED -->
+            <!-- ============================================= -->
 
             <div class="form-group">
 
@@ -110,7 +198,9 @@
             </div>
 
 
+            <!-- ============================================= -->
             <!-- DATE COMPLETED -->
+            <!-- ============================================= -->
 
             <div class="form-group">
 
@@ -126,7 +216,9 @@
             </div>
 
 
+            <!-- ============================================= -->
             <!-- STATUS -->
+            <!-- ============================================= -->
 
             <div class="form-group">
 
@@ -142,10 +234,15 @@
                   Select Status
                 </option>
 
-                @for (status of statuses; track status.id) {
+                @for (
+                  status of statuses;
+                  track status.id
+                ) {
 
                   <option [ngValue]="status.id">
+
                     {{ status.statusName }}
+
                   </option>
 
                 }
@@ -155,7 +252,9 @@
             </div>
 
 
+            <!-- ============================================= -->
             <!-- SPMS TYPE -->
+            <!-- ============================================= -->
 
             <div class="form-group">
 
@@ -171,10 +270,15 @@
                   Select SPMS Type
                 </option>
 
-                @for (spms of spmsTypes; track spms.id) {
+                @for (
+                  spms of spmsTypes;
+                  track spms.id
+                ) {
 
                   <option [ngValue]="spms.id">
+
                     {{ spms.spmsName }}
+
                   </option>
 
                 }
@@ -184,7 +288,9 @@
             </div>
 
 
+            <!-- ============================================= -->
             <!-- REQUESTING OFFICE -->
+            <!-- ============================================= -->
 
             <div class="form-group">
 
@@ -200,10 +306,15 @@
                   Select Requesting Office
                 </option>
 
-                @for (office of offices; track office.id) {
+                @for (
+                  office of offices;
+                  track office.id
+                ) {
 
                   <option [ngValue]="office.id">
+
                     {{ office.officeName }}
+
                   </option>
 
                 }
@@ -213,7 +324,9 @@
             </div>
 
 
+            <!-- ============================================= -->
             <!-- DOCUMENT TYPE -->
+            <!-- ============================================= -->
 
             <div class="form-group">
 
@@ -235,7 +348,9 @@
                 ) {
 
                   <option [ngValue]="documentType.id">
+
                     {{ documentType.documentName }}
+
                   </option>
 
                 }
@@ -245,7 +360,9 @@
             </div>
 
 
+            <!-- ============================================= -->
             <!-- DOCUMENT FORMAT -->
+            <!-- ============================================= -->
 
             <div class="form-group">
 
@@ -267,7 +384,9 @@
                 ) {
 
                   <option [ngValue]="format.id">
+
                     {{ format.formatName }}
+
                   </option>
 
                 }
@@ -277,7 +396,9 @@
             </div>
 
 
+            <!-- ============================================= -->
             <!-- UPLOAD FILE -->
+            <!-- ============================================= -->
 
             <div class="form-group full-width">
 
@@ -292,6 +413,11 @@
                 (change)="onDocumentFileSelected($event)"
               >
 
+
+              <!-- =========================================== -->
+              <!-- SELECTED FILE -->
+              <!-- =========================================== -->
+
               @if (selectedDocumentFile) {
 
                 <div class="selected-file">
@@ -301,15 +427,90 @@
                   </span>
 
                   <span class="selected-file-name">
+
                     {{ selectedDocumentFile.name }}
+
                   </span>
 
                   <span class="selected-file-size">
+
                     {{
                       selectedDocumentFile.size / 1024 / 1024
                         | number:'1.2-2'
                     }}
+
                     MB
+
+                  </span>
+
+                </div>
+
+              }
+
+
+              <!-- =========================================== -->
+              <!-- UPLOAD STATUS -->
+              <!-- =========================================== -->
+
+              @if (uploadStatus !== 'idle') {
+
+                <div
+                  class="upload-status"
+                  [ngClass]="{
+                    'uploading':
+                      uploadStatus === 'uploading',
+
+                    'upload-success':
+                      uploadStatus === 'success',
+
+                    'upload-error':
+                      uploadStatus === 'error'
+                  }">
+
+
+                  <!-- UPLOADING -->
+
+                  @if (
+                    uploadStatus === 'uploading'
+                  ) {
+
+                    <span class="upload-status-icon">
+                      ⏳
+                    </span>
+
+                  }
+
+
+                  <!-- SUCCESS -->
+
+                  @if (
+                    uploadStatus === 'success'
+                  ) {
+
+                    <span class="upload-status-icon">
+                      ✓
+                    </span>
+
+                  }
+
+
+                  <!-- ERROR -->
+
+                  @if (
+                    uploadStatus === 'error'
+                  ) {
+
+                    <span class="upload-status-icon">
+                      ✕
+                    </span>
+
+                  }
+
+
+                  <span class="upload-status-message">
+
+                    {{ uploadStatusMessage }}
+
                   </span>
 
                 </div>
@@ -319,7 +520,9 @@
             </div>
 
 
+            <!-- ============================================= -->
             <!-- CURRENT STAGE -->
+            <!-- ============================================= -->
 
             <div class="form-group">
 
@@ -352,7 +555,9 @@
             </div>
 
 
+            <!-- ============================================= -->
             <!-- CONTACT DETAILS -->
+            <!-- ============================================= -->
 
             <div class="form-group full-width">
 
@@ -371,7 +576,9 @@
           </div>
 
 
+          <!-- ================================================= -->
           <!-- FORM BUTTONS -->
+          <!-- ================================================= -->
 
           <div class="form-actions">
 
@@ -403,9 +610,220 @@
   }
 
 
-  <!-- ========================= -->
+  <!-- ===================================================== -->
+  <!-- REPLACE DOCUMENT MODAL -->
+  <!-- ===================================================== -->
+
+  @if (showReplaceModal) {
+
+    <div
+      class="replace-overlay"
+      (click)="closeReplaceModal()">
+
+      <div
+        class="replace-modal"
+        (click)="$event.stopPropagation()">
+
+
+        <!-- ================================================= -->
+        <!-- MODAL HEADER -->
+        <!-- ================================================= -->
+
+        <div class="replace-modal-header">
+
+          <h3>
+            Replace Document
+          </h3>
+
+          <button
+            type="button"
+            class="replace-close-button"
+            (click)="closeReplaceModal()">
+
+            ×
+
+          </button>
+
+        </div>
+
+
+        <!-- ================================================= -->
+        <!-- MODAL BODY -->
+        <!-- ================================================= -->
+
+        <div class="replace-modal-body">
+
+
+          <!-- =============================================== -->
+          <!-- CURRENT DOCUMENT -->
+          <!-- =============================================== -->
+
+          <div class="current-document">
+
+            <label>
+              Current Document
+            </label>
+
+            @if (selectedReplaceDocument) {
+
+              <div class="current-file">
+
+                <span class="current-file-icon">
+                  📄
+                </span>
+
+                <div class="current-file-info">
+
+                  <span class="current-file-name">
+
+                    {{ selectedReplaceDocument.documentName }}
+
+                  </span>
+
+                  <span class="current-file-version">
+
+                    Version
+                    {{ selectedReplaceDocument.version }}
+
+                  </span>
+
+                </div>
+
+              </div>
+
+            }
+
+          </div>
+
+
+          <!-- =============================================== -->
+          <!-- NEW DOCUMENT -->
+          <!-- =============================================== -->
+
+          <div class="new-document">
+
+            <label for="replaceFileInput">
+              New Document
+            </label>
+
+            <input
+              id="replaceFileInput"
+              type="file"
+              accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png"
+              (change)="onReplaceFileSelected($event)"
+            >
+
+
+            <!-- ============================================= -->
+            <!-- SELECTED NEW FILE -->
+            <!-- ============================================= -->
+
+            @if (selectedReplaceFile) {
+
+              <div class="replacement-file">
+
+                <span class="replacement-file-icon">
+                  📄
+                </span>
+
+                <div class="replacement-file-info">
+
+                  <span class="replacement-file-name">
+
+                    {{ selectedReplaceFile.name }}
+
+                  </span>
+
+                  <span class="replacement-file-size">
+
+                    {{
+                      selectedReplaceFile.size / 1024 / 1024
+                        | number:'1.2-2'
+                    }}
+
+                    MB
+
+                  </span>
+
+                </div>
+
+              </div>
+
+            } @else {
+
+              <div class="replace-file-hint">
+
+                Select a new document to replace the current file.
+
+              </div>
+
+            }
+
+          </div>
+
+
+          <!-- =============================================== -->
+          <!-- WARNING -->
+          <!-- =============================================== -->
+
+          @if (selectedReplaceFile) {
+
+            <div class="replace-warning">
+
+              <span class="warning-icon">
+                ⚠
+              </span>
+
+              <span>
+
+                The existing document will be replaced.
+
+              </span>
+
+            </div>
+
+          }
+
+        </div>
+
+
+        <!-- ================================================= -->
+        <!-- MODAL ACTIONS -->
+        <!-- ================================================= -->
+
+        <div class="replace-modal-actions">
+
+          <button
+            type="button"
+            class="replace-cancel-button"
+            (click)="closeReplaceModal()">
+
+            Cancel
+
+          </button>
+
+          <button
+            type="button"
+            class="replace-confirm-button"
+            [disabled]="!selectedReplaceFile"
+            (click)="confirmReplaceDocument()">
+
+            Replace Document
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  }
+
+
+  <!-- ===================================================== -->
   <!-- LEGAL FILE TABLE -->
-  <!-- ========================= -->
+  <!-- ===================================================== -->
 
   <div class="table-wrapper">
 
@@ -414,6 +832,11 @@
       <thead>
 
         <tr>
+
+
+          <!-- =============================================== -->
+          <!-- SELECT -->
+          <!-- =============================================== -->
 
           <th class="checkbox-column">
 
@@ -425,61 +848,136 @@
 
           </th>
 
+
+          <!-- =============================================== -->
+          <!-- STATUS -->
+          <!-- =============================================== -->
+
           <th class="status-column">
             Status
           </th>
+
+
+          <!-- =============================================== -->
+          <!-- CASE NUMBER -->
+          <!-- =============================================== -->
 
           <th>
             Case No.
           </th>
 
+
+          <!-- =============================================== -->
+          <!-- FILE -->
+          <!-- =============================================== -->
+
           <th class="file-column">
             File
           </th>
+
+
+          <!-- =============================================== -->
+          <!-- DATE RECEIVED -->
+          <!-- =============================================== -->
 
           <th>
             Date Received
           </th>
 
+
+          <!-- =============================================== -->
+          <!-- TIME RECEIVED -->
+          <!-- =============================================== -->
+
           <th>
             Time Received
           </th>
+
+
+          <!-- =============================================== -->
+          <!-- DATE COMPLETED -->
+          <!-- =============================================== -->
 
           <th>
             Date Completed
           </th>
 
+
+          <!-- =============================================== -->
+          <!-- SPMS TYPE -->
+          <!-- =============================================== -->
+
           <th>
             SPMS Type
           </th>
+
+
+          <!-- =============================================== -->
+          <!-- REQUESTING OFFICE -->
+          <!-- =============================================== -->
 
           <th>
             Requesting Office
           </th>
 
+
+          <!-- =============================================== -->
+          <!-- DOCUMENT TYPE -->
+          <!-- =============================================== -->
+
           <th>
             Document Type
           </th>
+
+
+          <!-- =============================================== -->
+          <!-- DOCUMENT FORMAT -->
+          <!-- =============================================== -->
 
           <th>
             Document Format
           </th>
 
+
+          <!-- =============================================== -->
+          <!-- CONTACT DETAILS -->
+          <!-- =============================================== -->
+
           <th>
             Contact Details
           </th>
+
+
+          <!-- =============================================== -->
+          <!-- CURRENT STAGE -->
+          <!-- =============================================== -->
 
           <th>
             Current Stage
           </th>
 
+
+          <!-- =============================================== -->
+          <!-- CREATED BY -->
+          <!-- =============================================== -->
+
           <th>
             Created By
           </th>
 
+
+          <!-- =============================================== -->
+          <!-- CREATED AT -->
+          <!-- =============================================== -->
+
           <th>
             Created At
           </th>
+
+
+          <!-- =============================================== -->
+          <!-- UPDATED AT -->
+          <!-- =============================================== -->
 
           <th>
             Updated At
@@ -492,9 +990,17 @@
 
       <tbody>
 
-        @for (file of legalFiles; track file.id) {
+        @for (
+          file of legalFiles;
+          track file.id
+        ) {
 
           <tr>
+
+
+            <!-- ============================================= -->
+            <!-- CHECKBOX -->
+            <!-- ============================================= -->
 
             <td class="checkbox-cell">
 
@@ -506,6 +1012,10 @@
 
             </td>
 
+
+            <!-- ============================================= -->
+            <!-- STATUS -->
+            <!-- ============================================= -->
 
             <td class="status-cell">
 
@@ -522,7 +1032,9 @@
                 ) {
 
                   <option [ngValue]="status.id">
+
                     {{ status.statusName }}
+
                   </option>
 
                 }
@@ -532,14 +1044,27 @@
             </td>
 
 
+            <!-- ============================================= -->
+            <!-- CASE NUMBER -->
+            <!-- ============================================= -->
+
             <td>
+
               {{ file.caseNo }}
+
             </td>
 
 
+            <!-- ============================================= -->
+            <!-- FILE -->
+            <!-- ============================================= -->
+
             <td class="file-column">
 
-              @if (file.documents && file.documents.length > 0) {
+              @if (
+                file.documents &&
+                file.documents.length > 0
+              ) {
 
                 @for (
                   document of file.documents;
@@ -548,9 +1073,15 @@
 
                   <div class="file-item">
 
+
+                    <!-- FILE ICON -->
+
                     <span class="file-icon">
                       📄
                     </span>
+
+
+                    <!-- FILE NAME -->
 
                     <span
                       class="file-name"
@@ -561,6 +1092,28 @@
 
                     </span>
 
+
+                    <!-- VERSION -->
+
+                    <span class="file-version">
+
+                      v{{ document.version }}
+
+                    </span>
+
+
+                    <!-- REPLACE -->
+
+                    <button
+                      type="button"
+                      class="edit-file-button"
+                      title="Replace document"
+                      (click)="openReplaceDocument(document)">
+
+                      ✎
+
+                    </button>
+
                   </div>
 
                 }
@@ -568,7 +1121,9 @@
               } @else {
 
                 <span class="no-file">
+
                   No file
+
                 </span>
 
               }
@@ -576,63 +1131,135 @@
             </td>
 
 
+            <!-- ============================================= -->
+            <!-- DATE RECEIVED -->
+            <!-- ============================================= -->
+
             <td>
+
               {{ file.dateReceived }}
+
             </td>
 
 
+            <!-- ============================================= -->
+            <!-- TIME RECEIVED -->
+            <!-- ============================================= -->
+
             <td>
+
               {{ file.timeReceived || 'N/A' }}
+
             </td>
 
 
+            <!-- ============================================= -->
+            <!-- DATE COMPLETED -->
+            <!-- ============================================= -->
+
             <td>
+
               {{ file.dateCompleted || 'N/A' }}
+
             </td>
 
 
+            <!-- ============================================= -->
+            <!-- SPMS TYPE -->
+            <!-- ============================================= -->
+
             <td>
+
               {{ file.spmsTypeName || 'N/A' }}
+
             </td>
 
 
+            <!-- ============================================= -->
+            <!-- REQUESTING OFFICE -->
+            <!-- ============================================= -->
+
             <td>
+
               {{ file.requestingOfficeName || 'N/A' }}
+
             </td>
 
 
+            <!-- ============================================= -->
+            <!-- DOCUMENT TYPE -->
+            <!-- ============================================= -->
+
             <td>
+
               {{ file.documentTypeName || 'N/A' }}
+
             </td>
 
 
+            <!-- ============================================= -->
+            <!-- DOCUMENT FORMAT -->
+            <!-- ============================================= -->
+
             <td>
+
               {{ file.documentFormatName || 'N/A' }}
+
             </td>
 
 
+            <!-- ============================================= -->
+            <!-- CONTACT DETAILS -->
+            <!-- ============================================= -->
+
             <td>
+
               {{ file.contactDetails || 'N/A' }}
+
             </td>
 
 
+            <!-- ============================================= -->
+            <!-- CURRENT STAGE -->
+            <!-- ============================================= -->
+
             <td>
+
               {{ file.currentStage || 'N/A' }}
+
             </td>
 
 
+            <!-- ============================================= -->
+            <!-- CREATED BY -->
+            <!-- ============================================= -->
+
             <td>
+
               {{ file.createdById || 'N/A' }}
+
             </td>
 
 
+            <!-- ============================================= -->
+            <!-- CREATED AT -->
+            <!-- ============================================= -->
+
             <td>
+
               {{ file.createdAt || 'N/A' }}
+
             </td>
 
 
+            <!-- ============================================= -->
+            <!-- UPDATED AT -->
+            <!-- ============================================= -->
+
             <td>
+
               {{ file.updatedAt || 'N/A' }}
+
             </td>
 
           </tr>
@@ -646,11 +1273,14 @@
   </div>
 
 
-  <!-- ========================= -->
+  <!-- ===================================================== -->
   <!-- TABLE ACTIONS -->
-  <!-- ========================= -->
+  <!-- ===================================================== -->
 
   <div class="update-actions">
+
+
+    <!-- UPDATE -->
 
     <button
       type="button"
@@ -663,6 +1293,8 @@
 
     </button>
 
+
+    <!-- DELETE -->
 
     <button
       type="button"
