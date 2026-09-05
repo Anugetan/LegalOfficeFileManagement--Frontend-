@@ -13,7 +13,7 @@ import {
 
 import { CreateLegalFile } from '../model/legalFiles/create-legal-files';
 import { environment } from '../env/environment';
-
+import { FileAction } from '../model/file-action/file-action';
 
 
 
@@ -26,9 +26,14 @@ export class LegalFileServiceTs {
   // API URLS
   // =========================================
 
-  private apiUrl = `${environment.apiUrl}/legal-files`;
+  private apiUrl =
+    `${environment.apiUrl}/legal-files`;
 
-  private lookupUrl = `${environment.apiUrl}/legal-file-options`;
+  private lookupUrl =
+    `${environment.apiUrl}/legal-file-options`;
+
+  private fileActionsUrl =
+    `${environment.apiUrl}/file-actions`;
 
 
   constructor(
@@ -128,8 +133,24 @@ export class LegalFileServiceTs {
 
 
   // =========================================
+  // FILE ACTIONS / ACTIVITY HISTORY
+  // =========================================
+
+  getFileActions(
+    fileId: number
+  ): Observable<FileAction[]> {
+
+    return this.http.get<FileAction[]>(
+      `${this.fileActionsUrl}/file/${fileId}`
+    );
+
+  }
+
+
+  // =========================================
   // DROPDOWN OPTIONS
   // =========================================
+
 
   // =========================================
   // GET STATUSES

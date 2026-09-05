@@ -1,4 +1,5 @@
-import { FileUploadResponse } from "../fileupload/file-upload";
+import { FileUploadResponse } from "../file-upload/file-upload";
+
 
 export interface LegalFile {
 

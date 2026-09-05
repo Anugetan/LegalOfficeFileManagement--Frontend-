@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-import { FileUploadResponse } from '../model/fileupload/file-upload';
+
 import { environment } from '../env/environment';
+import { FileUploadResponse } from '../model/file-upload/file-upload';
 
 @Injectable({
   providedIn: 'root'

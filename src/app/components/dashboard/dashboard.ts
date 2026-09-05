@@ -1,112 +1,158 @@
 import {
-  ChangeDetectorRef,
-  Component,
-  OnInit
+ChangeDetectorRef,
+Component,
+OnInit
 } from '@angular/core';
 
 import { LegalFileServiceTs } from '../../service/legal-file.service.ts';
 import { LegalFile } from '../../model/legalFiles/legal-files-model.js';
 
 @Component({
-  selector: 'app-dashboard',
-  imports: [],
-  templateUrl: './dashboard.html',
-  styleUrl: './dashboard.css',
+selector: 'app-dashboard',
+standalone: true,
+imports: [],
+templateUrl: './dashboard.html',
+styleUrl: './dashboard.css',
 })
 export class Dashboard implements OnInit {
 
-  // All legal files from backend
-  legalFiles: LegalFile[] = [];
+// =========================================================
+// ALL LEGAL FILES
+// =========================================================
 
-  // Files separated by status
-  pendingFiles: LegalFile[] = [];
-  outFiles: LegalFile[] = [];
-  resolvedFiles: LegalFile[] = [];
-  archivedFiles: LegalFile[] = [];
-  cancelledFiles: LegalFile[] = [];
+legalFiles: LegalFile[] = [];
 
-  constructor(
-    private legalFileService: LegalFileServiceTs,
-    private cdr: ChangeDetectorRef
-  ) {}
+// =========================================================
+// FILES SEPARATED BY STATUS
+// =========================================================
 
-  ngOnInit(): void {
-    this.loadLegalFiles();
-  }
+pendingFiles: LegalFile[] = [];
 
+outFiles: LegalFile[] = [];
 
-  // =========================================================
-  // LOAD ALL LEGAL FILES
-  // =========================================================
+resolvedFiles: LegalFile[] = [];
 
-  loadLegalFiles(): void {
+archivedFiles: LegalFile[] = [];
 
-    this.legalFileService.getAllLegalFiles().subscribe({
+cancelledFiles: LegalFile[] = [];
 
-      next: (data: LegalFile[]) => {
+// =========================================================
+// CONSTRUCTOR
+// =========================================================
 
-        console.log('DASHBOARD LEGAL FILES:', data);
+constructor(
+private legalFileService: LegalFileServiceTs,
+private cdr: ChangeDetectorRef
+) {}
 
-        // Store all files
-        this.legalFiles = data;
+// =========================================================
+// INITIALIZE
+// =========================================================
 
-        // Separate files by status
-        this.filterByStatus();
-
-        // Force UI update
-        this.cdr.detectChanges();
-
-      },
-
-      error: (error) => {
-
-        console.error(
-          'Error loading legal files:',
-          error
-        );
-
-      }
-
-    });
-
-  }
+ngOnInit(): void {
 
 
-  // =========================================================
-  // FILTER FILES BY STATUS
-  // =========================================================
-
-  filterByStatus(): void {
-
-    this.pendingFiles = this.legalFiles.filter(
-      file =>
-        file.statusName?.trim().toLowerCase() === 'pending'
-    );
+this.loadLegalFiles();
 
 
-    this.outFiles = this.legalFiles.filter(
-      file =>
-        file.statusName?.trim().toLowerCase() === 'out'
-    );
+}
+
+// =========================================================
+// LOAD ALL LEGAL FILES
+// =========================================================
+
+loadLegalFiles(): void {
+
+this.legalFileService
+  .getAllLegalFiles()
+  .subscribe({
+
+    next: (data: LegalFile[]) => {
+
+      console.log(
+        'DASHBOARD LEGAL FILES:',
+        data
+      );
+
+      // Store all files
+      this.legalFiles = data;
 
 
-    this.resolvedFiles = this.legalFiles.filter(
-      file =>
-        file.statusName?.trim().toLowerCase() === 'resolved'
-    );
+      // Separate files by status
+      this.filterByStatus();
 
 
-    this.archivedFiles = this.legalFiles.filter(
-      file =>
-        file.statusName?.trim().toLowerCase() === 'archived'
-    );
+      // Force UI update
+      this.cdr.detectChanges();
+
+    },
+
+    error: (error) => {
+
+      console.error(
+        'Error loading legal files:',
+        error
+      );
+
+    }
+
+  });
 
 
-    this.cancelledFiles = this.legalFiles.filter(
-      file =>
-        file.statusName?.trim().toLowerCase() === 'cancelled'
-    );
+}
 
-  }
+// =========================================================
+// FILTER FILES BY STATUS
+// =========================================================
+
+filterByStatus(): void {
+
+
+this.pendingFiles =
+  this.legalFiles.filter(
+    file =>
+      file.statusName
+        ?.trim()
+        .toLowerCase() === 'pending'
+  );
+
+
+this.outFiles =
+  this.legalFiles.filter(
+    file =>
+      file.statusName
+        ?.trim()
+        .toLowerCase() === 'out'
+  );
+
+
+this.resolvedFiles =
+  this.legalFiles.filter(
+    file =>
+      file.statusName
+        ?.trim()
+        .toLowerCase() === 'resolved'
+  );
+
+
+this.archivedFiles =
+  this.legalFiles.filter(
+    file =>
+      file.statusName
+        ?.trim()
+        .toLowerCase() === 'archived'
+  );
+
+
+this.cancelledFiles =
+  this.legalFiles.filter(
+    file =>
+      file.statusName
+        ?.trim()
+        .toLowerCase() === 'cancelled'
+  );
+
+
+}
 
 }

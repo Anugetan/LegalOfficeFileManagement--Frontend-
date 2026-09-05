@@ -1,13 +1,10 @@
-
 import {
   Component,
   OnInit,
   ChangeDetectorRef
 } from '@angular/core';
 
-import {
-  CommonModule
-} from '@angular/common';
+import { CommonModule } from '@angular/common';
 
 import {
   ReactiveFormsModule,
@@ -25,21 +22,14 @@ import {
   DocumentFormat
 } from '../../model/legalFiles/legal-files-model';
 
-import {
-  LegalFileServiceTs
-} from '../../service/legal-file.service.ts';
+import { LegalFileServiceTs } from '../../service/legal-file.service.ts';
+import { CreateLegalFile } from '../../model/legalFiles/create-legal-files';
 
-import {
-  CreateLegalFile
-} from '../../model/legalFiles/create-legal-files';
-
-import {
-  FileDocumentService
-} from '../../service/FileDocumentService';
-
-import {
-  FileUploadResponse
-} from '../../model/fileupload/file-upload';
+import { FileDocumentService } from '../../service/FileDocumentService';
+import { FileAction } from '../../model/file-action/file-action';
+import { FileUploadResponse } from '../../model/file-upload/file-upload';
+import { CreateFileReview, FileReview } from '../../model/file-review/file-review';
+import { FileReviewService } from '../../service/FileReviewService';
 
 
 @Component({
@@ -75,6 +65,40 @@ export class LegalFiles implements OnInit {
     'error' = 'idle';
 
   uploadStatusMessage = '';
+
+  selectedLegalFile: LegalFile | null = null;
+
+  fileActions: FileAction[] = [];
+
+  showActivityModal = false;
+
+  loadingFileActions = false;
+  
+// =====================================================
+// FILE REVIEW
+// =====================================================
+
+selectedReviewFile: LegalFile | null = null;
+
+fileReviews: FileReview[] = [];
+
+showReviewModal = false;
+
+loadingReviews = false;
+
+savingReview = false;
+
+reviewForm = {
+  reviewType: 'INITIAL',
+  reviewStatus: 'PENDING',
+  remarks: ''
+};
+
+  // =====================================================
+  // SELECTED ROW
+  // =====================================================
+
+  selectedRowId: number | null = null;
 
 
   // =====================================================
@@ -160,15 +184,10 @@ export class LegalFiles implements OnInit {
   constructor(
 
     private fb: FormBuilder,
-
-    private legalFileServiceTs:
-      LegalFileServiceTs,
-
-    private fileDocumentService:
-      FileDocumentService,
-
-    private cdr:
-      ChangeDetectorRef
+    private legalFileServiceTs: LegalFileServiceTs,
+    private fileDocumentService: FileDocumentService,
+    private fileReviewService: FileReviewService,
+    private cdr: ChangeDetectorRef
 
   ) {
 
@@ -248,6 +267,36 @@ export class LegalFiles implements OnInit {
     this.loadDocumentFormats();
 
   }
+
+
+  // =====================================================
+  // SELECT ROW
+  // =====================================================
+
+selectRow(fileId: number): void {
+
+  console.log('ROW CLICKED:', fileId);
+
+  // Click same row = remove highlight
+  if (this.selectedRowId === fileId) {
+
+    this.selectedRowId = null;
+
+  } else {
+
+    // Click different row = highlight that row
+    this.selectedRowId = fileId;
+
+  }
+
+  console.log(
+    'SELECTED ROW ID:',
+    this.selectedRowId
+  );
+
+  this.cdr.detectChanges();
+
+}
 
 
   // =====================================================
@@ -644,10 +693,6 @@ export class LegalFiles implements OnInit {
         ?.value;
 
 
-    // =============================================
-    // UPLOAD STARTED
-    // =============================================
-
     this.uploadStatus =
       'uploading';
 
@@ -658,10 +703,6 @@ export class LegalFiles implements OnInit {
     this.cdr.detectChanges();
 
 
-    // =============================================
-    // UPLOAD FILE
-    // =============================================
-
     this.fileDocumentService
       .uploadFile(
         legalFileId,
@@ -669,10 +710,6 @@ export class LegalFiles implements OnInit {
         documentFormatId
       )
       .subscribe({
-
-        // =========================================
-        // SUCCESS
-        // =========================================
 
         next: (
           response: FileUploadResponse
@@ -698,11 +735,6 @@ export class LegalFiles implements OnInit {
           this.cdr.detectChanges();
 
         },
-
-
-        // =========================================
-        // ERROR
-        // =========================================
 
         error: (
           error: unknown
@@ -750,10 +782,6 @@ export class LegalFiles implements OnInit {
           );
 
 
-          // ---------------------------------------------
-          // Save original status IDs
-          // ---------------------------------------------
-
           this.originalStatusIds.clear();
 
 
@@ -761,37 +789,22 @@ export class LegalFiles implements OnInit {
             file => {
 
               this.originalStatusIds.set(
-
                 file.id,
-
                 file.statusId ?? null
-
               );
 
             }
           );
 
 
-          // ---------------------------------------------
-          // Clear unsaved status changes
-          // ---------------------------------------------
-
           this.statusChanges.clear();
 
-
-          // ---------------------------------------------
-          // Sort and display
-          // ---------------------------------------------
 
           this.legalFiles =
             this.sortLegalFiles(
               data
             );
 
-
-          // ---------------------------------------------
-          // Remove selections that no longer exist
-          // ---------------------------------------------
 
           const existingIds =
             new Set(
@@ -812,16 +825,8 @@ export class LegalFiles implements OnInit {
             );
 
 
-          // ---------------------------------------------
-          // Update select-all checkbox
-          // ---------------------------------------------
-
           this.updateAllSelected();
 
-
-          // ---------------------------------------------
-          // Load documents for each legal file
-          // ---------------------------------------------
 
           this.legalFiles.forEach(
             file => {
@@ -852,7 +857,6 @@ export class LegalFiles implements OnInit {
 
                   },
 
-
                   error: (
                     error: unknown
                   ) => {
@@ -879,7 +883,6 @@ export class LegalFiles implements OnInit {
 
         },
 
-
         error: (
           error: unknown
         ) => {
@@ -892,6 +895,526 @@ export class LegalFiles implements OnInit {
         }
 
       });
+
+  }
+
+
+  // =====================================================
+  // OPEN ACTIVITY HISTORY
+  // =====================================================
+
+  openActivityHistory(
+    file: LegalFile
+  ): void {
+
+    console.log(
+      'OPENING ACTIVITY HISTORY:',
+      file
+    );
+
+
+    this.selectedLegalFile =
+      file;
+
+
+    this.fileActions =
+      [];
+
+
+    this.showActivityModal =
+      true;
+
+
+    this.loadFileActions(
+      file.id
+    );
+
+
+    this.cdr.detectChanges();
+
+  }
+
+
+  // =====================================================
+  // LOAD FILE ACTIONS
+  // =====================================================
+
+  loadFileActions(
+    fileId: number
+  ): void {
+
+    this.loadingFileActions =
+      true;
+
+
+    this.legalFileServiceTs
+      .getFileActions(fileId)
+      .subscribe({
+
+        next: (
+          data: FileAction[]
+        ) => {
+
+          console.log(
+            'FILE ACTIONS:',
+            data
+          );
+
+
+          this.fileActions =
+            data;
+
+
+          this.loadingFileActions =
+            false;
+
+
+          this.cdr.detectChanges();
+
+        },
+
+        error: (
+          error: unknown
+        ) => {
+
+          console.error(
+            'ERROR LOADING FILE ACTIONS:',
+            error
+          );
+
+
+          this.fileActions =
+            [];
+
+
+          this.loadingFileActions =
+            false;
+
+
+          this.cdr.detectChanges();
+
+        }
+
+      });
+
+  }
+
+    // =====================================================
+  // OPEN REVIEW 
+  // ====================================================
+
+openReview(file: LegalFile): void {
+
+  console.log('OPEN REVIEW:', file);
+
+  this.selectedReviewFile = file;
+
+  this.fileReviews = [];
+
+  this.reviewForm = {
+    reviewType: 'INITIAL',
+    reviewStatus: 'PENDING',
+    remarks: ''
+  };
+
+  this.showReviewModal = true;
+
+  this.loadFileReviews(file.id);
+
+  this.cdr.detectChanges();
+}
+
+loadFileReviews(fileId: number): void {
+
+  console.log('LOADING REVIEWS FOR FILE:', fileId);
+
+  this.loadingReviews = true;
+
+  this.fileReviewService
+    .getReviewsByFile(fileId)
+    .subscribe({
+
+      next: (reviews: FileReview[]) => {
+
+        console.log(
+          'FILE REVIEWS:',
+          reviews
+        );
+
+        this.fileReviews = reviews;
+
+        this.loadingReviews = false;
+
+        this.cdr.detectChanges();
+      },
+
+      error: (error: unknown) => {
+
+        console.error(
+          'ERROR LOADING FILE REVIEWS:',
+          error
+        );
+
+        this.fileReviews = [];
+
+        this.loadingReviews = false;
+
+        this.cdr.detectChanges();
+      }
+
+    });
+}
+
+saveReview(): void {
+
+  // ---------------------------------------------------
+  // CHECK SELECTED FILE
+  // ---------------------------------------------------
+
+  if (!this.selectedReviewFile) {
+
+    console.error(
+      'NO LEGAL FILE SELECTED FOR REVIEW'
+    );
+
+    return;
+  }
+
+
+  // ---------------------------------------------------
+  // GET CURRENT USER ID
+  // ---------------------------------------------------
+
+  const storedUserId =
+    localStorage.getItem('userId');
+
+  console.log(
+    'STORED USER ID:',
+    storedUserId
+  );
+
+
+  const userId =
+    storedUserId
+      ? Number(storedUserId)
+      : null;
+
+
+  // ---------------------------------------------------
+  // CHECK USER ID
+  // ---------------------------------------------------
+
+  if (
+    userId === null ||
+    Number.isNaN(userId) ||
+    userId <= 0
+  ) {
+
+    console.error(
+      'CURRENT USER ID NOT FOUND IN LOCAL STORAGE'
+    );
+
+    console.log(
+      'LOCAL STORAGE:',
+      {
+        userId:
+          localStorage.getItem('userId'),
+
+        username:
+          localStorage.getItem('username'),
+
+        fullName:
+          localStorage.getItem('fullName'),
+
+        role:
+          localStorage.getItem('role'),
+
+        token:
+          localStorage.getItem('token')
+      }
+    );
+
+
+    this.errorMessage =
+      'Unable to determine the current user. Please login again.';
+
+    this.showErrorNotification = true;
+
+    this.cdr.detectChanges();
+
+    return;
+  }
+
+
+  // ---------------------------------------------------
+  // START SAVING
+  // ---------------------------------------------------
+
+  this.savingReview = true;
+
+
+  // ---------------------------------------------------
+  // CREATE REQUEST
+  // ---------------------------------------------------
+
+  const request: CreateFileReview = {
+
+    fileId:
+      this.selectedReviewFile.id,
+
+    reviewedBy:
+      userId,
+
+    reviewType:
+      this.reviewForm.reviewType,
+
+    reviewStatus:
+      this.reviewForm.reviewStatus,
+
+    remarks:
+      this.reviewForm.remarks?.trim() || ''
+
+  };
+
+
+  console.log(
+    'SAVING FILE REVIEW:',
+    request
+  );
+
+
+  // ---------------------------------------------------
+  // SEND TO BACKEND
+  // ---------------------------------------------------
+
+  this.fileReviewService
+    .createReview(request)
+    .subscribe({
+
+      next: (review: FileReview) => {
+
+        console.log(
+          'REVIEW CREATED SUCCESSFULLY:',
+          review
+        );
+
+
+        // ---------------------------------------------
+        // SUCCESS MESSAGE
+        // ---------------------------------------------
+
+        this.successMessage =
+          'File review saved successfully.';
+
+        this.showSuccessNotification =
+          true;
+
+
+        this.savingReview =
+          false;
+
+
+        // ---------------------------------------------
+        // RELOAD REVIEW HISTORY
+        // ---------------------------------------------
+
+        this.loadFileReviews(
+          this.selectedReviewFile!.id
+        );
+
+
+        // ---------------------------------------------
+        // RESET FORM
+        // ---------------------------------------------
+
+        this.reviewForm = {
+
+          reviewType:
+            this.reviewForm.reviewType,
+
+          reviewStatus:
+            'PENDING',
+
+          remarks:
+            ''
+
+        };
+
+
+        this.cdr.detectChanges();
+
+
+        // ---------------------------------------------
+        // HIDE SUCCESS MESSAGE
+        // ---------------------------------------------
+
+        setTimeout(() => {
+
+          this.showSuccessNotification =
+            false;
+
+          this.cdr.detectChanges();
+
+        }, 5000);
+
+      },
+
+
+      error: (error: any) => {
+
+        console.error(
+          'ERROR SAVING FILE REVIEW:',
+          error
+        );
+
+
+        this.savingReview =
+          false;
+
+
+        this.errorMessage =
+          error?.error?.message ||
+          error?.error ||
+          'Failed to save file review.';
+
+
+        this.showErrorNotification =
+          true;
+
+
+        this.cdr.detectChanges();
+
+
+        setTimeout(() => {
+
+          this.showErrorNotification =
+            false;
+
+          this.cdr.detectChanges();
+
+        }, 5000);
+
+      }
+
+    });
+}
+
+
+closeReviewModal(): void {
+
+  this.showReviewModal = false;
+  this.selectedReviewFile = null;
+  this.fileReviews = [];
+
+  this.reviewForm = {
+    reviewType: 'INITIAL',
+    reviewStatus: 'PENDING',
+    remarks:''
+  };
+
+  this.loadingReviews =
+    false;
+
+  this.savingReview =
+    false;
+
+  this.cdr.detectChanges();
+}
+  // =====================================================
+  // CLOSE ACTIVITY HISTORY
+  // =====================================================
+
+  closeActivityHistory(): void {
+
+    this.showActivityModal =
+      false;
+
+
+    this.selectedLegalFile =
+      null;
+
+
+    this.fileActions =
+      [];
+
+
+    this.cdr.detectChanges();
+
+  }
+
+
+  // =====================================================
+  // FORMAT ACTIVITY DATE
+  // =====================================================
+
+  formatActionDate(
+    date: string | null | undefined
+  ): string {
+
+    if (!date) {
+
+      return 'N/A';
+
+    }
+
+
+    const parsedDate =
+      new Date(date);
+
+
+    if (
+      Number.isNaN(
+        parsedDate.getTime()
+      )
+    ) {
+
+      return date;
+
+    }
+
+
+    return parsedDate.toLocaleString();
+
+  }
+
+
+  // =====================================================
+  // GET ACTION USER
+  // =====================================================
+
+  getActionUser(
+    action: FileAction
+  ): string {
+
+    if (
+      action.performedByName
+    ) {
+
+      return action.performedByName;
+
+    }
+
+
+    if (
+      action.performedByUsername
+    ) {
+
+      return action.performedByUsername;
+
+    }
+
+
+    if (
+      action.performedBy !== null &&
+      action.performedBy !== undefined
+    ) {
+
+      return `User #${action.performedBy}`;
+
+    }
+
+
+    return 'System';
 
   }
 
@@ -923,7 +1446,6 @@ export class LegalFiles implements OnInit {
           this.cdr.detectChanges();
 
         },
-
 
         error: (
           error: unknown
@@ -969,7 +1491,6 @@ export class LegalFiles implements OnInit {
 
         },
 
-
         error: (
           error: unknown
         ) => {
@@ -1013,7 +1534,6 @@ export class LegalFiles implements OnInit {
           this.cdr.detectChanges();
 
         },
-
 
         error: (
           error: unknown
@@ -1059,7 +1579,6 @@ export class LegalFiles implements OnInit {
 
         },
 
-
         error: (
           error: unknown
         ) => {
@@ -1103,7 +1622,6 @@ export class LegalFiles implements OnInit {
           this.cdr.detectChanges();
 
         },
-
 
         error: (
           error: unknown
@@ -1155,13 +1673,12 @@ export class LegalFiles implements OnInit {
 
         },
 
-
         error: (
           error: unknown
         ) => {
 
           console.error(
-            'ERROR LOADING DOCUMENTS:',
+            'ERROR LOADING DOCUMENTS FOR CASE:',
             error
           );
 
@@ -1228,7 +1745,6 @@ export class LegalFiles implements OnInit {
           );
 
         },
-
 
         error: (
           error: unknown
@@ -1496,7 +2012,6 @@ export class LegalFiles implements OnInit {
 
         },
 
-
         error: (
           error: unknown
         ) => {
@@ -1657,12 +2172,8 @@ export class LegalFiles implements OnInit {
 
 
               this.originalStatusIds.set(
-
                 fileId,
-
-                updatedFile.statusId ??
-                null
-
+                updatedFile.statusId ?? null
               );
 
 
@@ -1716,17 +2227,13 @@ export class LegalFiles implements OnInit {
 
             },
 
-
             error: (
               error: unknown
             ) => {
 
               console.error(
-
                 `ERROR UPDATING LEGAL FILE ${fileId}:`,
-
                 error
-
               );
 
             }
@@ -1767,9 +2274,7 @@ export class LegalFiles implements OnInit {
 
     const confirmed =
       window.confirm(
-
         `Are you sure you want to delete ${selectedIds.length} selected legal file(s)?`
-
       );
 
 
@@ -1838,6 +2343,10 @@ export class LegalFiles implements OnInit {
                   false;
 
 
+                this.selectedRowId =
+                  null;
+
+
                 this.loadLegalFiles();
 
 
@@ -1847,17 +2356,13 @@ export class LegalFiles implements OnInit {
 
             },
 
-
             error: (
               error: unknown
             ) => {
 
               console.error(
-
                 `ERROR DELETING LEGAL FILE ${fileId}:`,
-
                 error
-
               );
 
             }
@@ -1877,10 +2382,6 @@ export class LegalFiles implements OnInit {
 
   saveLegalFile(): void {
 
-    // ===================================================
-    // VALIDATE FORM
-    // ===================================================
-
     if (
       this.legalFileForm.invalid
     ) {
@@ -1899,17 +2400,9 @@ export class LegalFiles implements OnInit {
     }
 
 
-    // ===================================================
-    // GET FORM VALUES
-    // ===================================================
-
     const formValue =
       this.legalFileForm.getRawValue();
 
-
-    // ===================================================
-    // BUILD LEGAL FILE REQUEST
-    // ===================================================
 
     const legalFile:
       CreateLegalFile = {
@@ -1950,12 +2443,6 @@ export class LegalFiles implements OnInit {
     };
 
 
-    // ===================================================
-    // IMPORTANT:
-    // Save the selected file in a variable BEFORE
-    // the async request starts.
-    // ===================================================
-
     const fileToUpload =
       this.selectedDocumentFile;
 
@@ -1963,10 +2450,6 @@ export class LegalFiles implements OnInit {
     const documentFormatId =
       formValue.documentFormatId;
 
-
-    // ===================================================
-    // RESET NOTIFICATIONS
-    // ===================================================
 
     this.showSuccessNotification =
       false;
@@ -1981,20 +2464,12 @@ export class LegalFiles implements OnInit {
       '';
 
 
-    // ===================================================
-    // RESET UPLOAD STATUS
-    // ===================================================
-
     this.uploadStatus =
       'idle';
 
     this.uploadStatusMessage =
       '';
 
-
-    // ===================================================
-    // DEBUG
-    // ===================================================
 
     console.log(
       'SENDING LEGAL FILE:',
@@ -2012,19 +2487,11 @@ export class LegalFiles implements OnInit {
     );
 
 
-    // ===================================================
-    // CREATE LEGAL FILE
-    // ===================================================
-
     this.legalFileServiceTs
       .createLegalFile(
         legalFile
       )
       .subscribe({
-
-        // ===============================================
-        // LEGAL FILE CREATED
-        // ===============================================
 
         next: (
           data: LegalFile
@@ -2054,27 +2521,10 @@ export class LegalFiles implements OnInit {
           );
 
 
-          // =============================================
-          // DOCUMENT WAS SELECTED
-          // =============================================
-
           if (
             fileToUpload &&
             data.id
           ) {
-
-            console.log(
-              'LEGAL FILE CREATED.'
-            );
-
-            console.log(
-              'NOW UPLOADING DOCUMENT...'
-            );
-
-
-            // -------------------------------------------
-            // Show uploading state
-            // -------------------------------------------
 
             this.uploadStatus =
               'uploading';
@@ -2086,10 +2536,6 @@ export class LegalFiles implements OnInit {
             this.cdr.detectChanges();
 
 
-            // -------------------------------------------
-            // Upload document
-            // -------------------------------------------
-
             this.fileDocumentService
               .uploadFile(
                 data.id,
@@ -2097,10 +2543,6 @@ export class LegalFiles implements OnInit {
                 documentFormatId
               )
               .subscribe({
-
-                // =======================================
-                // DOCUMENT UPLOAD SUCCESS
-                // =======================================
 
                 next: (
                   response: FileUploadResponse
@@ -2119,31 +2561,15 @@ export class LegalFiles implements OnInit {
                     'Document uploaded successfully ✓';
 
 
-                  // ---------------------------------------
-                  // CLOSE CREATE FORM
-                  // ---------------------------------------
-
                   this.showForm =
                     false;
 
 
-                  // ---------------------------------------
-                  // RESET FORM
-                  // ---------------------------------------
-
                   this.resetForm();
 
 
-                  // ---------------------------------------
-                  // RELOAD DATA
-                  // ---------------------------------------
-
                   this.loadLegalFiles();
 
-
-                  // ---------------------------------------
-                  // SHOW SUCCESS NOTIFICATION
-                  // ---------------------------------------
 
                   this.successMessage =
                     `Legal file ${data.caseNo} and document were saved successfully.`;
@@ -2155,10 +2581,6 @@ export class LegalFiles implements OnInit {
                   this.cdr.detectChanges();
 
 
-                  // ---------------------------------------
-                  // AUTO HIDE NOTIFICATION
-                  // ---------------------------------------
-
                   setTimeout(() => {
 
                     this.showSuccessNotification =
@@ -2169,11 +2591,6 @@ export class LegalFiles implements OnInit {
                   }, 5000);
 
                 },
-
-
-                // =======================================
-                // DOCUMENT UPLOAD ERROR
-                // =======================================
 
                 error: (
                   error: unknown
@@ -2191,10 +2608,6 @@ export class LegalFiles implements OnInit {
                   this.uploadStatusMessage =
                     'File upload failed. Please try again.';
 
-
-                  // ---------------------------------------
-                  // Legal file exists but document failed
-                  // ---------------------------------------
 
                   this.errorMessage =
                     `Legal file ${data.caseNo} was created, but the document upload failed.`;
@@ -2215,40 +2628,15 @@ export class LegalFiles implements OnInit {
           }
 
 
-          // =================================================
-          // NO DOCUMENT SELECTED
-          // =================================================
-
-          console.log(
-            'LEGAL FILE SAVED WITHOUT DOCUMENT.'
-          );
-
-
-          // -----------------------------------------------
-          // CLOSE FORM
-          // -----------------------------------------------
-
           this.showForm =
             false;
 
 
-          // -----------------------------------------------
-          // RESET FORM
-          // -----------------------------------------------
-
           this.resetForm();
 
 
-          // -----------------------------------------------
-          // RELOAD DATA
-          // -----------------------------------------------
-
           this.loadLegalFiles();
 
-
-          // -----------------------------------------------
-          // SUCCESS NOTIFICATION
-          // -----------------------------------------------
 
           this.successMessage =
             `Legal file ${data.caseNo} was saved successfully.`;
@@ -2260,10 +2648,6 @@ export class LegalFiles implements OnInit {
           this.cdr.detectChanges();
 
 
-          // -----------------------------------------------
-          // AUTO HIDE
-          // -----------------------------------------------
-
           setTimeout(() => {
 
             this.showSuccessNotification =
@@ -2274,11 +2658,6 @@ export class LegalFiles implements OnInit {
           }, 5000);
 
         },
-
-
-        // ===============================================
-        // CREATE LEGAL FILE ERROR
-        // ===============================================
 
         error: (
           error: unknown
@@ -2301,10 +2680,6 @@ export class LegalFiles implements OnInit {
           this.cdr.detectChanges();
 
 
-          // ---------------------------------------------
-          // AUTO HIDE ERROR
-          // ---------------------------------------------
-
           setTimeout(() => {
 
             this.showErrorNotification =
@@ -2321,4 +2696,3 @@ export class LegalFiles implements OnInit {
   }
 
 }
-

@@ -110,6 +110,73 @@ export class Login {
           );
 
 
+          // =================================
+          // SAVE AUTHENTICATION DATA
+          // =================================
+
+          localStorage.setItem(
+            'token',
+            response.token
+          );
+
+
+          // IMPORTANT:
+          // Save the database USER_ID
+          localStorage.setItem(
+            'userId',
+            String(response.userId)
+          );
+
+
+          localStorage.setItem(
+            'username',
+            response.username
+          );
+
+
+          localStorage.setItem(
+            'fullName',
+            response.fullName
+          );
+
+
+          localStorage.setItem(
+            'role',
+            response.role
+          );
+
+
+          // =================================
+          // VERIFY LOCAL STORAGE
+          // =================================
+
+          console.log(
+            'USER ID SAVED:',
+            localStorage.getItem('userId')
+          );
+
+
+          console.log(
+            'LOCAL STORAGE AFTER LOGIN:',
+            {
+              userId:
+                localStorage.getItem('userId'),
+
+              username:
+                localStorage.getItem('username'),
+
+              fullName:
+                localStorage.getItem('fullName'),
+
+              role:
+                localStorage.getItem('role'),
+
+              token:
+                localStorage.getItem('token')
+            }
+          );
+
+
           this.loading = false;
 
           this.cdr.detectChanges();
@@ -142,6 +209,7 @@ export class Login {
           this.router.navigate([
             '/menubar'
           ]);
+
         },
 
 
@@ -193,7 +261,11 @@ export class Login {
 
 
           this.cdr.detectChanges();
+
         }
+
       });
+
   }
+
 }

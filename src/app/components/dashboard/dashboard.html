@@ -1,415 +1,461 @@
 <div class="dashboard">
 
   <!-- ========================= -->
+
   <!-- DASHBOARD HEADER -->
+
   <!-- ========================= -->
 
   <div class="dashboard-header">
 
-    <h2>Dashboard</h2>
+
+<h2>Dashboard</h2>
+
 
   </div>
 
-
   <!-- ========================= -->
+
   <!-- PENDING -->
+
   <!-- ========================= -->
 
   <section class="status-section pending-section">
 
-    <div class="section-header">
-      <h3>Pending</h3>
 
-      <span class="count">
-        {{ pendingFiles.length }}
-      </span>
-    </div>
+<div class="section-header">
 
+  <h3>Pending</h3>
 
-    <div class="table-wrapper">
+  <span class="count">
+    {{ pendingFiles.length }}
+  </span>
 
-      <table>
-
-        <thead>
-
-          <tr>
-            <th>Document Type</th>
-            <th>Requesting Office</th>
-            <th>SPMS Type</th>
-            <th>Document Format</th>
-          </tr>
-
-        </thead>
+</div>
 
 
-        <tbody>
+<div class="table-wrapper">
 
-          @for (file of pendingFiles; track file.id) {
+  <table>
 
-            <tr>
+    <thead>
 
-              <td>
-                {{ file.documentTypeName || 'N/A' }}
-              </td>
+      <tr>
+        <th>Case No.</th>
+        <th>Document Type</th>
+        <th>Requesting Office</th>
+        <th>SPMS Type</th>
+        <th>Document Format</th>
+      </tr>
 
-              <td>
-                {{ file.requestingOfficeName || 'N/A' }}
-              </td>
-
-              <td>
-                {{ file.spmsTypeName || 'N/A' }}
-              </td>
-
-              <td>
-                {{ file.documentFormatName || 'N/A' }}
-              </td>
-
-            </tr>
-
-          }
+    </thead>
 
 
-          @if (pendingFiles.length === 0) {
+    <tbody>
 
-            <tr class="empty-row">
+      @for (file of pendingFiles; track file.id) {
 
-              <td colspan="4">
-                No pending legal files.
-              </td>
+        <tr>
 
-            </tr>
+          <td>
+            {{ file.caseNo || 'N/A' }}
+          </td>
 
-          }
+          <td>
+            {{ file.documentTypeName || 'N/A' }}
+          </td>
 
-        </tbody>
+          <td>
+            {{ file.requestingOfficeName || 'N/A' }}
+          </td>
 
-      </table>
+          <td>
+            {{ file.spmsTypeName || 'N/A' }}
+          </td>
 
-    </div>
+          <td>
+            {{ file.documentFormatName || 'N/A' }}
+          </td>
+
+        </tr>
+
+      }
+
+
+      @if (pendingFiles.length === 0) {
+
+        <tr class="empty-row">
+
+          <td colspan="5">
+            No pending legal files.
+          </td>
+
+        </tr>
+
+      }
+
+    </tbody>
+
+  </table>
+
+</div>
+
 
   </section>
 
-
   <!-- ========================= -->
+
   <!-- OUT -->
+
   <!-- ========================= -->
 
   <section class="status-section out-section">
 
-    <div class="section-header">
 
-      <h3>Out</h3>
+<div class="section-header">
 
-      <span class="count">
-        {{ outFiles.length }}
-      </span>
+  <h3>Out</h3>
 
-    </div>
+  <span class="count">
+    {{ outFiles.length }}
+  </span>
 
-
-    <div class="table-wrapper">
-
-      <table>
-
-        <thead>
-
-          <tr>
-            <th>Document Type</th>
-            <th>Requesting Office</th>
-            <th>SPMS Type</th>
-            <th>Document Format</th>
-          </tr>
-
-        </thead>
+</div>
 
 
-        <tbody>
+<div class="table-wrapper">
 
-          @for (file of outFiles; track file.id) {
+  <table>
 
-            <tr>
+    <thead>
 
-              <td>
-                {{ file.documentTypeName || 'N/A' }}
-              </td>
+      <tr>
+        <th>Case No.</th>
+        <th>Document Type</th>
+        <th>Requesting Office</th>
+        <th>SPMS Type</th>
+        <th>Document Format</th>
+      </tr>
 
-              <td>
-                {{ file.requestingOfficeName || 'N/A' }}
-              </td>
-
-              <td>
-                {{ file.spmsTypeName || 'N/A' }}
-              </td>
-
-              <td>
-                {{ file.documentFormatName || 'N/A' }}
-              </td>
-
-            </tr>
-
-          }
+    </thead>
 
 
-          @if (outFiles.length === 0) {
+    <tbody>
 
-            <tr class="empty-row">
+      @for (file of outFiles; track file.id) {
 
-              <td colspan="4">
-                No out legal files.
-              </td>
+        <tr>
 
-            </tr>
+          <td>
+            {{ file.caseNo || 'N/A' }}
+          </td>
 
-          }
+          <td>
+            {{ file.documentTypeName || 'N/A' }}
+          </td>
 
-        </tbody>
+          <td>
+            {{ file.requestingOfficeName || 'N/A' }}
+          </td>
 
-      </table>
+          <td>
+            {{ file.spmsTypeName || 'N/A' }}
+          </td>
 
-    </div>
+          <td>
+            {{ file.documentFormatName || 'N/A' }}
+          </td>
+
+        </tr>
+
+      }
+
+
+      @if (outFiles.length === 0) {
+
+        <tr class="empty-row">
+
+          <td colspan="5">
+            No out legal files.
+          </td>
+
+        </tr>
+
+      }
+
+    </tbody>
+
+  </table>
+
+</div>
+
 
   </section>
 
-
   <!-- ========================= -->
+
   <!-- RESOLVED -->
+
   <!-- ========================= -->
 
   <section class="status-section resolved-section">
 
-    <div class="section-header">
 
-      <h3>Resolved</h3>
+<div class="section-header">
 
-      <span class="count">
-        {{ resolvedFiles.length }}
-      </span>
+  <h3>Resolved</h3>
 
-    </div>
+  <span class="count">
+    {{ resolvedFiles.length }}
+  </span>
 
-
-    <div class="table-wrapper">
-
-      <table>
-
-        <thead>
-
-          <tr>
-            <th>Document Type</th>
-            <th>Requesting Office</th>
-            <th>SPMS Type</th>
-            <th>Document Format</th>
-          </tr>
-
-        </thead>
+</div>
 
 
-        <tbody>
+<div class="table-wrapper">
 
-          @for (file of resolvedFiles; track file.id) {
+  <table>
 
-            <tr>
+    <thead>
 
-              <td>
-                {{ file.documentTypeName || 'N/A' }}
-              </td>
+      <tr>
+        <th>Case No.</th>
+        <th>Document Type</th>
+        <th>Requesting Office</th>
+        <th>SPMS Type</th>
+        <th>Document Format</th>
+      </tr>
 
-              <td>
-                {{ file.requestingOfficeName || 'N/A' }}
-              </td>
-
-              <td>
-                {{ file.spmsTypeName || 'N/A' }}
-              </td>
-
-              <td>
-                {{ file.documentFormatName || 'N/A' }}
-              </td>
-
-            </tr>
-
-          }
+    </thead>
 
 
-          @if (resolvedFiles.length === 0) {
+    <tbody>
 
-            <tr class="empty-row">
+      @for (file of resolvedFiles; track file.id) {
 
-              <td colspan="4">
-                No resolved legal files.
-              </td>
+        <tr>
 
-            </tr>
+          <td>
+            {{ file.caseNo || 'N/A' }}
+          </td>
 
-          }
+          <td>
+            {{ file.documentTypeName || 'N/A' }}
+          </td>
 
-        </tbody>
+          <td>
+            {{ file.requestingOfficeName || 'N/A' }}
+          </td>
 
-      </table>
+          <td>
+            {{ file.spmsTypeName || 'N/A' }}
+          </td>
 
-    </div>
+          <td>
+            {{ file.documentFormatName || 'N/A' }}
+          </td>
+
+        </tr>
+
+      }
+
+
+      @if (resolvedFiles.length === 0) {
+
+        <tr class="empty-row">
+
+          <td colspan="5">
+            No resolved legal files.
+          </td>
+
+        </tr>
+
+      }
+
+    </tbody>
+
+  </table>
+
+</div>
+
 
   </section>
 
-
   <!-- ========================= -->
+
   <!-- ARCHIVED -->
+
   <!-- ========================= -->
 
   <section class="status-section archived-section">
 
-    <div class="section-header">
 
-      <h3>Archived</h3>
+<div class="section-header">
 
-      <span class="count">
-        {{ archivedFiles.length }}
-      </span>
+  <h3>Archived</h3>
 
-    </div>
+  <span class="count">
+    {{ archivedFiles.length }}
+  </span>
 
-
-    <div class="table-wrapper">
-
-      <table>
-
-        <thead>
-
-          <tr>
-            <th>Document Type</th>
-            <th>Requesting Office</th>
-            <th>SPMS Type</th>
-            <th>Document Format</th>
-          </tr>
-
-        </thead>
+</div>
 
 
-        <tbody>
+<div class="table-wrapper">
 
-          @for (file of archivedFiles; track file.id) {
+  <table>
 
-            <tr>
+    <thead>
 
-              <td>
-                {{ file.documentTypeName || 'N/A' }}
-              </td>
+      <tr>
+        <th>Case No.</th>
+        <th>Document Type</th>
+        <th>Requesting Office</th>
+        <th>SPMS Type</th>
+        <th>Document Format</th>
+      </tr>
 
-              <td>
-                {{ file.requestingOfficeName || 'N/A' }}
-              </td>
-
-              <td>
-                {{ file.spmsTypeName || 'N/A' }}
-              </td>
-
-              <td>
-                {{ file.documentFormatName || 'N/A' }}
-              </td>
-
-            </tr>
-
-          }
+    </thead>
 
 
-          @if (archivedFiles.length === 0) {
+    <tbody>
 
-            <tr class="empty-row">
+      @for (file of archivedFiles; track file.id) {
 
-              <td colspan="4">
-                No archived legal files.
-              </td>
+        <tr>
 
-            </tr>
+          <td>
+            {{ file.caseNo || 'N/A' }}
+          </td>
 
-          }
+          <td>
+            {{ file.documentTypeName || 'N/A' }}
+          </td>
 
-        </tbody>
+          <td>
+            {{ file.requestingOfficeName || 'N/A' }}
+          </td>
 
-      </table>
+          <td>
+            {{ file.spmsTypeName || 'N/A' }}
+          </td>
 
-    </div>
+          <td>
+            {{ file.documentFormatName || 'N/A' }}
+          </td>
+
+        </tr>
+
+      }
+
+
+      @if (archivedFiles.length === 0) {
+
+        <tr class="empty-row">
+
+          <td colspan="5">
+            No archived legal files.
+          </td>
+
+        </tr>
+
+      }
+
+    </tbody>
+
+  </table>
+
+</div>
+
 
   </section>
 
-
   <!-- ========================= -->
+
   <!-- CANCELLED -->
+
   <!-- ========================= -->
 
   <section class="status-section cancelled-section">
 
-    <div class="section-header">
 
-      <h3>Cancelled</h3>
+<div class="section-header">
 
-      <span class="count">
-        {{ cancelledFiles.length }}
-      </span>
+  <h3>Cancelled</h3>
 
-    </div>
+  <span class="count">
+    {{ cancelledFiles.length }}
+  </span>
 
-
-    <div class="table-wrapper">
-
-      <table>
-
-        <thead>
-
-          <tr>
-            <th>Document Type</th>
-            <th>Requesting Office</th>
-            <th>SPMS Type</th>
-            <th>Document Format</th>
-          </tr>
-
-        </thead>
+</div>
 
 
-        <tbody>
+<div class="table-wrapper">
 
-          @for (file of cancelledFiles; track file.id) {
+  <table>
 
-            <tr>
+    <thead>
 
-              <td>
-                {{ file.documentTypeName || 'N/A' }}
-              </td>
+      <tr>
+        <th>Case No.</th>
+        <th>Document Type</th>
+        <th>Requesting Office</th>
+        <th>SPMS Type</th>
+        <th>Document Format</th>
+      </tr>
 
-              <td>
-                {{ file.requestingOfficeName || 'N/A' }}
-              </td>
-
-              <td>
-                {{ file.spmsTypeName || 'N/A' }}
-              </td>
-
-              <td>
-                {{ file.documentFormatName || 'N/A' }}
-              </td>
-
-            </tr>
-
-          }
+    </thead>
 
 
-          @if (cancelledFiles.length === 0) {
+    <tbody>
 
-            <tr class="empty-row">
+      @for (file of cancelledFiles; track file.id) {
 
-              <td colspan="4">
-                No cancelled legal files.
-              </td>
+        <tr>
 
-            </tr>
+          <td>
+            {{ file.caseNo || 'N/A' }}
+          </td>
 
-          }
+          <td>
+            {{ file.documentTypeName || 'N/A' }}
+          </td>
 
-        </tbody>
+          <td>
+            {{ file.requestingOfficeName || 'N/A' }}
+          </td>
 
-      </table>
+          <td>
+            {{ file.spmsTypeName || 'N/A' }}
+          </td>
 
-    </div>
+          <td>
+            {{ file.documentFormatName || 'N/A' }}
+          </td>
+
+        </tr>
+
+      }
+
+
+      @if (cancelledFiles.length === 0) {
+
+        <tr class="empty-row">
+
+          <td colspan="5">
+            No cancelled legal files.
+          </td>
+
+        </tr>
+
+      }
+
+    </tbody>
+
+  </table>
+
+</div>
+
 
   </section>
 

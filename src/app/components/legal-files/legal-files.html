@@ -82,7 +82,9 @@
 
   <div class="page-header">
 
-    <h2>Legal Files</h2>
+    <h2>
+      Legal Files
+    </h2>
 
     <button
       class="add-button"
@@ -110,10 +112,6 @@
         class="form-container"
         (click)="$event.stopPropagation()">
 
-        <!-- ================================================= -->
-        <!-- FORM HEADER -->
-        <!-- ================================================= -->
-
         <div class="form-header">
 
           <h3>
@@ -132,20 +130,13 @@
         </div>
 
 
-        <!-- ================================================= -->
-        <!-- FORM -->
-        <!-- ================================================= -->
-
         <form
           [formGroup]="legalFileForm"
           (ngSubmit)="saveLegalFile()">
 
           <div class="form-grid">
 
-
-            <!-- ============================================= -->
             <!-- CASE NUMBER -->
-            <!-- ============================================= -->
 
             <div class="form-group">
 
@@ -162,9 +153,7 @@
             </div>
 
 
-            <!-- ============================================= -->
             <!-- DATE RECEIVED -->
-            <!-- ============================================= -->
 
             <div class="form-group">
 
@@ -180,9 +169,7 @@
             </div>
 
 
-            <!-- ============================================= -->
             <!-- TIME RECEIVED -->
-            <!-- ============================================= -->
 
             <div class="form-group">
 
@@ -198,9 +185,7 @@
             </div>
 
 
-            <!-- ============================================= -->
             <!-- DATE COMPLETED -->
-            <!-- ============================================= -->
 
             <div class="form-group">
 
@@ -216,9 +201,7 @@
             </div>
 
 
-            <!-- ============================================= -->
             <!-- STATUS -->
-            <!-- ============================================= -->
 
             <div class="form-group">
 
@@ -252,9 +235,7 @@
             </div>
 
 
-            <!-- ============================================= -->
             <!-- SPMS TYPE -->
-            <!-- ============================================= -->
 
             <div class="form-group">
 
@@ -288,9 +269,7 @@
             </div>
 
 
-            <!-- ============================================= -->
             <!-- REQUESTING OFFICE -->
-            <!-- ============================================= -->
 
             <div class="form-group">
 
@@ -324,9 +303,7 @@
             </div>
 
 
-            <!-- ============================================= -->
             <!-- DOCUMENT TYPE -->
-            <!-- ============================================= -->
 
             <div class="form-group">
 
@@ -360,9 +337,7 @@
             </div>
 
 
-            <!-- ============================================= -->
             <!-- DOCUMENT FORMAT -->
-            <!-- ============================================= -->
 
             <div class="form-group">
 
@@ -396,9 +371,7 @@
             </div>
 
 
-            <!-- ============================================= -->
             <!-- UPLOAD FILE -->
-            <!-- ============================================= -->
 
             <div class="form-group full-width">
 
@@ -413,11 +386,6 @@
                 (change)="onDocumentFileSelected($event)"
               >
 
-
-              <!-- =========================================== -->
-              <!-- SELECTED FILE -->
-              <!-- =========================================== -->
-
               @if (selectedDocumentFile) {
 
                 <div class="selected-file">
@@ -427,9 +395,7 @@
                   </span>
 
                   <span class="selected-file-name">
-
                     {{ selectedDocumentFile.name }}
-
                   </span>
 
                   <span class="selected-file-size">
@@ -448,10 +414,6 @@
               }
 
 
-              <!-- =========================================== -->
-              <!-- UPLOAD STATUS -->
-              <!-- =========================================== -->
-
               @if (uploadStatus !== 'idle') {
 
                 <div
@@ -467,12 +429,7 @@
                       uploadStatus === 'error'
                   }">
 
-
-                  <!-- UPLOADING -->
-
-                  @if (
-                    uploadStatus === 'uploading'
-                  ) {
+                  @if (uploadStatus === 'uploading') {
 
                     <span class="upload-status-icon">
                       ⏳
@@ -480,12 +437,7 @@
 
                   }
 
-
-                  <!-- SUCCESS -->
-
-                  @if (
-                    uploadStatus === 'success'
-                  ) {
+                  @if (uploadStatus === 'success') {
 
                     <span class="upload-status-icon">
                       ✓
@@ -493,12 +445,7 @@
 
                   }
 
-
-                  <!-- ERROR -->
-
-                  @if (
-                    uploadStatus === 'error'
-                  ) {
+                  @if (uploadStatus === 'error') {
 
                     <span class="upload-status-icon">
                       ✕
@@ -506,11 +453,8 @@
 
                   }
 
-
                   <span class="upload-status-message">
-
                     {{ uploadStatusMessage }}
-
                   </span>
 
                 </div>
@@ -520,9 +464,7 @@
             </div>
 
 
-            <!-- ============================================= -->
             <!-- CURRENT STAGE -->
-            <!-- ============================================= -->
 
             <div class="form-group">
 
@@ -555,9 +497,7 @@
             </div>
 
 
-            <!-- ============================================= -->
             <!-- CONTACT DETAILS -->
-            <!-- ============================================= -->
 
             <div class="form-group full-width">
 
@@ -576,9 +516,7 @@
           </div>
 
 
-          <!-- ================================================= -->
           <!-- FORM BUTTONS -->
-          <!-- ================================================= -->
 
           <div class="form-actions">
 
@@ -624,11 +562,6 @@
         class="replace-modal"
         (click)="$event.stopPropagation()">
 
-
-        <!-- ================================================= -->
-        <!-- MODAL HEADER -->
-        <!-- ================================================= -->
-
         <div class="replace-modal-header">
 
           <h3>
@@ -647,16 +580,7 @@
         </div>
 
 
-        <!-- ================================================= -->
-        <!-- MODAL BODY -->
-        <!-- ================================================= -->
-
         <div class="replace-modal-body">
-
-
-          <!-- =============================================== -->
-          <!-- CURRENT DOCUMENT -->
-          <!-- =============================================== -->
 
           <div class="current-document">
 
@@ -675,9 +599,7 @@
                 <div class="current-file-info">
 
                   <span class="current-file-name">
-
                     {{ selectedReplaceDocument.documentName }}
-
                   </span>
 
                   <span class="current-file-version">
@@ -696,10 +618,6 @@
           </div>
 
 
-          <!-- =============================================== -->
-          <!-- NEW DOCUMENT -->
-          <!-- =============================================== -->
-
           <div class="new-document">
 
             <label for="replaceFileInput">
@@ -713,11 +631,6 @@
               (change)="onReplaceFileSelected($event)"
             >
 
-
-            <!-- ============================================= -->
-            <!-- SELECTED NEW FILE -->
-            <!-- ============================================= -->
-
             @if (selectedReplaceFile) {
 
               <div class="replacement-file">
@@ -729,9 +642,7 @@
                 <div class="replacement-file-info">
 
                   <span class="replacement-file-name">
-
                     {{ selectedReplaceFile.name }}
-
                   </span>
 
                   <span class="replacement-file-size">
@@ -762,10 +673,6 @@
           </div>
 
 
-          <!-- =============================================== -->
-          <!-- WARNING -->
-          <!-- =============================================== -->
-
           @if (selectedReplaceFile) {
 
             <div class="replace-warning">
@@ -775,9 +682,7 @@
               </span>
 
               <span>
-
                 The existing document will be replaced.
-
               </span>
 
             </div>
@@ -786,10 +691,6 @@
 
         </div>
 
-
-        <!-- ================================================= -->
-        <!-- MODAL ACTIONS -->
-        <!-- ================================================= -->
 
         <div class="replace-modal-actions">
 
@@ -822,6 +723,661 @@
 
 
   <!-- ===================================================== -->
+  <!-- FILE ACTION HISTORY MODAL -->
+  <!-- ===================================================== -->
+
+  @if (showActivityModal) {
+
+    <div
+      class="action-history-overlay"
+      (click)="closeActivityHistory()">
+
+      <div
+        class="action-history-modal"
+        (click)="$event.stopPropagation()">
+
+        <!-- MODAL HEADER -->
+
+        <div class="action-history-header">
+
+          <div>
+
+            <h3>
+              File Action History
+            </h3>
+
+            @if (selectedLegalFile) {
+
+              <span class="action-history-case">
+
+                Case No:
+
+                <strong>
+                  {{ selectedLegalFile.caseNo }}
+                </strong>
+
+              </span>
+
+            }
+
+          </div>
+
+
+          <button
+            type="button"
+            class="action-history-close"
+            (click)="closeActivityHistory()">
+
+            ×
+
+          </button>
+
+        </div>
+
+
+        <!-- MODAL BODY -->
+
+        <div class="action-history-body">
+
+          <!-- LOADING -->
+
+          @if (loadingFileActions) {
+
+            <div class="action-history-loading">
+
+              <span>
+                ⏳
+              </span>
+
+              <span>
+                Loading action history...
+              </span>
+
+            </div>
+
+          }
+
+
+          <!-- NO ACTIONS -->
+
+          @if (
+            !loadingFileActions &&
+            fileActions.length === 0
+          ) {
+
+            <div class="action-history-empty">
+
+              <span class="empty-history-icon">
+                📋
+              </span>
+
+              <strong>
+                No Action History
+              </strong>
+
+              <span>
+                No actions have been recorded for this legal file.
+              </span>
+
+            </div>
+
+          }
+
+
+          <!-- ACTION LIST -->
+
+          @if (
+            !loadingFileActions &&
+            fileActions.length > 0
+          ) {
+
+            <div class="action-history-list">
+
+              @for (
+                action of fileActions;
+                track action.id
+              ) {
+
+                <div class="action-history-item">
+
+                  <!-- ACTION ICON -->
+
+                  <div class="action-history-icon">
+
+                    @if (action.action === 'FILE CREATED') {
+
+                      ✓
+
+                    } @else if (action.action === 'STAGE CHANGED') {
+
+                      ⇄
+
+                    } @else if (action.action === 'STATUS CHANGED') {
+
+                      ↻
+
+                    } @else {
+
+                      •
+
+                    }
+
+                  </div>
+
+
+                  <!-- ACTION CONTENT -->
+
+                  <div class="action-history-content">
+
+                    <!-- ACTION + DATE -->
+
+                    <div class="action-history-top">
+
+                      <strong>
+                        {{ action.action }}
+                      </strong>
+
+                      <span class="action-history-date">
+                        {{ formatActionDate(action.performedAt) }}
+                      </span>
+
+                    </div>
+
+
+                    <!-- STAGE -->
+
+                    @if (
+                      action.fromStage ||
+                      action.toStage
+                    ) {
+
+                      <div class="action-stage">
+
+                        <span class="stage-value">
+                          {{ action.fromStage || 'N/A' }}
+                        </span>
+
+                        <span class="stage-arrow">
+                          →
+                        </span>
+
+                        <span class="stage-value">
+                          {{ action.toStage || 'N/A' }}
+                        </span>
+
+                      </div>
+
+                    }
+
+
+                    <!-- REMARKS -->
+
+                    @if (action.remarks) {
+
+                      <div class="action-remarks">
+
+                        <span class="remarks-label">
+                          Remarks:
+                        </span>
+
+                        <span>
+                          {{ action.remarks }}
+                        </span>
+
+                      </div>
+
+                    }
+
+
+                    <!-- PERFORMED BY -->
+
+                    <div class="action-performed-by">
+
+                      <span class="performed-label">
+                        Performed by:
+                      </span>
+
+                      <span>
+                        {{ getActionUser(action) }}
+                      </span>
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+              }
+
+            </div>
+
+          }
+
+        </div>
+
+
+        <!-- MODAL FOOTER -->
+
+        <div class="action-history-footer">
+
+          <button
+            type="button"
+            class="action-history-done"
+            (click)="closeActivityHistory()">
+
+            Close
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  }
+
+
+  <!-- ===================================================== -->
+  <!-- FILE REVIEW MODAL -->
+  <!-- ===================================================== -->
+
+  @if (showReviewModal && selectedReviewFile) {
+
+    <div
+      class="review-overlay"
+      (click)="closeReviewModal()">
+
+      <div
+        class="review-modal"
+        (click)="$event.stopPropagation()">
+
+
+        <!-- ================================================= -->
+        <!-- REVIEW HEADER -->
+        <!-- ================================================= -->
+
+        <div class="review-modal-header">
+
+          <div>
+
+            <h3>
+              File Review
+            </h3>
+
+            <span class="review-case-number">
+
+              Case No:
+
+              <strong>
+                {{ selectedReviewFile.caseNo }}
+              </strong>
+
+            </span>
+
+          </div>
+
+
+          <button
+            type="button"
+            class="review-close-button"
+            (click)="closeReviewModal()">
+
+            ×
+
+          </button>
+
+        </div>
+
+
+        <!-- ================================================= -->
+        <!-- REVIEW BODY -->
+        <!-- ================================================= -->
+
+        <div class="review-modal-body">
+
+
+          <!-- =============================================== -->
+          <!-- FILE INFORMATION -->
+          <!-- =============================================== -->
+
+          <div class="review-file-information">
+
+            <div class="review-info-item">
+
+              <span class="review-info-label">
+                Case No.
+              </span>
+
+              <strong>
+                {{ selectedReviewFile.caseNo }}
+              </strong>
+
+            </div>
+
+
+            <div class="review-info-item">
+
+              <span class="review-info-label">
+                Current Stage
+              </span>
+
+              <strong>
+                {{ selectedReviewFile.currentStage || 'N/A' }}
+              </strong>
+
+            </div>
+
+
+            <div class="review-info-item">
+
+              <span class="review-info-label">
+                Status
+              </span>
+
+              <strong>
+                {{ selectedReviewFile.statusName || 'N/A' }}
+              </strong>
+
+            </div>
+
+          </div>
+
+
+          <!-- =============================================== -->
+          <!-- REVIEW TYPE -->
+          <!-- =============================================== -->
+
+          <div class="review-form-group">
+
+            <label for="reviewType">
+              Review Type
+            </label>
+
+            <select
+              id="reviewType"
+              [(ngModel)]="reviewForm.reviewType">
+
+              <option value="INITIAL">
+                Initial Review
+              </option>
+
+              <option value="FINAL">
+                Final Review
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <!-- =============================================== -->
+          <!-- REVIEW STATUS -->
+          <!-- =============================================== -->
+
+          <div class="review-form-group">
+
+            <label for="reviewStatus">
+              Review Status
+            </label>
+
+            <select
+              id="reviewStatus"
+              [(ngModel)]="reviewForm.reviewStatus">
+
+              <option value="PENDING">
+                Pending
+              </option>
+
+              <option value="APPROVED">
+                Approved
+              </option>
+
+              <option value="RETURNED">
+                Returned
+              </option>
+
+              <option value="REJECTED">
+                Rejected
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <!-- =============================================== -->
+          <!-- REMARKS -->
+          <!-- =============================================== -->
+
+          <div class="review-form-group">
+
+            <label for="reviewRemarks">
+              Remarks
+            </label>
+
+            <textarea
+              id="reviewRemarks"
+              rows="5"
+              [(ngModel)]="reviewForm.remarks"
+              placeholder="Enter review remarks...">
+            </textarea>
+
+          </div>
+
+
+          <!-- =============================================== -->
+          <!-- REVIEW ACTIONS -->
+          <!-- =============================================== -->
+
+          <div class="review-form-actions">
+
+            <button
+              type="button"
+              class="review-cancel-button"
+              (click)="closeReviewModal()">
+
+              Cancel
+
+            </button>
+
+
+            <button
+              type="button"
+              class="review-save-button"
+              [disabled]="savingReview"
+              (click)="saveReview()">
+
+              @if (savingReview) {
+
+                Saving...
+
+              } @else {
+
+                Save Review
+
+              }
+
+            </button>
+
+          </div>
+
+
+          <!-- =============================================== -->
+          <!-- REVIEW HISTORY -->
+          <!-- =============================================== -->
+
+          <div class="review-history-section">
+
+            <div class="review-history-title">
+
+              <h4>
+                Review History
+              </h4>
+
+            </div>
+
+
+            @if (loadingReviews) {
+
+              <div class="review-loading">
+
+                ⏳
+                Loading reviews...
+
+              </div>
+
+            }
+
+
+            @if (
+              !loadingReviews &&
+              fileReviews.length === 0
+            ) {
+
+              <div class="review-empty">
+
+                <span>
+                  📝
+                </span>
+
+                <strong>
+                  No Reviews
+                </strong>
+
+                <span>
+                  No reviews have been recorded for this file.
+                </span>
+
+              </div>
+
+            }
+
+
+            @if (
+              !loadingReviews &&
+              fileReviews.length > 0
+            ) {
+
+              <div class="review-list">
+
+                @for (
+                  review of fileReviews;
+                  track review.id
+                ) {
+
+                  <div class="review-item">
+
+
+                    <!-- REVIEW HEADER -->
+
+                    <div class="review-item-header">
+
+                      <div>
+
+                        <strong>
+                          {{ review.reviewType }}
+                        </strong>
+
+                        <span class="review-item-date">
+
+                          {{ review.reviewedAt | date:'medium' }}
+
+                        </span>
+
+                      </div>
+
+
+                      <span
+                        class="review-status"
+                        [class.review-status-pending]="
+                          review.reviewStatus === 'PENDING'
+                        "
+                        [class.review-status-approved]="
+                          review.reviewStatus === 'APPROVED'
+                        "
+                        [class.review-status-returned]="
+                          review.reviewStatus === 'RETURNED'
+                        "
+                        [class.review-status-rejected]="
+                          review.reviewStatus === 'REJECTED'
+                        ">
+
+                        {{ review.reviewStatus }}
+
+                      </span>
+
+                    </div>
+
+
+                    <!-- REVIEWER -->
+
+                    <div class="review-item-row">
+
+                      <span class="review-item-label">
+                        Reviewed By:
+                      </span>
+
+                      <span>
+                        {{ review.reviewerName }}
+                      </span>
+
+                    </div>
+
+
+                    <!-- REMARKS -->
+
+                    <div class="review-item-row">
+
+                      <span class="review-item-label">
+                        Remarks:
+                      </span>
+
+                      <span>
+                        {{ review.remarks || 'No remarks' }}
+                      </span>
+
+                    </div>
+
+
+                  </div>
+
+                }
+
+              </div>
+
+            }
+
+          </div>
+
+        </div>
+
+
+        <!-- ================================================= -->
+        <!-- REVIEW FOOTER -->
+        <!-- ================================================= -->
+
+        <div class="review-modal-footer">
+
+          <button
+            type="button"
+            class="review-close-footer-button"
+            (click)="closeReviewModal()">
+
+            Close
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  }
+
+
+  <!-- ===================================================== -->
   <!-- LEGAL FILE TABLE -->
   <!-- ===================================================== -->
 
@@ -833,154 +1389,129 @@
 
         <tr>
 
-
-          <!-- =============================================== -->
           <!-- SELECT -->
-          <!-- =============================================== -->
 
           <th class="checkbox-column">
 
             <input
               type="checkbox"
               [checked]="allSelected"
+              (click)="$event.stopPropagation()"
               (change)="toggleSelectAll($event)"
               title="Select all">
 
           </th>
 
 
-          <!-- =============================================== -->
           <!-- STATUS -->
-          <!-- =============================================== -->
 
           <th class="status-column">
             Status
           </th>
 
 
-          <!-- =============================================== -->
           <!-- CASE NUMBER -->
-          <!-- =============================================== -->
 
           <th>
             Case No.
           </th>
 
 
-          <!-- =============================================== -->
           <!-- FILE -->
-          <!-- =============================================== -->
 
           <th class="file-column">
             File
           </th>
 
 
-          <!-- =============================================== -->
           <!-- DATE RECEIVED -->
-          <!-- =============================================== -->
 
           <th>
             Date Received
           </th>
 
 
-          <!-- =============================================== -->
           <!-- TIME RECEIVED -->
-          <!-- =============================================== -->
 
           <th>
             Time Received
           </th>
 
 
-          <!-- =============================================== -->
           <!-- DATE COMPLETED -->
-          <!-- =============================================== -->
 
           <th>
             Date Completed
           </th>
 
 
-          <!-- =============================================== -->
           <!-- SPMS TYPE -->
-          <!-- =============================================== -->
 
           <th>
             SPMS Type
           </th>
 
 
-          <!-- =============================================== -->
           <!-- REQUESTING OFFICE -->
-          <!-- =============================================== -->
 
           <th>
             Requesting Office
           </th>
 
 
-          <!-- =============================================== -->
           <!-- DOCUMENT TYPE -->
-          <!-- =============================================== -->
 
           <th>
             Document Type
           </th>
 
 
-          <!-- =============================================== -->
           <!-- DOCUMENT FORMAT -->
-          <!-- =============================================== -->
 
           <th>
             Document Format
           </th>
 
 
-          <!-- =============================================== -->
           <!-- CONTACT DETAILS -->
-          <!-- =============================================== -->
 
           <th>
             Contact Details
           </th>
 
 
-          <!-- =============================================== -->
           <!-- CURRENT STAGE -->
-          <!-- =============================================== -->
 
           <th>
             Current Stage
           </th>
 
 
-          <!-- =============================================== -->
           <!-- CREATED BY -->
-          <!-- =============================================== -->
 
           <th>
             Created By
           </th>
 
 
-          <!-- =============================================== -->
           <!-- CREATED AT -->
-          <!-- =============================================== -->
 
           <th>
             Created At
           </th>
 
 
-          <!-- =============================================== -->
           <!-- UPDATED AT -->
-          <!-- =============================================== -->
 
           <th>
             Updated At
+          </th>
+
+
+          <!-- ACTION HISTORY -->
+
+          <th class="action-history-column">
+            History
           </th>
 
         </tr>
@@ -995,34 +1526,47 @@
           track file.id
         ) {
 
-          <tr>
+          <!-- ================================================= -->
+          <!-- SELECTABLE ROW -->
+          <!-- ================================================= -->
+
+          <tr
+            [class.selected-row]="selectedRowId === file.id"
+            (click)="selectRow(file.id)"
+          >
 
 
-            <!-- ============================================= -->
+            <!-- ================================================= -->
             <!-- CHECKBOX -->
-            <!-- ============================================= -->
+            <!-- ================================================= -->
 
-            <td class="checkbox-cell">
+            <td
+              class="checkbox-cell"
+              (click)="$event.stopPropagation()">
 
               <input
                 type="checkbox"
                 [checked]="isSelected(file.id)"
+                (click)="$event.stopPropagation()"
                 (change)="toggleSelection(file.id, $event)"
               >
 
             </td>
 
 
-            <!-- ============================================= -->
+            <!-- ================================================= -->
             <!-- STATUS -->
-            <!-- ============================================= -->
+            <!-- ================================================= -->
 
-            <td class="status-cell">
+            <td
+              class="status-cell"
+              (click)="$event.stopPropagation()">
 
               <select
                 class="status-select"
                 [ngClass]="getStatusClass(file.statusId)"
                 [ngModel]="file.statusId"
+                (click)="$event.stopPropagation()"
                 (ngModelChange)="onStatusChange(file, $event)"
               >
 
@@ -1044,9 +1588,9 @@
             </td>
 
 
-            <!-- ============================================= -->
+            <!-- ================================================= -->
             <!-- CASE NUMBER -->
-            <!-- ============================================= -->
+            <!-- ================================================= -->
 
             <td>
 
@@ -1055,9 +1599,9 @@
             </td>
 
 
-            <!-- ============================================= -->
+            <!-- ================================================= -->
             <!-- FILE -->
-            <!-- ============================================= -->
+            <!-- ================================================= -->
 
             <td class="file-column">
 
@@ -1073,27 +1617,20 @@
 
                   <div class="file-item">
 
-
-                    <!-- FILE ICON -->
-
                     <span class="file-icon">
                       📄
                     </span>
 
 
-                    <!-- FILE NAME -->
-
                     <span
                       class="file-name"
                       title="{{ document.documentName }}"
-                      (click)="downloadDocument(document)">
+                      (click)="downloadDocument(document); $event.stopPropagation()">
 
                       {{ document.documentName }}
 
                     </span>
 
-
-                    <!-- VERSION -->
 
                     <span class="file-version">
 
@@ -1102,13 +1639,11 @@
                     </span>
 
 
-                    <!-- REPLACE -->
-
                     <button
                       type="button"
                       class="edit-file-button"
                       title="Replace document"
-                      (click)="openReplaceDocument(document)">
+                      (click)="openReplaceDocument(document); $event.stopPropagation()">
 
                       ✎
 
@@ -1131,9 +1666,9 @@
             </td>
 
 
-            <!-- ============================================= -->
+            <!-- ================================================= -->
             <!-- DATE RECEIVED -->
-            <!-- ============================================= -->
+            <!-- ================================================= -->
 
             <td>
 
@@ -1142,9 +1677,9 @@
             </td>
 
 
-            <!-- ============================================= -->
+            <!-- ================================================= -->
             <!-- TIME RECEIVED -->
-            <!-- ============================================= -->
+            <!-- ================================================= -->
 
             <td>
 
@@ -1153,9 +1688,9 @@
             </td>
 
 
-            <!-- ============================================= -->
+            <!-- ================================================= -->
             <!-- DATE COMPLETED -->
-            <!-- ============================================= -->
+            <!-- ================================================= -->
 
             <td>
 
@@ -1164,9 +1699,9 @@
             </td>
 
 
-            <!-- ============================================= -->
+            <!-- ================================================= -->
             <!-- SPMS TYPE -->
-            <!-- ============================================= -->
+            <!-- ================================================= -->
 
             <td>
 
@@ -1175,9 +1710,9 @@
             </td>
 
 
-            <!-- ============================================= -->
+            <!-- ================================================= -->
             <!-- REQUESTING OFFICE -->
-            <!-- ============================================= -->
+            <!-- ================================================= -->
 
             <td>
 
@@ -1186,9 +1721,9 @@
             </td>
 
 
-            <!-- ============================================= -->
+            <!-- ================================================= -->
             <!-- DOCUMENT TYPE -->
-            <!-- ============================================= -->
+            <!-- ================================================= -->
 
             <td>
 
@@ -1197,9 +1732,9 @@
             </td>
 
 
-            <!-- ============================================= -->
+            <!-- ================================================= -->
             <!-- DOCUMENT FORMAT -->
-            <!-- ============================================= -->
+            <!-- ================================================= -->
 
             <td>
 
@@ -1208,9 +1743,9 @@
             </td>
 
 
-            <!-- ============================================= -->
+            <!-- ================================================= -->
             <!-- CONTACT DETAILS -->
-            <!-- ============================================= -->
+            <!-- ================================================= -->
 
             <td>
 
@@ -1219,9 +1754,9 @@
             </td>
 
 
-            <!-- ============================================= -->
+            <!-- ================================================= -->
             <!-- CURRENT STAGE -->
-            <!-- ============================================= -->
+            <!-- ================================================= -->
 
             <td>
 
@@ -1230,9 +1765,9 @@
             </td>
 
 
-            <!-- ============================================= -->
+            <!-- ================================================= -->
             <!-- CREATED BY -->
-            <!-- ============================================= -->
+            <!-- ================================================= -->
 
             <td>
 
@@ -1241,9 +1776,9 @@
             </td>
 
 
-            <!-- ============================================= -->
+            <!-- ================================================= -->
             <!-- CREATED AT -->
-            <!-- ============================================= -->
+            <!-- ================================================= -->
 
             <td>
 
@@ -1252,13 +1787,51 @@
             </td>
 
 
-            <!-- ============================================= -->
+            <!-- ================================================= -->
             <!-- UPDATED AT -->
-            <!-- ============================================= -->
+            <!-- ================================================= -->
 
             <td>
 
               {{ file.updatedAt || 'N/A' }}
+
+            </td>
+
+
+            <!-- ================================================= -->
+            <!-- REVIEW + HISTORY -->
+            <!-- ================================================= -->
+
+            <td class="action-history-cell">
+
+              <button
+                type="button"
+                class="review-button"
+                title="Review file"
+                (click)="openReview(file); $event.stopPropagation()">
+
+                📝
+
+                <span>
+                  Review
+                </span>
+
+              </button>
+
+
+              <button
+                type="button"
+                class="history-button"
+                title="View file action history"
+                (click)="openActivityHistory(file); $event.stopPropagation()">
+
+                📋
+
+                <span>
+                  History
+                </span>
+
+              </button>
 
             </td>
 
