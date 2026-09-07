@@ -1,0 +1,1275 @@
+/* ============================================================
+   PROOF OF SERVICE CONTAINER
+   ============================================================ */
+
+.proof-of-service-container {
+  width: 100%;
+  min-height: 100%;
+  box-sizing: border-box;
+}
+
+
+/* ============================================================
+   PAGE HEADER
+   ============================================================ */
+
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 24px;
+}
+
+.page-header h2 {
+  margin: 0 0 5px;
+
+  font-size: 24px;
+  font-weight: 700;
+
+  color: #1e293b;
+}
+
+.page-header p {
+  margin: 0;
+
+  font-size: 13px;
+
+  color: #64748b;
+}
+
+
+/* ============================================================
+   CARD
+   ============================================================ */
+
+.card {
+  background: #ffffff;
+
+  border: 1px solid #e2e8f0;
+
+  border-radius: 12px;
+
+  box-shadow:
+    0 2px 8px rgba(15, 23, 42, 0.05);
+}
+
+.table-card {
+  overflow: hidden;
+}
+
+
+/* ============================================================
+   CARD HEADER
+   ============================================================ */
+
+.card-header {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  padding: 20px 22px;
+
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.card-header h3 {
+  margin: 0 0 5px;
+
+  font-size: 16px;
+
+  color: #1e293b;
+}
+
+.card-header p {
+  margin: 0;
+
+  font-size: 12px;
+
+  color: #64748b;
+}
+
+.document-count {
+  min-width: 34px;
+  height: 34px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #f1f5f9;
+
+  color: #334155;
+
+  font-size: 13px;
+
+  font-weight: 700;
+}
+
+
+/* ============================================================
+   TABLE
+   ============================================================ */
+
+.table-wrapper {
+  width: 100%;
+
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+
+  border-collapse: collapse;
+
+  min-width: 850px;
+}
+
+thead {
+  background: #f8fafc;
+}
+
+th {
+  padding: 13px 18px;
+
+  text-align: left;
+
+  font-size: 11px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.4px;
+
+  color: #64748b;
+
+  text-transform: uppercase;
+
+  white-space: nowrap;
+}
+
+td {
+  padding: 15px 18px;
+
+  border-top: 1px solid #f1f5f9;
+
+  font-size: 13px;
+
+  color: #334155;
+
+  vertical-align: middle;
+}
+
+tbody tr {
+  transition: background 0.15s ease;
+}
+
+tbody tr:hover {
+  background: #f8fafc;
+}
+
+td strong {
+  color: #1e293b;
+}
+
+
+/* ============================================================
+   STAGE BADGE
+   ============================================================ */
+
+.stage-badge {
+  display: inline-flex;
+
+  align-items: center;
+
+  padding: 5px 10px;
+
+  border-radius: 999px;
+
+  font-size: 11px;
+
+  font-weight: 700;
+}
+
+.stage-badge.resolved {
+  background: #dcfce7;
+
+  color: #15803d;
+}
+
+
+/* ============================================================
+   DOCUMENT STATUS
+   ============================================================ */
+
+.document-status {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 4px;
+
+  font-size: 12px;
+
+  font-weight: 600;
+}
+
+.document-status.available {
+  color: #15803d;
+}
+
+.document-status.unavailable {
+  color: #dc2626;
+}
+
+.document-status.loading-status {
+  color: #94a3b8;
+}
+
+
+/* ============================================================
+   PROCESS BUTTON
+   ============================================================ */
+
+.process-button {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  min-width: 95px;
+
+  padding: 9px 14px;
+
+  border: none;
+
+  border-radius: 7px;
+
+  background: #2563eb;
+
+  color: #ffffff;
+
+  font-family: inherit;
+
+  font-size: 12px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    transform 0.15s ease;
+}
+
+.process-button:hover:not(:disabled) {
+  background: #1d4ed8;
+
+  transform: translateY(-1px);
+}
+
+.process-button:disabled {
+  background: #cbd5e1;
+
+  color: #64748b;
+
+  cursor: not-allowed;
+
+  transform: none;
+}
+
+
+/* ============================================================
+   FLOATING MODAL OVERLAY
+   ============================================================ */
+
+.modal-overlay {
+  position: fixed;
+
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  width: 100%;
+  height: 100%;
+
+  box-sizing: border-box;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 25px;
+
+  background: rgba(15, 23, 42, 0.62);
+
+  z-index: 99999;
+
+  overflow: hidden;
+
+  animation: modalFadeIn 0.2s ease-out;
+}
+
+
+/* ============================================================
+   FLOATING MODAL
+   ============================================================ */
+
+.proof-modal {
+  position: relative;
+
+  width: 100%;
+
+  max-width: 800px;
+
+  max-height: 92vh;
+
+  display: flex;
+
+  flex-direction: column;
+
+  background: #ffffff;
+
+  border-radius: 14px;
+
+  overflow: hidden;
+
+  box-shadow:
+    0 25px 70px rgba(0, 0, 0, 0.28);
+
+  animation: modalSlideIn 0.25s ease-out;
+}
+
+
+/* ============================================================
+   MODAL HEADER
+   ============================================================ */
+
+.modal-header {
+  flex-shrink: 0;
+
+  display: flex;
+
+  align-items: flex-start;
+
+  justify-content: space-between;
+
+  padding: 22px 24px;
+
+  background: #ffffff;
+
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.modal-title-area {
+  min-width: 0;
+}
+
+.modal-header h2 {
+  margin: 0 0 6px;
+
+  font-size: 21px;
+
+  font-weight: 700;
+
+  color: #111827;
+}
+
+.modal-header p {
+  margin: 0;
+
+  font-size: 13px;
+
+  color: #64748b;
+}
+
+.modal-header p strong {
+  color: #1e293b;
+}
+
+
+/* ============================================================
+   CLOSE BUTTON
+   ============================================================ */
+
+.modal-close {
+  flex-shrink: 0;
+
+  width: 34px;
+  height: 34px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border: none;
+
+  border-radius: 7px;
+
+  background: transparent;
+
+  color: #64748b;
+
+  font-size: 26px;
+
+  line-height: 1;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.modal-close:hover {
+  background: #f1f5f9;
+
+  color: #111827;
+}
+
+
+/* ============================================================
+   MODAL BODY
+   ============================================================ */
+
+.modal-body {
+  flex: 1;
+
+  min-height: 0;
+
+  padding: 24px;
+
+  overflow-y: auto;
+
+  overflow-x: hidden;
+}
+
+
+/* ============================================================
+   CUSTOM SCROLLBAR
+   ============================================================ */
+
+.modal-body::-webkit-scrollbar {
+  width: 7px;
+}
+
+.modal-body::-webkit-scrollbar-track {
+  background: #f8fafc;
+}
+
+.modal-body::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+
+  border-radius: 10px;
+}
+
+.modal-body::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+
+/* ============================================================
+   SUMMARY GRID
+   ============================================================ */
+
+.modal-summary-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+
+  gap: 14px;
+
+  margin-bottom: 24px;
+}
+
+.summary-box {
+  padding: 14px 15px;
+
+  background: #f8fafc;
+
+  border: 1px solid #e2e8f0;
+
+  border-radius: 9px;
+}
+
+.summary-box span {
+  display: block;
+
+  margin-bottom: 7px;
+
+  font-size: 10px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.6px;
+
+  color: #64748b;
+}
+
+.summary-box strong {
+  display: block;
+
+  font-size: 14px;
+
+  color: #1e293b;
+}
+
+
+/* ============================================================
+   RESOLVED BADGE
+   ============================================================ */
+
+.resolved-badge {
+  display: inline-flex !important;
+
+  width: fit-content;
+
+  padding: 4px 9px;
+
+  border-radius: 999px;
+
+  background: #dcfce7;
+
+  color: #15803d !important;
+
+  font-size: 11px !important;
+
+  font-weight: 700 !important;
+}
+
+
+/* ============================================================
+   MODAL SECTION
+   ============================================================ */
+
+.modal-section {
+  margin-bottom: 23px;
+}
+
+.modal-section h3 {
+  margin: 0 0 11px;
+
+  font-size: 14px;
+
+  font-weight: 700;
+
+  color: #1e293b;
+}
+
+
+/* ============================================================
+   FINAL DOCUMENT
+   ============================================================ */
+
+.final-document-box {
+  display: flex;
+
+  align-items: center;
+
+  gap: 13px;
+
+  padding: 14px 15px;
+
+  background: #f8fbff;
+
+  border: 1px solid #dbeafe;
+
+  border-radius: 9px;
+}
+
+.final-document-icon {
+  flex-shrink: 0;
+
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 8px;
+
+  background: #e0f2fe;
+
+  font-size: 20px;
+}
+
+.final-document-info {
+  min-width: 0;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 3px;
+}
+
+.final-document-info strong {
+  font-size: 13px;
+
+  color: #1e293b;
+
+  word-break: break-word;
+}
+
+.final-document-info span {
+  font-size: 11px;
+
+  color: #64748b;
+}
+
+.final-document-info small {
+  font-size: 10px;
+
+  color: #94a3b8;
+
+  word-break: break-all;
+}
+
+
+/* ============================================================
+   FORM
+   ============================================================ */
+
+.form-group {
+  margin-bottom: 19px;
+}
+
+.form-group label {
+  display: block;
+
+  margin-bottom: 7px;
+
+  font-size: 12px;
+
+  font-weight: 700;
+
+  color: #334155;
+}
+
+.required {
+  color: #dc2626;
+
+  margin-left: 2px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+
+  box-sizing: border-box;
+
+  padding: 10px 12px;
+
+  border: 1px solid #cbd5e1;
+
+  border-radius: 7px;
+
+  background: #ffffff;
+
+  color: #1e293b;
+
+  font-family: inherit;
+
+  font-size: 13px;
+
+  outline: none;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: #94a3b8;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: #2563eb;
+
+  box-shadow:
+    0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.form-group textarea {
+  min-height: 100px;
+
+  resize: vertical;
+}
+
+.form-group small {
+  display: block;
+
+  margin-top: 6px;
+
+  font-size: 10px;
+
+  color: #94a3b8;
+}
+
+
+/* ============================================================
+   RESOLVED INFORMATION
+   ============================================================ */
+
+.modal-success-message {
+  display: flex;
+
+  align-items: flex-start;
+
+  gap: 11px;
+
+  padding: 13px 14px;
+
+  margin-top: 5px;
+
+  background: #f0fdf4;
+
+  border: 1px solid #bbf7d0;
+
+  border-radius: 8px;
+}
+
+.success-icon {
+  flex-shrink: 0;
+
+  width: 27px;
+  height: 27px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #16a34a;
+
+  color: #ffffff;
+
+  font-size: 13px;
+
+  font-weight: 700;
+}
+
+.modal-success-message strong {
+  display: block;
+
+  margin-bottom: 3px;
+
+  font-size: 12px;
+
+  color: #15803d;
+}
+
+.modal-success-message p {
+  margin: 0;
+
+  font-size: 11px;
+
+  line-height: 1.5;
+
+  color: #166534;
+}
+
+
+/* ============================================================
+   MODAL ACTIONS
+   ============================================================ */
+
+.modal-actions {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: flex-end;
+
+  gap: 10px;
+
+  margin-top: 20px;
+
+  padding-top: 18px;
+
+  border-top: 1px solid #e5e7eb;
+}
+
+.cancel-modal-button,
+.save-modal-button {
+  min-height: 38px;
+
+  padding: 9px 16px;
+
+  border-radius: 7px;
+
+  font-family: inherit;
+
+  font-size: 12px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.15s ease;
+}
+
+.cancel-modal-button {
+  background: #ffffff;
+
+  border: 1px solid #cbd5e1;
+
+  color: #475569;
+}
+
+.cancel-modal-button:hover {
+  background: #f8fafc;
+
+  border-color: #94a3b8;
+}
+
+.save-modal-button {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  border: none;
+
+  background: #2563eb;
+
+  color: #ffffff;
+}
+
+.save-modal-button:hover:not(:disabled) {
+  background: #1d4ed8;
+
+  transform: translateY(-1px);
+}
+
+.save-modal-button:disabled {
+  background: #cbd5e1;
+
+  color: #64748b;
+
+  cursor: not-allowed;
+
+  transform: none;
+}
+
+
+/* ============================================================
+   MODAL FOOTER
+   ============================================================ */
+
+.modal-footer {
+  flex-shrink: 0;
+
+  display: flex;
+
+  justify-content: flex-end;
+
+  padding: 12px 24px;
+
+  background: #f8fafc;
+
+  border-top: 1px solid #e5e7eb;
+}
+
+.close-modal-button {
+  padding: 8px 15px;
+
+  border: 1px solid #cbd5e1;
+
+  border-radius: 7px;
+
+  background: #ffffff;
+
+  color: #475569;
+
+  font-family: inherit;
+
+  font-size: 12px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+.close-modal-button:hover {
+  background: #f1f5f9;
+}
+
+
+/* ============================================================
+   LOADING
+   ============================================================ */
+
+.loading-container {
+  min-height: 220px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 10px;
+
+  color: #64748b;
+}
+
+.loading-container p {
+  margin: 0;
+
+  font-size: 12px;
+}
+
+.modal-loading {
+  min-height: 100px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 9px;
+
+  color: #64748b;
+
+  font-size: 12px;
+}
+
+.spinner {
+  width: 22px;
+  height: 22px;
+
+  border: 3px solid #e2e8f0;
+
+  border-top-color: #2563eb;
+
+  border-radius: 50%;
+
+  animation: spin 0.8s linear infinite;
+}
+
+
+/* ============================================================
+   BUTTON SPINNER
+   ============================================================ */
+
+.button-spinner {
+  width: 13px;
+  height: 13px;
+
+  border: 2px solid rgba(255, 255, 255, 0.4);
+
+  border-top-color: #ffffff;
+
+  border-radius: 50%;
+
+  animation: spin 0.7s linear infinite;
+}
+
+
+/* ============================================================
+   WARNING
+   ============================================================ */
+
+.modal-warning {
+  padding: 14px;
+
+  background: #fff7ed;
+
+  border: 1px solid #fed7aa;
+
+  border-radius: 8px;
+}
+
+.modal-warning strong {
+  display: block;
+
+  margin-bottom: 5px;
+
+  font-size: 12px;
+
+  color: #c2410c;
+}
+
+.modal-warning p {
+  margin: 0;
+
+  font-size: 11px;
+
+  line-height: 1.5;
+
+  color: #9a3412;
+}
+
+
+/* ============================================================
+   EMPTY STATE
+   ============================================================ */
+
+.empty-state {
+  padding: 60px 25px;
+
+  text-align: center;
+}
+
+.empty-icon {
+  margin-bottom: 10px;
+
+  font-size: 35px;
+}
+
+.empty-state h4 {
+  margin: 0 0 7px;
+
+  font-size: 15px;
+
+  color: #334155;
+}
+
+.empty-state p {
+  max-width: 450px;
+
+  margin: 0 auto;
+
+  font-size: 12px;
+
+  line-height: 1.6;
+
+  color: #64748b;
+}
+
+
+/* ============================================================
+   NOTIFICATIONS
+   ============================================================ */
+
+.notification {
+  position: fixed;
+
+  top: 20px;
+  right: 25px;
+
+  z-index: 100000;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 11px;
+
+  min-width: 300px;
+
+  max-width: 420px;
+
+  padding: 13px 16px;
+
+  border-radius: 9px;
+
+  box-shadow:
+    0 10px 30px rgba(15, 23, 42, 0.15);
+
+  animation: notificationSlide 0.25s ease;
+}
+
+.notification-icon {
+  flex-shrink: 0;
+
+  width: 27px;
+  height: 27px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  font-weight: 700;
+}
+
+.notification strong {
+  display: block;
+
+  margin-bottom: 2px;
+
+  font-size: 12px;
+}
+
+.notification p {
+  margin: 0;
+
+  font-size: 11px;
+}
+
+.success-notification {
+  background: #f0fdf4;
+
+  border: 1px solid #bbf7d0;
+
+  color: #166534;
+}
+
+.success-notification .notification-icon {
+  background: #16a34a;
+
+  color: #ffffff;
+}
+
+.error-notification {
+  background: #fef2f2;
+
+  border: 1px solid #fecaca;
+
+  color: #991b1b;
+}
+
+.error-notification .notification-icon {
+  background: #dc2626;
+
+  color: #ffffff;
+}
+
+
+/* ============================================================
+   ANIMATIONS
+   ============================================================ */
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(-15px)
+      scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0)
+      scale(1);
+  }
+}
+
+@keyframes notificationSlide {
+  from {
+    opacity: 0;
+
+    transform: translateX(20px);
+  }
+
+  to {
+    opacity: 1;
+
+    transform: translateX(0);
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 800px) {
+
+  .modal-overlay {
+    padding: 15px;
+  }
+
+  .proof-modal {
+    max-height: 94vh;
+  }
+
+  .modal-summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+
+@media (max-width: 600px) {
+
+  .modal-overlay {
+    padding: 8px;
+  }
+
+  .proof-modal {
+    max-height: 96vh;
+
+    border-radius: 10px;
+  }
+
+  .modal-header {
+    padding: 17px;
+  }
+
+  .modal-body {
+    padding: 17px;
+  }
+
+  .modal-footer {
+    padding: 10px 17px;
+  }
+
+  .modal-actions {
+    flex-direction: column-reverse;
+
+    align-items: stretch;
+  }
+
+  .cancel-modal-button,
+  .save-modal-button {
+    width: 100%;
+  }
+
+  .notification {
+    left: 12px;
+    right: 12px;
+
+    min-width: 0;
+
+    max-width: none;
+  }
+
+}

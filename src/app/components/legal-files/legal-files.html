@@ -99,7 +99,7 @@
 
 
   <!-- ===================================================== -->
-  <!-- CREATE FORM OVERLAY -->
+  <!-- CREATE LEGAL FILE FORM -->
   <!-- ===================================================== -->
 
   @if (showForm) {
@@ -150,6 +150,17 @@
                 formControlName="caseNo"
                 placeholder="Enter case number">
 
+              @if (
+                legalFileForm.get('caseNo')?.touched &&
+                legalFileForm.get('caseNo')?.invalid
+              ) {
+
+                <small class="field-error">
+                  Case number is required.
+                </small>
+
+              }
+
             </div>
 
 
@@ -165,6 +176,17 @@
                 id="dateReceived"
                 type="date"
                 formControlName="dateReceived">
+
+              @if (
+                legalFileForm.get('dateReceived')?.touched &&
+                legalFileForm.get('dateReceived')?.invalid
+              ) {
+
+                <small class="field-error">
+                  Date received is required.
+                </small>
+
+              }
 
             </div>
 
@@ -182,55 +204,16 @@
                 type="time"
                 formControlName="timeReceived">
 
-            </div>
+              @if (
+                legalFileForm.get('timeReceived')?.touched &&
+                legalFileForm.get('timeReceived')?.invalid
+              ) {
 
+                <small class="field-error">
+                  Time received is required.
+                </small>
 
-            <!-- DATE COMPLETED -->
-
-            <div class="form-group">
-
-              <label for="dateCompleted">
-                Date Completed
-              </label>
-
-              <input
-                id="dateCompleted"
-                type="date"
-                formControlName="dateCompleted">
-
-            </div>
-
-
-            <!-- STATUS -->
-
-            <div class="form-group">
-
-              <label for="statusId">
-                Status
-              </label>
-
-              <select
-                id="statusId"
-                formControlName="statusId">
-
-                <option [ngValue]="null">
-                  Select Status
-                </option>
-
-                @for (
-                  status of statuses;
-                  track status.id
-                ) {
-
-                  <option [ngValue]="status.id">
-
-                    {{ status.statusName }}
-
-                  </option>
-
-                }
-
-              </select>
+              }
 
             </div>
 
@@ -257,9 +240,7 @@
                 ) {
 
                   <option [ngValue]="spms.id">
-
                     {{ spms.spmsName }}
-
                   </option>
 
                 }
@@ -291,9 +272,7 @@
                 ) {
 
                   <option [ngValue]="office.id">
-
                     {{ office.officeName }}
-
                   </option>
 
                 }
@@ -325,9 +304,7 @@
                 ) {
 
                   <option [ngValue]="documentType.id">
-
                     {{ documentType.documentName }}
-
                   </option>
 
                 }
@@ -359,9 +336,7 @@
                 ) {
 
                   <option [ngValue]="format.id">
-
                     {{ format.formatName }}
-
                   </option>
 
                 }
@@ -464,39 +439,6 @@
             </div>
 
 
-            <!-- CURRENT STAGE -->
-
-            <div class="form-group">
-
-              <label for="currentStage">
-                Current Stage
-              </label>
-
-              <select
-                id="currentStage"
-                formControlName="currentStage">
-
-                <option value="RECEIVED">
-                  RECEIVED
-                </option>
-
-                <option value="INITIAL_REVIEW">
-                  INITIAL REVIEW
-                </option>
-
-                <option value="REVIEW">
-                  REVIEW
-                </option>
-
-                <option value="COMPLETED">
-                  COMPLETED
-                </option>
-
-              </select>
-
-            </div>
-
-
             <!-- CONTACT DETAILS -->
 
             <div class="form-group full-width">
@@ -516,7 +458,55 @@
           </div>
 
 
-          <!-- FORM BUTTONS -->
+          <!-- WORKFLOW INFORMATION -->
+
+          <div class="workflow-info-tooltip">
+
+            <span
+              class="workflow-info-icon"
+              aria-label="File workflow information">
+
+              i
+
+            </span>
+
+            <div class="workflow-tooltip-content">
+
+              <div class="workflow-tooltip-header">
+
+                <span class="workflow-tooltip-icon">
+                  ℹ
+                </span>
+
+                <strong>
+                  File Workflow
+                </strong>
+
+              </div>
+
+              <div class="workflow-tooltip-body">
+
+                <p>
+                  New legal files automatically start at
+                  <strong>RECEIVED</strong>
+                  with
+                  <strong>PENDING</strong>
+                  status.
+                </p>
+
+                <p>
+                  The next step is handled through
+                  <strong>Initial Review</strong>.
+                </p>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <!-- FORM ACTIONS -->
 
           <div class="form-actions">
 
@@ -531,7 +521,8 @@
 
             <button
               type="submit"
-              class="save-button">
+              class="save-button"
+              [disabled]="legalFileForm.invalid">
 
               Save Legal File
 
@@ -663,9 +654,7 @@
             } @else {
 
               <div class="replace-file-hint">
-
                 Select a new document to replace the current file.
-
               </div>
 
             }
@@ -736,8 +725,6 @@
         class="action-history-modal"
         (click)="$event.stopPropagation()">
 
-        <!-- MODAL HEADER -->
-
         <div class="action-history-header">
 
           <div>
@@ -762,7 +749,6 @@
 
           </div>
 
-
           <button
             type="button"
             class="action-history-close"
@@ -775,11 +761,7 @@
         </div>
 
 
-        <!-- MODAL BODY -->
-
         <div class="action-history-body">
-
-          <!-- LOADING -->
 
           @if (loadingFileActions) {
 
@@ -797,8 +779,6 @@
 
           }
 
-
-          <!-- NO ACTIONS -->
 
           @if (
             !loadingFileActions &&
@@ -824,8 +804,6 @@
           }
 
 
-          <!-- ACTION LIST -->
-
           @if (
             !loadingFileActions &&
             fileActions.length > 0
@@ -840,21 +818,25 @@
 
                 <div class="action-history-item">
 
-                  <!-- ACTION ICON -->
-
                   <div class="action-history-icon">
 
-                    @if (action.action === 'FILE CREATED') {
+                    @if (
+                      action.action === 'FILE CREATED'
+                    ) {
 
                       ✓
 
-                    } @else if (action.action === 'STAGE CHANGED') {
+                    } @else if (
+                      action.action.includes('INITIAL REVIEW')
+                    ) {
 
-                      ⇄
+                      📝
 
-                    } @else if (action.action === 'STATUS CHANGED') {
+                    } @else if (
+                      action.action.includes('FINAL REVIEW')
+                    ) {
 
-                      ↻
+                      ✓
 
                     } @else {
 
@@ -865,11 +847,7 @@
                   </div>
 
 
-                  <!-- ACTION CONTENT -->
-
                   <div class="action-history-content">
-
-                    <!-- ACTION + DATE -->
 
                     <div class="action-history-top">
 
@@ -883,8 +861,6 @@
 
                     </div>
 
-
-                    <!-- STAGE -->
 
                     @if (
                       action.fromStage ||
@@ -910,8 +886,6 @@
                     }
 
 
-                    <!-- REMARKS -->
-
                     @if (action.remarks) {
 
                       <div class="action-remarks">
@@ -928,8 +902,6 @@
 
                     }
 
-
-                    <!-- PERFORMED BY -->
 
                     <div class="action-performed-by">
 
@@ -956,8 +928,6 @@
         </div>
 
 
-        <!-- MODAL FOOTER -->
-
         <div class="action-history-footer">
 
           <button
@@ -982,7 +952,10 @@
   <!-- FILE REVIEW MODAL -->
   <!-- ===================================================== -->
 
-  @if (showReviewModal && selectedReviewFile) {
+  @if (
+    showReviewModal &&
+    selectedReviewFile
+  ) {
 
     <div
       class="review-overlay"
@@ -992,17 +965,20 @@
         class="review-modal"
         (click)="$event.stopPropagation()">
 
-
-        <!-- ================================================= -->
         <!-- REVIEW HEADER -->
-        <!-- ================================================= -->
 
         <div class="review-modal-header">
 
           <div>
 
             <h3>
-              File Review
+
+              @if (reviewType === 'INITIAL') {
+                Initial Review
+              } @else {
+                Final Review
+              }
+
             </h3>
 
             <span class="review-case-number">
@@ -1030,16 +1006,11 @@
         </div>
 
 
-        <!-- ================================================= -->
         <!-- REVIEW BODY -->
-        <!-- ================================================= -->
 
         <div class="review-modal-body">
 
-
-          <!-- =============================================== -->
           <!-- FILE INFORMATION -->
-          <!-- =============================================== -->
 
           <div class="review-file-information">
 
@@ -1062,8 +1033,15 @@
                 Current Stage
               </span>
 
-              <strong>
-                {{ selectedReviewFile.currentStage || 'N/A' }}
+              <strong
+                [ngClass]="
+                  getStageClass(
+                    selectedReviewFile.currentStage
+                  )
+                ">
+
+                {{ selectedReviewFile.currentStage }}
+
               </strong>
 
             </div>
@@ -1081,39 +1059,29 @@
 
             </div>
 
-          </div>
 
+            <div class="review-info-item">
 
-          <!-- =============================================== -->
-          <!-- REVIEW TYPE -->
-          <!-- =============================================== -->
+              <span class="review-info-label">
+                Review Type
+              </span>
 
-          <div class="review-form-group">
+              <strong>
 
-            <label for="reviewType">
-              Review Type
-            </label>
+                @if (reviewType === 'INITIAL') {
+                  Initial Review
+                } @else {
+                  Final Review
+                }
 
-            <select
-              id="reviewType"
-              [(ngModel)]="reviewForm.reviewType">
+              </strong>
 
-              <option value="INITIAL">
-                Initial Review
-              </option>
-
-              <option value="FINAL">
-                Final Review
-              </option>
-
-            </select>
+            </div>
 
           </div>
 
 
-          <!-- =============================================== -->
           <!-- REVIEW STATUS -->
-          <!-- =============================================== -->
 
           <div class="review-form-group">
 
@@ -1146,9 +1114,7 @@
           </div>
 
 
-          <!-- =============================================== -->
           <!-- REMARKS -->
-          <!-- =============================================== -->
 
           <div class="review-form-group">
 
@@ -1166,9 +1132,58 @@
           </div>
 
 
-          <!-- =============================================== -->
+          <!-- WORKFLOW MESSAGE -->
+
+          <div class="review-workflow-message">
+
+            @if (reviewType === 'INITIAL') {
+
+              <span class="workflow-message-icon">
+                📝
+              </span>
+
+              <div>
+
+                <strong>
+                  Initial Review
+                </strong>
+
+                <p>
+
+                  Approving this review will move the file
+                  to <strong>FINAL REVIEW</strong>.
+
+                </p>
+
+              </div>
+
+            } @else {
+
+              <span class="workflow-message-icon">
+                ✓
+              </span>
+
+              <div>
+
+                <strong>
+                  Final Review
+                </strong>
+
+                <p>
+
+                  Approving this review will mark the file as
+                  <strong>RESOLVED</strong>.
+
+                </p>
+
+              </div>
+
+            }
+
+          </div>
+
+
           <!-- REVIEW ACTIONS -->
-          <!-- =============================================== -->
 
           <div class="review-form-actions">
 
@@ -1189,13 +1204,9 @@
               (click)="saveReview()">
 
               @if (savingReview) {
-
                 Saving...
-
               } @else {
-
                 Save Review
-
               }
 
             </button>
@@ -1203,142 +1214,669 @@
           </div>
 
 
-          <!-- =============================================== -->
-          <!-- REVIEW HISTORY -->
-          <!-- =============================================== -->
+          <!-- INITIAL REVIEW HISTORY -->
 
-          <div class="review-history-section">
+          @if (reviewType === 'INITIAL') {
 
-            <div class="review-history-title">
+            <div class="review-history-section">
 
-              <h4>
-                Review History
-              </h4>
+              <div class="review-history-title">
 
-            </div>
-
-
-            @if (loadingReviews) {
-
-              <div class="review-loading">
-
-                ⏳
-                Loading reviews...
+                <h4>
+                  Initial Review History
+                </h4>
 
               </div>
 
-            }
+
+              @if (loadingReviews) {
+
+                <div class="review-loading">
+
+                  ⏳
+                  Loading reviews...
+
+                </div>
+
+              }
 
 
-            @if (
-              !loadingReviews &&
-              fileReviews.length === 0
-            ) {
+              @if (
+                !loadingReviews &&
+                initialReviews.length === 0
+              ) {
 
-              <div class="review-empty">
+                <div class="review-empty">
 
-                <span>
-                  📝
-                </span>
+                  <span>
+                    📝
+                  </span>
 
-                <strong>
-                  No Reviews
-                </strong>
+                  <strong>
+                    No Initial Reviews
+                  </strong>
 
-                <span>
-                  No reviews have been recorded for this file.
-                </span>
+                  <span>
+                    No initial reviews have been recorded
+                    for this file.
+                  </span>
 
-              </div>
+                </div>
 
-            }
-
-
-            @if (
-              !loadingReviews &&
-              fileReviews.length > 0
-            ) {
-
-              <div class="review-list">
-
-                @for (
-                  review of fileReviews;
-                  track review.id
-                ) {
-
-                  <div class="review-item">
+              }
 
 
-                    <!-- REVIEW HEADER -->
+              @if (
+                !loadingReviews &&
+                initialReviews.length > 0
+              ) {
 
-                    <div class="review-item-header">
+                <div class="review-list">
 
-                      <div>
+                  @for (
+                    review of initialReviews;
+                    track review.id
+                  ) {
 
-                        <strong>
-                          {{ review.reviewType }}
-                        </strong>
+                    <div class="review-item">
 
-                        <span class="review-item-date">
+                      <div class="review-item-header">
 
-                          {{ review.reviewedAt | date:'medium' }}
+                        <div>
+
+                          <strong>
+                            Initial Review
+                          </strong>
+
+                          <span class="review-item-date">
+
+                            {{
+                              review.reviewDate
+                                | date:'medium'
+                            }}
+
+                          </span>
+
+                        </div>
+
+
+                        <span
+                          class="review-status"
+                          [class.review-status-pending]="
+                            review.reviewStatus === 'PENDING'
+                          "
+                          [class.review-status-approved]="
+                            review.reviewStatus === 'APPROVED'
+                          "
+                          [class.review-status-returned]="
+                            review.reviewStatus === 'RETURNED'
+                          "
+                          [class.review-status-rejected]="
+                            review.reviewStatus === 'REJECTED'
+                          ">
+
+                          {{ review.reviewStatus }}
 
                         </span>
 
                       </div>
 
 
-                      <span
-                        class="review-status"
-                        [class.review-status-pending]="
-                          review.reviewStatus === 'PENDING'
-                        "
-                        [class.review-status-approved]="
-                          review.reviewStatus === 'APPROVED'
-                        "
-                        [class.review-status-returned]="
-                          review.reviewStatus === 'RETURNED'
-                        "
-                        [class.review-status-rejected]="
-                          review.reviewStatus === 'REJECTED'
-                        ">
+                      <div class="review-item-row">
 
-                        {{ review.reviewStatus }}
+                        <span class="review-item-label">
+                          Reviewed By:
+                        </span>
 
-                      </span>
+                        <span>
+                          {{ review.reviewerName }}
+                        </span>
 
-                    </div>
+                      </div>
 
 
-                    <!-- REVIEWER -->
+                      <div class="review-item-row">
 
-                    <div class="review-item-row">
+                        <span class="review-item-label">
+                          Remarks:
+                        </span>
 
-                      <span class="review-item-label">
-                        Reviewed By:
-                      </span>
+                        <span>
+                          {{ review.remarks || 'No remarks' }}
+                        </span>
 
-                      <span>
-                        {{ review.reviewerName }}
-                      </span>
+                      </div>
 
                     </div>
 
+                  }
 
-                    <!-- REMARKS -->
+                </div>
 
-                    <div class="review-item-row">
+              }
 
-                      <span class="review-item-label">
-                        Remarks:
-                      </span>
+            </div>
 
-                      <span>
-                        {{ review.remarks || 'No remarks' }}
-                      </span>
+          }
+
+
+          <!-- FINAL REVIEW HISTORY -->
+
+          @if (reviewType === 'FINAL') {
+
+            <div class="review-history-section">
+
+              <div class="review-history-title">
+
+                <h4>
+                  Final Review History
+                </h4>
+
+              </div>
+
+
+              @if (loadingReviews) {
+
+                <div class="review-loading">
+
+                  ⏳
+                  Loading reviews...
+
+                </div>
+
+              }
+
+
+              @if (
+                !loadingReviews &&
+                fileReviews.length === 0
+              ) {
+
+                <div class="review-empty">
+
+                  <span>
+                    📝
+                  </span>
+
+                  <strong>
+                    No Final Reviews
+                  </strong>
+
+                  <span>
+                    No final reviews have been recorded
+                    for this file.
+                  </span>
+
+                </div>
+
+              }
+
+
+              @if (
+                !loadingReviews &&
+                fileReviews.length > 0
+              ) {
+
+                <div class="review-list">
+
+                  @for (
+                    review of fileReviews;
+                    track review.id
+                  ) {
+
+                    <div class="review-item">
+
+                      <div class="review-item-header">
+
+                        <div>
+
+                          <strong>
+                            Final Review
+                          </strong>
+
+                          <span class="review-item-date">
+
+                            {{
+                              review.reviewedAt
+                                | date:'medium'
+                            }}
+
+                          </span>
+
+                        </div>
+
+
+                        <span
+                          class="review-status"
+                          [class.review-status-pending]="
+                            review.reviewStatus === 'PENDING'
+                          "
+                          [class.review-status-approved]="
+                            review.reviewStatus === 'APPROVED'
+                          "
+                          [class.review-status-returned]="
+                            review.reviewStatus === 'RETURNED'
+                          "
+                          [class.review-status-rejected]="
+                            review.reviewStatus === 'REJECTED'
+                          ">
+
+                          {{ review.reviewStatus }}
+
+                        </span>
+
+                      </div>
+
+
+                      <div class="review-item-row">
+
+                        <span class="review-item-label">
+                          Reviewed By:
+                        </span>
+
+                        <span>
+                          {{ review.reviewerName }}
+                        </span>
+
+                      </div>
+
+
+                      <div class="review-item-row">
+
+                        <span class="review-item-label">
+                          Remarks:
+                        </span>
+
+                        <span>
+                          {{ review.remarks || 'No remarks' }}
+                        </span>
+
+                      </div>
 
                     </div>
 
+                  }
+
+                </div>
+
+              }
+
+            </div>
+
+          }
+
+        </div>
+
+
+        <!-- REVIEW FOOTER -->
+
+        <div class="review-modal-footer">
+
+          <button
+            type="button"
+            class="review-close-footer-button"
+            (click)="closeReviewModal()">
+
+            Close
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  }
+
+
+  <!-- ===================================================== -->
+  <!-- FINAL DOCUMENT MODAL -->
+  <!-- ===================================================== -->
+
+  @if (
+    showFinalDocumentModal &&
+    selectedFinalDocumentFile
+  ) {
+
+    <div
+      class="final-document-overlay"
+      (click)="closeFinalDocument()">
+
+      <div
+        class="final-document-modal"
+        (click)="$event.stopPropagation()">
+
+        <div class="final-document-header">
+
+          <div>
+
+            <h3>
+              Final Document
+            </h3>
+
+            <span class="final-document-case">
+
+              Case No:
+
+              <strong>
+                {{ selectedFinalDocumentFile.caseNo }}
+              </strong>
+
+            </span>
+
+          </div>
+
+
+          <button
+            type="button"
+            class="final-document-close"
+            (click)="closeFinalDocument()">
+
+            ×
+
+          </button>
+
+        </div>
+
+
+        <div class="final-document-body">
+
+          <div class="final-document-information">
+
+            <div class="final-document-info-item">
+
+              <span>
+                Case No.
+              </span>
+
+              <strong>
+                {{ selectedFinalDocumentFile.caseNo }}
+              </strong>
+
+            </div>
+
+
+            <div class="final-document-info-item">
+
+              <span>
+                Current Stage
+              </span>
+
+              <strong
+                class="stage-badge stage-resolved">
+
+                {{ selectedFinalDocumentFile.currentStage }}
+
+              </strong>
+
+            </div>
+
+
+            <div class="final-document-info-item">
+
+              <span>
+                Status
+              </span>
+
+              <strong>
+                {{ selectedFinalDocumentFile.statusName || 'N/A' }}
+              </strong>
+
+            </div>
+
+          </div>
+
+
+          <div class="final-document-form">
+
+            <div class="final-document-form-group">
+
+              <label for="finalDocumentName">
+
+                Document Name
+                <span class="required">
+                  *
+                </span>
+
+              </label>
+
+              <input
+                id="finalDocumentName"
+                type="text"
+                [(ngModel)]="finalDocumentForm.documentName"
+                placeholder="Enter final document name">
+
+            </div>
+
+
+            <div class="final-document-form-group">
+
+              <label for="finalDocumentPath">
+                File Path
+              </label>
+
+              <input
+                id="finalDocumentPath"
+                type="text"
+                [(ngModel)]="finalDocumentForm.filePath"
+                placeholder="Enter final document file path">
+
+              <small class="final-document-hint">
+                Optional. Enter the location of the finalized document.
+              </small>
+
+            </div>
+
+
+            <div class="final-document-form-group">
+
+              <label for="finalDocumentRemarks">
+                Remarks
+              </label>
+
+              <textarea
+                id="finalDocumentRemarks"
+                rows="4"
+                [(ngModel)]="finalDocumentForm.remarks"
+                placeholder="Enter remarks...">
+              </textarea>
+
+            </div>
+
+
+            <div class="final-document-workflow">
+
+              <span class="final-document-workflow-icon">
+                ✓
+              </span>
+
+              <div>
+
+                <strong>
+                  File Resolved
+                </strong>
+
+                <p>
+                  This legal file has completed the review process.
+                  You can now record the final document.
+                </p>
+
+              </div>
+
+            </div>
+
+
+            <div class="final-document-actions">
+
+              <button
+                type="button"
+                class="final-document-cancel"
+                (click)="closeFinalDocument()">
+
+                Cancel
+
+              </button>
+
+
+              <button
+                type="button"
+                class="final-document-save"
+                [disabled]="
+                  savingFinalDocument ||
+                  !finalDocumentForm.documentName.trim()
+                "
+                (click)="saveFinalDocument()">
+
+                @if (savingFinalDocument) {
+                  Saving...
+                } @else {
+                  Save Final Document
+                }
+
+              </button>
+
+            </div>
+
+          </div>
+
+
+          <!-- FINAL DOCUMENT HISTORY -->
+
+          <div class="final-document-history">
+
+            <div class="final-document-history-header">
+
+              <h4>
+                Final Document History
+              </h4>
+
+            </div>
+
+
+            @if (loadingFinalDocuments) {
+
+              <div class="final-document-loading">
+
+                ⏳
+                Loading final documents...
+
+              </div>
+
+            }
+
+
+            @if (
+              !loadingFinalDocuments &&
+              finalDocuments.length === 0
+            ) {
+
+              <div class="final-document-empty">
+
+                <span class="final-document-empty-icon">
+                  📄
+                </span>
+
+                <strong>
+                  No Final Documents
+                </strong>
+
+                <span>
+                  No final documents have been recorded
+                  for this legal file.
+                </span>
+
+              </div>
+
+            }
+
+
+            @if (
+              !loadingFinalDocuments &&
+              finalDocuments.length > 0
+            ) {
+
+              <div class="final-document-list">
+
+                @for (
+                  document of finalDocuments;
+                  track document.id
+                ) {
+
+                  <div class="final-document-item">
+
+                    <div class="final-document-item-icon">
+                      📄
+                    </div>
+
+                    <div class="final-document-item-content">
+
+                      <div class="final-document-item-header">
+
+                        <strong>
+                          {{ document.documentName }}
+                        </strong>
+
+                        <span>
+                          {{
+                            document.finalizedAt
+                              | date:'medium'
+                          }}
+                        </span>
+
+                      </div>
+
+
+                      <div class="final-document-item-row">
+
+                        <span class="final-document-item-label">
+                          Finalized By:
+                        </span>
+
+                        <span>
+                          {{
+                            document.finalizedByName ||
+                            'Unknown'
+                          }}
+                        </span>
+
+                      </div>
+
+
+                      @if (document.filePath) {
+
+                        <div class="final-document-item-row">
+
+                          <span class="final-document-item-label">
+                            File Path:
+                          </span>
+
+                          <span class="final-document-file-path">
+                            {{ document.filePath }}
+                          </span>
+
+                        </div>
+
+                      }
+
+
+                      @if (document.remarks) {
+
+                        <div class="final-document-item-row">
+
+                          <span class="final-document-item-label">
+                            Remarks:
+                          </span>
+
+                          <span>
+                            {{ document.remarks }}
+                          </span>
+
+                        </div>
+
+                      }
+
+                    </div>
 
                   </div>
 
@@ -1353,16 +1891,12 @@
         </div>
 
 
-        <!-- ================================================= -->
-        <!-- REVIEW FOOTER -->
-        <!-- ================================================= -->
-
-        <div class="review-modal-footer">
+        <div class="final-document-footer">
 
           <button
             type="button"
-            class="review-close-footer-button"
-            (click)="closeReviewModal()">
+            class="final-document-close-footer"
+            (click)="closeFinalDocument()">
 
             Close
 
@@ -1389,8 +1923,6 @@
 
         <tr>
 
-          <!-- SELECT -->
-
           <th class="checkbox-column">
 
             <input
@@ -1403,115 +1935,83 @@
           </th>
 
 
-          <!-- STATUS -->
-
           <th class="status-column">
             Status
           </th>
 
-
-          <!-- CASE NUMBER -->
 
           <th>
             Case No.
           </th>
 
 
-          <!-- FILE -->
-
           <th class="file-column">
             File
           </th>
 
-
-          <!-- DATE RECEIVED -->
 
           <th>
             Date Received
           </th>
 
 
-          <!-- TIME RECEIVED -->
-
           <th>
             Time Received
           </th>
 
-
-          <!-- DATE COMPLETED -->
 
           <th>
             Date Completed
           </th>
 
 
-          <!-- SPMS TYPE -->
-
           <th>
             SPMS Type
           </th>
 
-
-          <!-- REQUESTING OFFICE -->
 
           <th>
             Requesting Office
           </th>
 
 
-          <!-- DOCUMENT TYPE -->
-
           <th>
             Document Type
           </th>
 
-
-          <!-- DOCUMENT FORMAT -->
 
           <th>
             Document Format
           </th>
 
 
-          <!-- CONTACT DETAILS -->
-
           <th>
             Contact Details
           </th>
 
-
-          <!-- CURRENT STAGE -->
 
           <th>
             Current Stage
           </th>
 
 
-          <!-- CREATED BY -->
-
           <th>
             Created By
           </th>
 
-
-          <!-- CREATED AT -->
 
           <th>
             Created At
           </th>
 
 
-          <!-- UPDATED AT -->
-
           <th>
             Updated At
           </th>
 
 
-          <!-- ACTION HISTORY -->
-
           <th class="action-history-column">
-            History
+            Actions
           </th>
 
         </tr>
@@ -1526,19 +2026,12 @@
           track file.id
         ) {
 
-          <!-- ================================================= -->
-          <!-- SELECTABLE ROW -->
-          <!-- ================================================= -->
-
           <tr
-            [class.selected-row]="selectedRowId === file.id"
+            [class.selected-row]="
+              selectedRowId === file.id
+            "
             (click)="selectRow(file.id)"
           >
-
-
-            <!-- ================================================= -->
-            <!-- CHECKBOX -->
-            <!-- ================================================= -->
 
             <td
               class="checkbox-cell"
@@ -1554,54 +2047,31 @@
             </td>
 
 
-            <!-- ================================================= -->
             <!-- STATUS -->
-            <!-- ================================================= -->
 
-            <td
-              class="status-cell"
-              (click)="$event.stopPropagation()">
+            <td class="status-cell">
 
-              <select
-                class="status-select"
-                [ngClass]="getStatusClass(file.statusId)"
-                [ngModel]="file.statusId"
-                (click)="$event.stopPropagation()"
-                (ngModelChange)="onStatusChange(file, $event)"
-              >
+              <span
+                class="status-badge"
+                [ngClass]="
+                  getStatusClass(file.statusId)
+                ">
 
-                @for (
-                  status of statuses;
-                  track status.id
-                ) {
+                {{ file.statusName || 'PENDING' }}
 
-                  <option [ngValue]="status.id">
-
-                    {{ status.statusName }}
-
-                  </option>
-
-                }
-
-              </select>
+              </span>
 
             </td>
 
 
-            <!-- ================================================= -->
             <!-- CASE NUMBER -->
-            <!-- ================================================= -->
 
             <td>
-
               {{ file.caseNo }}
-
             </td>
 
 
-            <!-- ================================================= -->
             <!-- FILE -->
-            <!-- ================================================= -->
 
             <td class="file-column">
 
@@ -1625,7 +2095,10 @@
                     <span
                       class="file-name"
                       title="{{ document.documentName }}"
-                      (click)="downloadDocument(document); $event.stopPropagation()">
+                      (click)="
+                        downloadDocument(document);
+                        $event.stopPropagation()
+                      ">
 
                       {{ document.documentName }}
 
@@ -1633,9 +2106,7 @@
 
 
                     <span class="file-version">
-
                       v{{ document.version }}
-
                     </span>
 
 
@@ -1643,7 +2114,10 @@
                       type="button"
                       class="edit-file-button"
                       title="Replace document"
-                      (click)="openReplaceDocument(document); $event.stopPropagation()">
+                      (click)="
+                        openReplaceDocument(document);
+                        $event.stopPropagation()
+                      ">
 
                       ✎
 
@@ -1656,9 +2130,7 @@
               } @else {
 
                 <span class="no-file">
-
                   No file
-
                 </span>
 
               }
@@ -1666,164 +2138,212 @@
             </td>
 
 
-            <!-- ================================================= -->
             <!-- DATE RECEIVED -->
-            <!-- ================================================= -->
 
             <td>
-
               {{ file.dateReceived }}
-
             </td>
 
 
-            <!-- ================================================= -->
             <!-- TIME RECEIVED -->
-            <!-- ================================================= -->
 
             <td>
-
               {{ file.timeReceived || 'N/A' }}
-
             </td>
 
 
-            <!-- ================================================= -->
             <!-- DATE COMPLETED -->
-            <!-- ================================================= -->
 
             <td>
-
               {{ file.dateCompleted || 'N/A' }}
-
             </td>
 
 
-            <!-- ================================================= -->
             <!-- SPMS TYPE -->
-            <!-- ================================================= -->
 
             <td>
-
               {{ file.spmsTypeName || 'N/A' }}
-
             </td>
 
 
-            <!-- ================================================= -->
             <!-- REQUESTING OFFICE -->
-            <!-- ================================================= -->
 
             <td>
-
               {{ file.requestingOfficeName || 'N/A' }}
-
             </td>
 
 
-            <!-- ================================================= -->
             <!-- DOCUMENT TYPE -->
-            <!-- ================================================= -->
 
             <td>
-
               {{ file.documentTypeName || 'N/A' }}
-
             </td>
 
 
-            <!-- ================================================= -->
             <!-- DOCUMENT FORMAT -->
-            <!-- ================================================= -->
 
             <td>
-
               {{ file.documentFormatName || 'N/A' }}
-
             </td>
 
 
-            <!-- ================================================= -->
             <!-- CONTACT DETAILS -->
-            <!-- ================================================= -->
 
             <td>
-
               {{ file.contactDetails || 'N/A' }}
-
             </td>
 
 
-            <!-- ================================================= -->
             <!-- CURRENT STAGE -->
-            <!-- ================================================= -->
 
             <td>
 
-              {{ file.currentStage || 'N/A' }}
+              <span
+                class="stage-badge"
+                [ngClass]="
+                  getStageClass(file.currentStage)
+                ">
+
+                @switch (file.currentStage) {
+
+                  @case ('RECEIVED') {
+                    Received
+                  }
+
+                  @case ('INITIAL_REVIEW') {
+                    Initial Review
+                  }
+
+                  @case ('FINAL_REVIEW') {
+                    Final Review
+                  }
+
+                  @case ('RESOLVED') {
+                    Resolved
+                  }
+
+                  @case ('OUT') {
+                    Out
+                  }
+
+                  @default {
+                    {{ file.currentStage || 'N/A' }}
+                  }
+
+                }
+
+              </span>
 
             </td>
 
 
-            <!-- ================================================= -->
             <!-- CREATED BY -->
-            <!-- ================================================= -->
 
             <td>
-
               {{ file.createdById || 'N/A' }}
-
             </td>
 
 
-            <!-- ================================================= -->
             <!-- CREATED AT -->
-            <!-- ================================================= -->
 
             <td>
-
               {{ file.createdAt || 'N/A' }}
-
             </td>
 
 
-            <!-- ================================================= -->
             <!-- UPDATED AT -->
-            <!-- ================================================= -->
 
             <td>
-
               {{ file.updatedAt || 'N/A' }}
-
             </td>
 
 
-            <!-- ================================================= -->
-            <!-- REVIEW + HISTORY -->
-            <!-- ================================================= -->
+            <!-- ACTIONS -->
 
-            <td class="action-history-cell">
+            <td
+              class="action-history-cell"
+              (click)="$event.stopPropagation()">
 
-              <button
-                type="button"
-                class="review-button"
-                title="Review file"
-                (click)="openReview(file); $event.stopPropagation()">
+              <!-- REVIEW BUTTON -->
 
-                📝
+              @if (isReviewAvailable(file)) {
 
-                <span>
-                  Review
+                <button
+                  type="button"
+                  class="review-button"
+                  title="{{ getWorkflowAction(file) }}"
+                  (click)="
+                    openReview(file);
+                    $event.stopPropagation()
+                  ">
+
+                  📝
+
+                  <span>
+                    {{ getWorkflowAction(file) }}
+                  </span>
+
+                </button>
+
+              }
+
+
+              <!-- RESOLVED -->
+
+              @else if (file.currentStage === 'RESOLVED') {
+
+                <button
+                  type="button"
+                  class="final-document-button"
+                  title="Create Final Document"
+                  (click)="
+                    openFinalDocument(file);
+                    $event.stopPropagation()
+                  ">
+
+                  📄
+
+                  <span>
+                    Final Document
+                  </span>
+
+                </button>
+
+              }
+
+
+              <!-- OUT -->
+
+              @else if (file.currentStage === 'OUT') {
+
+                <span class="out-label">
+                  ✓ OUT
                 </span>
 
-              </button>
+              }
 
+
+              <!-- OTHER -->
+
+              @else {
+
+                <span class="resolved-label">
+                  ✓ Resolved
+                </span>
+
+              }
+
+
+              <!-- HISTORY BUTTON -->
 
               <button
                 type="button"
                 class="history-button"
                 title="View file action history"
-                (click)="openActivityHistory(file); $event.stopPropagation()">
+                (click)="
+                  openActivityHistory(file);
+                  $event.stopPropagation()
+                ">
 
                 📋
 
@@ -1832,6 +2352,39 @@
                 </span>
 
               </button>
+
+            </td>
+
+          </tr>
+
+        }
+
+
+        <!-- EMPTY TABLE -->
+
+        @if (legalFiles.length === 0) {
+
+          <tr>
+
+            <td
+              colspan="17"
+              class="empty-table">
+
+              <div class="empty-table-content">
+
+                <span class="empty-table-icon">
+                  📁
+                </span>
+
+                <strong>
+                  No Legal Files
+                </strong>
+
+                <span>
+                  No legal files have been created yet.
+                </span>
+
+              </div>
 
             </td>
 
@@ -1851,23 +2404,6 @@
   <!-- ===================================================== -->
 
   <div class="update-actions">
-
-
-    <!-- UPDATE -->
-
-    <button
-      type="button"
-      class="update-button"
-      [class.has-changes]="hasStatusChanges()"
-      [disabled]="!hasStatusChanges()"
-      (click)="updateChangedStatuses()">
-
-      Update
-
-    </button>
-
-
-    <!-- DELETE -->
 
     <button
       type="button"

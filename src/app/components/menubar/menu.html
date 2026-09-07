@@ -21,6 +21,7 @@
     <!-- NAVIGATION -->
     <nav>
 
+      <!-- DASHBOARD -->
       <a
         routerLink="/menubar/dashboard"
         routerLinkActive="active">
@@ -34,6 +35,7 @@
       </a>
 
 
+      <!-- LEGAL FILES -->
       <a
         routerLink="/menubar/legal-files"
         routerLinkActive="active">
@@ -47,21 +49,18 @@
       </a>
 
 
-
-      <!-- <a
-
+      <!-- PROOF OF SERVICE -->
       <a
- (Update legal files UI and document upload)
-        routerLink="/cases"
+        routerLink="/menubar/proof-of-service"
         routerLinkActive="active">
 
-        <span class="nav-icon">▣</span>
+        <span class="nav-icon">📬</span>
 
         <span class="nav-text">
-          Cases
+          Proof of Service
         </span>
 
-      </a> -->
+      </a>
 
     </nav>
 
@@ -70,6 +69,7 @@
     <div class="logout-container">
 
       <button
+        type="button"
         class="logout-button"
         (click)="logout()">
 

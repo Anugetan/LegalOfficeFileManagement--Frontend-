@@ -5,6 +5,7 @@ import { Register } from './components/register/register';
 import { MenuBar } from './components/menubar/menu';
 import { LegalFiles } from './components/legal-files/legal-files';
 import { Dashboard } from './components/dashboard/dashboard';
+import { ProofOfServiceComponent } from './components/proof-of-service/proof-of-service';
 // import { Home } from './components/home/home';
 // import { Cases } from './components/cases/cases';
 // import { Settings } from './components/settings/settings';
@@ -49,10 +50,10 @@ export const routes: Routes = [
         component: LegalFiles
       },
 
-      // {
-      //   path: 'cases',
-      //   component: Cases
-      // },
+      {
+      path: 'proof-of-service',
+      component: ProofOfServiceComponent
+    }
 
 
     ]

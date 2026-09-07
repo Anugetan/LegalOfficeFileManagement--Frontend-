@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { CreateFileReview, FileReview } from '../model/file-review/file-review';
+import { CreateFileReview, FileReview } from '../model/final-review/final-review';
 import { environment } from '../env/environment';
 
 

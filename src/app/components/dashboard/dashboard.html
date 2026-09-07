@@ -1,462 +1,990 @@
 <div class="dashboard">
 
-  <!-- ========================= -->
-
+  <!-- ===================================================== -->
   <!-- DASHBOARD HEADER -->
-
-  <!-- ========================= -->
+  <!-- ===================================================== -->
 
   <div class="dashboard-header">
 
+    <div class="dashboard-title">
 
-<h2>Dashboard</h2>
+      <h2>Dashboard</h2>
 
+    </div>
+
+
+    <button
+      type="button"
+      class="refresh-button"
+      (click)="refreshDashboard()">
+
+      ↻
+
+      <span>
+        Refresh
+      </span>
+
+    </button>
 
   </div>
 
-  <!-- ========================= -->
 
-  <!-- PENDING -->
+  <!-- ===================================================== -->
+  <!-- ERROR -->
+  <!-- ===================================================== -->
 
-  <!-- ========================= -->
+  @if (errorMessage) {
 
-  <section class="status-section pending-section">
+    <div class="dashboard-error">
 
+      {{ errorMessage }}
 
-<div class="section-header">
+    </div>
 
-  <h3>Pending</h3>
-
-  <span class="count">
-    {{ pendingFiles.length }}
-  </span>
-
-</div>
+  }
 
 
-<div class="table-wrapper">
+  <!-- ===================================================== -->
+  <!-- SUMMARY CARDS -->
+  <!-- ===================================================== -->
 
-  <table>
-
-    <thead>
-
-      <tr>
-        <th>Case No.</th>
-        <th>Document Type</th>
-        <th>Requesting Office</th>
-        <th>SPMS Type</th>
-        <th>Document Format</th>
-      </tr>
-
-    </thead>
+  <div class="summary-cards">
 
 
-    <tbody>
+    <!-- PENDING -->
 
-      @for (file of pendingFiles; track file.id) {
+    <div
+      class="summary-card pending-card"
+      (click)="viewLegalFiles()">
 
-        <tr>
+      <div class="summary-icon">
+        ⏱
+      </div>
 
-          <td>
-            {{ file.caseNo || 'N/A' }}
-          </td>
+      <div class="summary-content">
 
-          <td>
-            {{ file.documentTypeName || 'N/A' }}
-          </td>
+        <span class="summary-label">
+          Pending
+        </span>
 
-          <td>
-            {{ file.requestingOfficeName || 'N/A' }}
-          </td>
+        <strong>
+          {{ pendingFiles.length }}
+        </strong>
 
-          <td>
-            {{ file.spmsTypeName || 'N/A' }}
-          </td>
+      </div>
 
-          <td>
-            {{ file.documentFormatName || 'N/A' }}
-          </td>
+      <span class="summary-arrow">
+        →
+      </span>
 
-        </tr>
+    </div>
+
+
+    <!-- OUT -->
+
+    <div
+      class="summary-card out-card"
+      (click)="viewLegalFiles()">
+
+      <div class="summary-icon">
+        ➤
+      </div>
+
+      <div class="summary-content">
+
+        <span class="summary-label">
+          Out
+        </span>
+
+        <strong>
+          {{ outFiles.length }}
+        </strong>
+
+      </div>
+
+      <span class="summary-arrow">
+        →
+      </span>
+
+    </div>
+
+
+    <!-- RESOLVED -->
+
+    <div
+      class="summary-card resolved-card"
+      (click)="viewLegalFiles()">
+
+      <div class="summary-icon">
+        ✓
+      </div>
+
+      <div class="summary-content">
+
+        <span class="summary-label">
+          Resolved
+        </span>
+
+        <strong>
+          {{ resolvedFiles.length }}
+        </strong>
+
+      </div>
+
+      <span class="summary-arrow">
+        →
+      </span>
+
+    </div>
+
+
+    <!-- ARCHIVED -->
+<!-- 
+    <div
+      class="summary-card archived-card"
+      (click)="viewLegalFiles()">
+
+      <div class="summary-icon">
+        ▣
+      </div>
+
+      <div class="summary-content">
+
+        <span class="summary-label">
+          Archived
+        </span>
+
+        <strong>
+          {{ archivedFiles.length }}
+        </strong>
+
+      </div>
+
+      <span class="summary-arrow">
+        →
+      </span>
+
+    </div> -->
+
+
+    <!-- CANCELLED -->
+
+    <!-- <div
+      class="summary-card cancelled-card"
+      (click)="viewLegalFiles()">
+
+      <div class="summary-icon">
+        ×
+      </div>
+
+      <div class="summary-content">
+
+        <span class="summary-label">
+          Cancelled
+        </span>
+
+        <strong>
+          {{ cancelledFiles.length }}
+        </strong>
+
+      </div>
+
+      <span class="summary-arrow">
+        →
+      </span>
+
+    </div> -->
+
+  </div>
+
+
+  <!-- ===================================================== -->
+  <!-- MAIN DASHBOARD GRID -->
+  <!-- ===================================================== -->
+
+  <div class="dashboard-grid">
+
+
+    <!-- =================================================== -->
+    <!-- FILE STATUS OVERVIEW -->
+    <!-- =================================================== -->
+
+    <section class="dashboard-card status-overview">
+
+      <div class="card-header">
+
+        <div>
+
+          <h3>
+            <span class="header-icon">▥</span>
+            File Status Overview
+          </h3>
+
+          <p>
+            Current legal file distribution
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <div class="status-list">
+
+
+        <!-- PENDING -->
+
+        <div class="status-row">
+
+          <div class="status-name">
+            <span class="status-dot pending-dot"></span>
+            Pending
+          </div>
+
+          <div class="status-progress">
+
+            <div
+              class="progress-bar pending-progress"
+              [style.width.%]="
+                totalFiles
+                  ? (pendingFiles.length / totalFiles) * 100
+                  : 0
+              ">
+            </div>
+
+          </div>
+
+          <strong>
+            {{ pendingFiles.length }}
+          </strong>
+
+        </div>
+
+
+        <!-- RESOLVED -->
+
+        <div class="status-row">
+
+          <div class="status-name">
+            <span class="status-dot resolved-dot"></span>
+            Resolved
+          </div>
+
+          <div class="status-progress">
+
+            <div
+              class="progress-bar resolved-progress"
+              [style.width.%]="
+                totalFiles
+                  ? (resolvedFiles.length / totalFiles) * 100
+                  : 0
+              ">
+            </div>
+
+          </div>
+
+          <strong>
+            {{ resolvedFiles.length }}
+          </strong>
+
+        </div>
+
+
+        <!-- OUT -->
+
+        <div class="status-row">
+
+          <div class="status-name">
+            <span class="status-dot out-dot"></span>
+            Out
+          </div>
+
+          <div class="status-progress">
+
+            <div
+              class="progress-bar out-progress"
+              [style.width.%]="
+                totalFiles
+                  ? (outFiles.length / totalFiles) * 100
+                  : 0
+              ">
+            </div>
+
+          </div>
+
+          <strong>
+            {{ outFiles.length }}
+          </strong>
+
+        </div>
+
+
+        <!-- ARCHIVED -->
+
+        <!-- <div class="status-row">
+
+          <div class="status-name">
+            <span class="status-dot archived-dot"></span>
+            Archived
+          </div>
+
+          <div class="status-progress">
+
+            <div
+              class="progress-bar archived-progress"
+              [style.width.%]="
+                totalFiles
+                  ? (archivedFiles.length / totalFiles) * 100
+                  : 0
+              ">
+            </div>
+
+          </div>
+
+          <strong>
+            {{ archivedFiles.length }}
+          </strong>
+
+        </div> -->
+
+
+        <!-- CANCELLED -->
+
+        <!-- <div class="status-row">
+
+          <div class="status-name">
+            <span class="status-dot cancelled-dot"></span>
+            Cancelled
+          </div>
+
+          <div class="status-progress">
+
+            <div
+              class="progress-bar cancelled-progress"
+              [style.width.%]="
+                totalFiles
+                  ? (cancelledFiles.length / totalFiles) * 100
+                  : 0
+              ">
+            </div>
+
+          </div>
+
+          <strong>
+            {{ cancelledFiles.length }}
+          </strong>
+
+        </div> -->
+
+      </div>
+
+
+      <!-- TOTAL -->
+
+      <div class="status-total">
+
+        <span>
+          Total Legal Files
+        </span>
+
+        <strong>
+          {{ totalFiles }}
+        </strong>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- =================================================== -->
+    <!-- FINAL DOCUMENTS -->
+    <!-- =================================================== -->
+
+    <section class="dashboard-card final-documents-card">
+
+      <div class="card-header">
+
+        <div>
+
+          <h3>
+
+            <span class="header-icon">
+              📄
+            </span>
+
+            Final Documents
+
+          </h3>
+
+          <p>
+            Recently finalized legal documents
+          </p>
+
+        </div>
+
+
+        <span class="card-count">
+          {{ finalDocumentCount }}
+        </span>
+
+      </div>
+
+
+      @if (loadingFinalDocuments) {
+
+        <div class="empty-state">
+
+          <div class="loading-spinner"></div>
+
+          <p>
+            Loading final documents...
+          </p>
+
+        </div>
 
       }
+
+      @else if (finalDocuments.length === 0) {
+
+        <div class="empty-state">
+
+          <div class="empty-icon">
+            📄
+          </div>
+
+          <p>
+            No final documents yet.
+          </p>
+
+        </div>
+
+      }
+
+      @else {
+
+        <div class="table-wrapper">
+
+          <table class="dashboard-table">
+
+            <thead>
+
+              <tr>
+
+                <th>
+                  Case No.
+                </th>
+
+                <th>
+                  Document Name
+                </th>
+
+                <th>
+                  Finalized By
+                </th>
+
+                <th>
+                  Finalized At
+                </th>
+
+                <th>
+                  Action
+                </th>
+
+              </tr>
+
+            </thead>
+
+
+            <tbody>
+
+              @for (
+                document of finalDocuments.slice(0, 5);
+                track document.id
+              ) {
+
+                <tr>
+
+                  <td>
+                    <strong>
+                      {{ document.caseNo }}
+                    </strong>
+                  </td>
+
+
+                  <td>
+
+                    <span class="document-name">
+
+                      📄
+
+                      {{ document.documentName }}
+
+                    </span>
+
+                  </td>
+
+
+                  <td>
+                    {{ document.finalizedByName || '—' }}
+                  </td>
+
+
+                  <td>
+
+                    @if (document.finalizedAt) {
+
+                      {{ document.finalizedAt | date:'MMM d, y' }}
+
+                    }
+
+                    @else {
+
+                      —
+
+                    }
+
+                  </td>
+
+
+                  <td>
+
+                    <button
+                      type="button"
+                      class="table-action-button"
+                      (click)="viewFinalDocuments()">
+
+                      View
+
+                    </button>
+
+                  </td>
+
+                </tr>
+
+              }
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+
+        @if (finalDocuments.length > 5) {
+
+          <button
+            type="button"
+            class="view-all-button"
+            (click)="viewFinalDocuments()">
+
+            View all final documents →
+
+          </button>
+
+        }
+
+      }
+
+    </section>
+
+
+
+    <!-- =================================================== -->
+    <!-- RECENT ACTIVITY -->
+    <!-- =================================================== -->
+
+    <section class="dashboard-card activity-card">
+
+      <div class="card-header">
+
+        <div>
+
+          <h3>
+
+            <span class="header-icon">
+              ◷
+            </span>
+
+            Recent Activity
+
+          </h3>
+
+          <p>
+            Recently created or updated files
+          </p>
+
+        </div>
+
+      </div>
+
+
+      @if (recentFiles.length === 0) {
+
+        <div class="empty-state">
+
+          <div class="empty-icon">
+            ◷
+          </div>
+
+          <p>
+            No recent activity.
+          </p>
+
+        </div>
+
+      }
+
+      @else {
+
+        <div class="activity-list">
+
+          @for (
+            file of recentFiles;
+            track file.id
+          ) {
+
+            <div class="activity-item">
+
+
+              <div
+                class="activity-icon"
+                [class.resolved]="
+                  getStatusClass(file) === 'resolved'
+                "
+                [class.pending]="
+                  getStatusClass(file) === 'pending'
+                "
+                [class.out]="
+                  getStatusClass(file) === 'out'
+                "
+                [class.cancelled]="
+                  getStatusClass(file) === 'cancelled'
+                "
+                [class.archived]="
+                  getStatusClass(file) === 'archived'
+                ">
+
+                {{ getActivityIcon(file) }}
+
+              </div>
+
+
+              <div class="activity-content">
+
+                <strong>
+                  {{ getActivityTitle(file) }}
+                </strong>
+
+                <span>
+                  Case {{ file.caseNo }}
+                </span>
+
+                <small>
+
+                  {{ getStageLabel(file) }}
+
+                  @if (file.createdAt) {
+                    ·
+                    {{ file.createdAt | date:'MMM d, y' }}
+                  }
+
+                </small>
+
+              </div>
+
+            </div>
+
+          }
+
+        </div>
+
+      }
+
+    </section>
+
+
+
+    <!-- =================================================== -->
+    <!-- PENDING FILES -->
+    <!-- =================================================== -->
+
+    <section class="dashboard-card pending-files-card">
+
+      <div class="card-header">
+
+        <div>
+
+          <h3>
+
+            <span class="header-icon">
+              ◷
+            </span>
+
+            Pending Files
+
+          </h3>
+
+          <p>
+            Files waiting for processing
+          </p>
+
+        </div>
+
+
+        <span class="card-count">
+          {{ pendingFiles.length }}
+        </span>
+
+      </div>
 
 
       @if (pendingFiles.length === 0) {
 
-        <tr class="empty-row">
+        <div class="empty-state">
 
-          <td colspan="5">
-            No pending legal files.
-          </td>
+          <div class="empty-icon">
+            ✓
+          </div>
 
-        </tr>
+          <p>
+            No pending files.
+          </p>
 
-      }
-
-    </tbody>
-
-  </table>
-
-</div>
-
-
-  </section>
-
-  <!-- ========================= -->
-
-  <!-- OUT -->
-
-  <!-- ========================= -->
-
-  <section class="status-section out-section">
-
-
-<div class="section-header">
-
-  <h3>Out</h3>
-
-  <span class="count">
-    {{ outFiles.length }}
-  </span>
-
-</div>
-
-
-<div class="table-wrapper">
-
-  <table>
-
-    <thead>
-
-      <tr>
-        <th>Case No.</th>
-        <th>Document Type</th>
-        <th>Requesting Office</th>
-        <th>SPMS Type</th>
-        <th>Document Format</th>
-      </tr>
-
-    </thead>
-
-
-    <tbody>
-
-      @for (file of outFiles; track file.id) {
-
-        <tr>
-
-          <td>
-            {{ file.caseNo || 'N/A' }}
-          </td>
-
-          <td>
-            {{ file.documentTypeName || 'N/A' }}
-          </td>
-
-          <td>
-            {{ file.requestingOfficeName || 'N/A' }}
-          </td>
-
-          <td>
-            {{ file.spmsTypeName || 'N/A' }}
-          </td>
-
-          <td>
-            {{ file.documentFormatName || 'N/A' }}
-          </td>
-
-        </tr>
+        </div>
 
       }
 
+      @else {
 
-      @if (outFiles.length === 0) {
+        <div class="table-wrapper">
 
-        <tr class="empty-row">
+          <table class="dashboard-table pending-table">
 
-          <td colspan="5">
-            No out legal files.
-          </td>
+            <thead>
 
-        </tr>
+              <tr>
+
+                <th>
+                  Case No.
+                </th>
+
+                <th>
+                  Document Type
+                </th>
+
+                <th>
+                  Requesting Office
+                </th>
+
+                <th>
+                  SPMS Type
+                </th>
+
+                <th>
+                  Current Stage
+                </th>
+
+                <th>
+                  Action
+                </th>
+
+              </tr>
+
+            </thead>
+
+
+            <tbody>
+
+              @for (
+                file of pendingFiles.slice(0, 5);
+                track file.id
+              ) {
+
+                <tr>
+
+                  <td>
+
+                    <strong>
+                      {{ file.caseNo }}
+                    </strong>
+
+                  </td>
+
+
+                  <td>
+                    {{ file.documentTypeName || '—' }}
+                  </td>
+
+
+                  <td>
+                    {{ file.requestingOfficeName || '—' }}
+                  </td>
+
+
+                  <td>
+                    {{ file.spmsTypeName || '—' }}
+                  </td>
+
+
+                  <td>
+
+                    <span
+                      class="stage-badge"
+                      [class.initial-review]="
+                        file.currentStage === 'INITIAL_REVIEW'
+                      "
+                      [class.final-review]="
+                        file.currentStage === 'FINAL_REVIEW'
+                      "
+                      [class.received]="
+                        file.currentStage === 'RECEIVED'
+                      ">
+
+                      {{ getStageLabel(file) }}
+
+                    </span>
+
+                  </td>
+
+
+                  <td>
+
+                    <button
+                      type="button"
+                      class="table-action-button"
+                      (click)="viewFile(file)">
+
+                      👁 View
+
+                    </button>
+
+                  </td>
+
+                </tr>
+
+              }
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+
+        @if (pendingFiles.length > 5) {
+
+          <button
+            type="button"
+            class="view-all-button"
+            (click)="viewLegalFiles()">
+
+            View all pending files →
+
+          </button>
+
+        }
 
       }
 
-    </tbody>
+    </section>
 
-  </table>
 
-</div>
 
+    <!-- =================================================== -->
+    <!-- QUICK ACTIONS -->
+    <!-- =================================================== -->
 
-  </section>
+    <section class="dashboard-card quick-actions-card">
 
-  <!-- ========================= -->
+      <div class="card-header">
 
-  <!-- RESOLVED -->
+        <div>
 
-  <!-- ========================= -->
+          <h3>
 
-  <section class="status-section resolved-section">
+            <span class="header-icon">
+              ⚡
+            </span>
 
+            Quick Actions
 
-<div class="section-header">
+          </h3>
 
-  <h3>Resolved</h3>
+        </div>
 
-  <span class="count">
-    {{ resolvedFiles.length }}
-  </span>
+      </div>
 
-</div>
 
+      <div class="quick-actions">
 
-<div class="table-wrapper">
 
-  <table>
+        <button
+          type="button"
+          class="quick-action primary"
+          (click)="addLegalFile()">
 
-    <thead>
+          <span class="quick-action-icon">
+            ＋
+          </span>
 
-      <tr>
-        <th>Case No.</th>
-        <th>Document Type</th>
-        <th>Requesting Office</th>
-        <th>SPMS Type</th>
-        <th>Document Format</th>
-      </tr>
+          <span>
+            Add Legal File
+          </span>
 
-    </thead>
+        </button>
 
 
-    <tbody>
+        <button
+          type="button"
+          class="quick-action"
+          (click)="viewLegalFiles()">
 
-      @for (file of resolvedFiles; track file.id) {
+          <span class="quick-action-icon">
+            ▣
+          </span>
 
-        <tr>
+          <span>
+            View All Files
+          </span>
 
-          <td>
-            {{ file.caseNo || 'N/A' }}
-          </td>
+        </button>
 
-          <td>
-            {{ file.documentTypeName || 'N/A' }}
-          </td>
 
-          <td>
-            {{ file.requestingOfficeName || 'N/A' }}
-          </td>
+        <button
+          type="button"
+          class="quick-action"
+          (click)="viewProofOfService()">
 
-          <td>
-            {{ file.spmsTypeName || 'N/A' }}
-          </td>
+          <span class="quick-action-icon">
+            📬
+          </span>
 
-          <td>
-            {{ file.documentFormatName || 'N/A' }}
-          </td>
+          <span>
+            Proof of Service
+          </span>
 
-        </tr>
+        </button>
 
-      }
+<!-- 
+        <button
+          type="button"
+          class="quick-action">
 
+          <span class="quick-action-icon">
+            ⚙
+          </span>
 
-      @if (resolvedFiles.length === 0) {
+          <span>
+            Settings
+          </span>
 
-        <tr class="empty-row">
+        </button> -->
 
-          <td colspan="5">
-            No resolved legal files.
-          </td>
+      </div>
 
-        </tr>
+    </section>
 
-      }
-
-    </tbody>
-
-  </table>
-
-</div>
-
-
-  </section>
-
-  <!-- ========================= -->
-
-  <!-- ARCHIVED -->
-
-  <!-- ========================= -->
-
-  <section class="status-section archived-section">
-
-
-<div class="section-header">
-
-  <h3>Archived</h3>
-
-  <span class="count">
-    {{ archivedFiles.length }}
-  </span>
-
-</div>
-
-
-<div class="table-wrapper">
-
-  <table>
-
-    <thead>
-
-      <tr>
-        <th>Case No.</th>
-        <th>Document Type</th>
-        <th>Requesting Office</th>
-        <th>SPMS Type</th>
-        <th>Document Format</th>
-      </tr>
-
-    </thead>
-
-
-    <tbody>
-
-      @for (file of archivedFiles; track file.id) {
-
-        <tr>
-
-          <td>
-            {{ file.caseNo || 'N/A' }}
-          </td>
-
-          <td>
-            {{ file.documentTypeName || 'N/A' }}
-          </td>
-
-          <td>
-            {{ file.requestingOfficeName || 'N/A' }}
-          </td>
-
-          <td>
-            {{ file.spmsTypeName || 'N/A' }}
-          </td>
-
-          <td>
-            {{ file.documentFormatName || 'N/A' }}
-          </td>
-
-        </tr>
-
-      }
-
-
-      @if (archivedFiles.length === 0) {
-
-        <tr class="empty-row">
-
-          <td colspan="5">
-            No archived legal files.
-          </td>
-
-        </tr>
-
-      }
-
-    </tbody>
-
-  </table>
-
-</div>
-
-
-  </section>
-
-  <!-- ========================= -->
-
-  <!-- CANCELLED -->
-
-  <!-- ========================= -->
-
-  <section class="status-section cancelled-section">
-
-
-<div class="section-header">
-
-  <h3>Cancelled</h3>
-
-  <span class="count">
-    {{ cancelledFiles.length }}
-  </span>
-
-</div>
-
-
-<div class="table-wrapper">
-
-  <table>
-
-    <thead>
-
-      <tr>
-        <th>Case No.</th>
-        <th>Document Type</th>
-        <th>Requesting Office</th>
-        <th>SPMS Type</th>
-        <th>Document Format</th>
-      </tr>
-
-    </thead>
-
-
-    <tbody>
-
-      @for (file of cancelledFiles; track file.id) {
-
-        <tr>
-
-          <td>
-            {{ file.caseNo || 'N/A' }}
-          </td>
-
-          <td>
-            {{ file.documentTypeName || 'N/A' }}
-          </td>
-
-          <td>
-            {{ file.requestingOfficeName || 'N/A' }}
-          </td>
-
-          <td>
-            {{ file.spmsTypeName || 'N/A' }}
-          </td>
-
-          <td>
-            {{ file.documentFormatName || 'N/A' }}
-          </td>
-
-        </tr>
-
-      }
-
-
-      @if (cancelledFiles.length === 0) {
-
-        <tr class="empty-row">
-
-          <td colspan="5">
-            No cancelled legal files.
-          </td>
-
-        </tr>
-
-      }
-
-    </tbody>
-
-  </table>
-
-</div>
-
-
-  </section>
+  </div>
 
 </div>

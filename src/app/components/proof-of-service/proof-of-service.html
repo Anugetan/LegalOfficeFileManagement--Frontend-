@@ -1,0 +1,774 @@
+<div class="proof-of-service-container">
+
+  <!-- ===================================================== -->
+  <!-- PAGE HEADER -->
+  <!-- ===================================================== -->
+
+  <div class="page-header">
+
+    <div>
+      <h2>Proof of Service</h2>
+
+      <p>
+        Process proof of service for resolved legal files.
+      </p>
+    </div>
+
+  </div>
+
+
+  <!-- ===================================================== -->
+  <!-- SUCCESS NOTIFICATION -->
+  <!-- ===================================================== -->
+
+  @if (showSuccessNotification) {
+
+    <div class="notification success-notification">
+
+      <div class="notification-icon">
+        ✓
+      </div>
+
+      <div>
+        <strong>Success</strong>
+
+        <p>
+          {{ successMessage }}
+        </p>
+      </div>
+
+    </div>
+
+  }
+
+
+  <!-- ===================================================== -->
+  <!-- ERROR NOTIFICATION -->
+  <!-- ===================================================== -->
+
+  @if (showErrorNotification) {
+
+    <div class="notification error-notification">
+
+      <div class="notification-icon">
+        !
+      </div>
+
+      <div>
+        <strong>Error</strong>
+
+        <p>
+          {{ errorMessage }}
+        </p>
+      </div>
+
+    </div>
+
+  }
+
+
+  <!-- ===================================================== -->
+  <!-- ELIGIBLE FILES LIST -->
+  <!-- ===================================================== -->
+
+  <div class="card table-card">
+
+    <div class="card-header">
+
+      <div>
+
+        <h3>
+          Resolved Legal Files
+        </h3>
+
+        <p>
+          Legal files that have completed the review process.
+        </p>
+
+      </div>
+
+
+      <div class="document-count">
+
+        {{ eligibleFiles.length }}
+
+      </div>
+
+    </div>
+
+
+    <!-- =================================================== -->
+    <!-- LOADING -->
+    <!-- =================================================== -->
+
+    @if (loadingEligibleFiles) {
+
+      <div class="loading-container">
+
+        <div class="spinner"></div>
+
+        <p>
+          Loading resolved legal files...
+        </p>
+
+      </div>
+
+    }
+
+
+    <!-- =================================================== -->
+    <!-- EMPTY -->
+    <!-- =================================================== -->
+
+    @else if (eligibleFiles.length === 0) {
+
+      <div class="empty-state">
+
+        <div class="empty-icon">
+          📭
+        </div>
+
+        <h4>
+          No Resolved Files
+        </h4>
+
+        <p>
+          There are currently no resolved legal files
+          available for Proof of Service processing.
+        </p>
+
+      </div>
+
+    }
+
+
+    <!-- =================================================== -->
+    <!-- TABLE -->
+    <!-- =================================================== -->
+
+    @else {
+
+      <div class="table-wrapper">
+
+        <table>
+
+          <thead>
+
+            <tr>
+
+              <th>
+                Case No.
+              </th>
+
+              <th>
+                Date Received
+              </th>
+
+              <th>
+                Date Completed
+              </th>
+
+              <th>
+                Current Stage
+              </th>
+
+              <th>
+                Final Document
+              </th>
+
+              <th>
+                Action
+              </th>
+
+            </tr>
+
+          </thead>
+
+
+          <tbody>
+
+            @for (
+              file of eligibleFiles;
+              track file.id
+            ) {
+
+              <tr>
+
+                <!-- CASE NUMBER -->
+
+                <td>
+
+                  <strong>
+                    {{ file.caseNo }}
+                  </strong>
+
+                </td>
+
+
+                <!-- DATE RECEIVED -->
+
+                <td>
+
+                  {{ file.dateReceived }}
+
+                </td>
+
+
+                <!-- DATE COMPLETED -->
+
+                <td>
+
+                  {{ file.dateCompleted || '-' }}
+
+                </td>
+
+
+                <!-- CURRENT STAGE -->
+
+                <td>
+
+                  <span
+                    class="stage-badge resolved">
+
+                    {{ file.currentStage }}
+
+                  </span>
+
+                </td>
+
+
+                <!-- FINAL DOCUMENT -->
+
+                <td>
+
+                  @if (loadingEligibleFiles) {
+
+                    <span class="document-status loading-status">
+                      Checking...
+                    </span>
+
+                  }
+
+                  @else if (hasFinalDocument(file.id)) {
+
+                    <span class="document-status available">
+
+                      ✓ Available
+
+                    </span>
+
+                  }
+
+                  @else {
+
+                    <span class="document-status unavailable">
+
+                      ✕
+
+                      No Document
+
+                    </span>
+
+                  }
+
+                </td>
+
+
+                <!-- ACTION -->
+
+                <td>
+
+                  <button
+                    type="button"
+                    class="process-button"
+                    [disabled]="
+                      !canProcessFile(file)
+                    "
+                    (click)="processFile(file)">
+
+                    📬
+
+                    <span>
+                      Process
+                    </span>
+
+                  </button>
+
+                </td>
+
+              </tr>
+
+            }
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    }
+
+  </div>
+
+
+
+  <!-- ===================================================== -->
+  <!-- FLOATING PROOF OF SERVICE MODAL -->
+  <!-- ===================================================== -->
+
+  @if (showProcessModal) {
+
+    <div class="modal-overlay">
+
+
+      <!-- ================================================= -->
+      <!-- MODAL -->
+      <!-- ================================================= -->
+
+      <div
+        class="proof-modal"
+        (click)="$event.stopPropagation()">
+
+
+        <!-- =============================================== -->
+        <!-- MODAL HEADER -->
+        <!-- =============================================== -->
+
+        <div class="modal-header">
+
+          <div class="modal-title-area">
+
+            <h2>
+              Proof of Service
+            </h2>
+
+            <p>
+              Case No:
+
+              <strong>
+                {{ legalFile?.caseNo || '-' }}
+              </strong>
+            </p>
+
+          </div>
+
+
+          <!-- CLOSE X -->
+
+          <button
+            type="button"
+            class="modal-close"
+            (click)="goBack()">
+
+            ×
+
+          </button>
+
+        </div>
+
+
+
+        <!-- =============================================== -->
+        <!-- MODAL BODY -->
+        <!-- =============================================== -->
+
+        <div class="modal-body">
+
+
+          <!-- ============================================= -->
+          <!-- FILE INFORMATION -->
+          <!-- ============================================= -->
+
+          <div class="modal-summary-grid">
+
+
+            <!-- CASE NUMBER -->
+
+            <div class="summary-box">
+
+              <span>
+                CASE NO.
+              </span>
+
+              <strong>
+                {{ legalFile?.caseNo || '-' }}
+              </strong>
+
+            </div>
+
+
+            <!-- CURRENT STAGE -->
+
+            <div class="summary-box">
+
+              <span>
+                CURRENT STAGE
+              </span>
+
+              <strong
+                class="resolved-badge">
+
+                {{ legalFile?.currentStage || '-' }}
+
+              </strong>
+
+            </div>
+
+
+            <!-- STATUS -->
+
+            <div class="summary-box">
+
+              <span>
+                STATUS
+              </span>
+
+              <strong>
+                RESOLVED
+              </strong>
+
+            </div>
+
+          </div>
+
+
+
+          <!-- ============================================= -->
+          <!-- FINAL DOCUMENT SECTION -->
+          <!-- ============================================= -->
+
+          <div class="modal-section">
+
+            <h3>
+              Final Document
+            </h3>
+
+
+            <!-- LOADING -->
+
+            @if (loadingFinalDocuments) {
+
+              <div class="modal-loading">
+
+                <div class="spinner"></div>
+
+                <span>
+                  Loading final document...
+                </span>
+
+              </div>
+
+            }
+
+
+            <!-- NO DOCUMENT -->
+
+            @else if (finalDocuments.length === 0) {
+
+              <div class="modal-warning">
+
+                <strong>
+                  No Final Document
+                </strong>
+
+                <p>
+                  A final document is required before
+                  processing the Proof of Service.
+                </p>
+
+              </div>
+
+            }
+
+
+            <!-- DOCUMENT FOUND -->
+
+            @else {
+
+              <div class="final-document-box">
+
+
+                <div class="final-document-icon">
+                  📄
+                </div>
+
+
+                <div class="final-document-info">
+
+                  <strong>
+
+                    {{
+                      selectedFinalDocument?.documentName
+                    }}
+
+                  </strong>
+
+
+                  <span>
+                    Final Document
+                  </span>
+
+
+                  @if (
+                    selectedFinalDocument?.filePath
+                  ) {
+
+                    <small>
+
+                      {{
+                        selectedFinalDocument?.filePath
+                      }}
+
+                    </small>
+
+                  }
+
+                </div>
+
+              </div>
+
+            }
+
+          </div>
+
+
+
+          <!-- ============================================= -->
+          <!-- PROOF OF SERVICE FORM -->
+          <!-- ============================================= -->
+
+          @if (
+            !loadingFinalDocuments &&
+            finalDocuments.length > 0
+          ) {
+
+            <form
+              #proofForm="ngForm"
+              (ngSubmit)="saveProofOfService()">
+
+
+              <!-- ======================================= -->
+              <!-- STATUS -->
+              <!-- ======================================= -->
+
+              <div class="form-group">
+
+                <label for="modalStatus">
+
+                  Status
+
+                  <span class="required">
+                    *
+                  </span>
+
+                </label>
+
+
+                <select
+                  id="modalStatus"
+                  name="status"
+                  [(ngModel)]="
+                    proofOfServiceForm.status
+                  "
+                  required>
+
+                  <option value="PENDING">
+                    Pending
+                  </option>
+
+                  <option value="SUBMITTED">
+                    Submitted
+                  </option>
+
+                  <option value="RECEIVED">
+                    Received
+                  </option>
+
+                  <option value="COMPLETED">
+                    Completed
+                  </option>
+
+                </select>
+
+              </div>
+
+
+
+              <!-- ======================================= -->
+              <!-- PROOF FILE PATH -->
+              <!-- ======================================= -->
+
+              <div class="form-group">
+
+                <label for="modalProofFilePath">
+
+                  Proof of Service File
+
+                </label>
+
+
+                <input
+                  id="modalProofFilePath"
+                  name="proofFilePath"
+                  type="text"
+                  [(ngModel)]="
+                    proofOfServiceForm.proofFilePath
+                  "
+                  placeholder="
+                    Enter proof of service file path
+                  "
+                />
+
+
+                <small>
+
+                  Enter the location of the
+                  Proof of Service document.
+
+                </small>
+
+              </div>
+
+
+
+              <!-- ======================================= -->
+              <!-- REMARKS -->
+              <!-- ======================================= -->
+
+              <div class="form-group">
+
+                <label for="modalRemarks">
+
+                  Remarks
+
+                </label>
+
+
+                <textarea
+                  id="modalRemarks"
+                  name="remarks"
+                  rows="5"
+                  [(ngModel)]="
+                    proofOfServiceForm.remarks
+                  "
+                  placeholder="Enter remarks...">
+                </textarea>
+
+              </div>
+
+
+
+              <!-- ======================================= -->
+              <!-- RESOLVED INFORMATION -->
+              <!-- ======================================= -->
+
+              <div class="modal-success-message">
+
+
+                <div class="success-icon">
+                  ✓
+                </div>
+
+
+                <div>
+
+                  <strong>
+                    File Resolved
+                  </strong>
+
+
+                  <p>
+                    This legal file has completed the
+                    review process. You can now record
+                    the Proof of Service.
+                  </p>
+
+                </div>
+
+              </div>
+
+
+
+              <!-- ======================================= -->
+              <!-- FORM BUTTONS -->
+              <!-- ======================================= -->
+
+              <div class="modal-actions">
+
+
+                <!-- BACK / CANCEL -->
+
+                <button
+                  type="button"
+                  class="cancel-modal-button"
+                  (click)="goBack()">
+
+                  ← Back
+
+                </button>
+
+
+                <!-- SUBMIT -->
+
+                <button
+                  type="submit"
+                  class="save-modal-button"
+                  [disabled]="
+                    savingProofOfService ||
+                    !proofOfServiceForm.status ||
+                    !proofOfServiceForm.proofFilePath
+                  ">
+
+
+                  @if (savingProofOfService) {
+
+                    <span class="button-spinner"></span>
+
+                    Saving...
+
+                  }
+
+                  @else {
+
+                    📬
+
+                    Submit Proof of Service
+
+                  }
+
+                </button>
+
+              </div>
+
+            </form>
+
+          }
+
+        </div>
+
+
+
+        <!-- =============================================== -->
+        <!-- MODAL FOOTER -->
+        <!-- =============================================== -->
+
+        <div class="modal-footer">
+
+          <button
+            type="button"
+            class="close-modal-button"
+            (click)="goBack()">
+
+            Close
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  }
+
+</div>

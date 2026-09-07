@@ -1,302 +1,2516 @@
-/* =========================
-   GLOBAL
-   ========================= */
-
-* {
-  box-sizing: border-box;
-}
-
-
-/* =========================
+/* =========================================================
    DASHBOARD
-   ========================= */
+   ========================================================= */
 
 .dashboard {
-
-  width: 100%;
-  height: 100%;
-
-  padding: 24px;
-
-  background: #f5f6f8;
-
-  overflow-y: auto;
-
+  min-height: 100%;
+  padding: 28px;
+  background: #f5f7fb;
+  box-sizing: border-box;
+  color: #172b4d;
 }
 
 
-/* =========================
+/* =========================================================
    DASHBOARD HEADER
-   ========================= */
+   ========================================================= */
 
 .dashboard-header {
-
   display: flex;
+  align-items: flex-start;
   justify-content: space-between;
-  align-items: center;
-
   margin-bottom: 24px;
-
 }
 
-.dashboard-header h2 {
+.dashboard-title h2 {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 700;
+  color: #172b4d;
+}
+
+.dashboard-title p {
+  margin: 5px 0 0;
+  font-size: 14px;
+  color: #718096;
+}
+
+.refresh-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 9px 15px;
+
+  border: 1px solid #d7deea;
+  border-radius: 8px;
+
+  background: #ffffff;
+  color: #29456d;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.refresh-button:hover {
+  background: #f8fafc;
+  border-color: #b9c6d8;
+}
+
+.refresh-button:active {
+  transform: scale(0.97);
+}
+
+
+/* =========================================================
+   ERROR
+   ========================================================= */
+
+.dashboard-error {
+  margin-bottom: 20px;
+  padding: 13px 16px;
+
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+
+  background: #fef2f2;
+  color: #b91c1c;
+
+  font-size: 14px;
+}
+
+
+/* =========================================================
+   SUMMARY CARDS
+   ========================================================= */
+
+.summary-cards {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+
+  gap: 18px;
+
+  margin-bottom: 22px;
+}
+
+.summary-card {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+
+  min-height: 108px;
+
+  padding: 20px;
+
+  border: 1px solid;
+  border-radius: 10px;
+
+  background: #ffffff;
+
+  cursor: pointer;
+  overflow: hidden;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.summary-card:hover {
+  transform: translateY(-3px);
+
+  box-shadow:
+    0 8px 20px rgba(30, 55, 90, 0.10);
+}
+
+
+/* =========================================================
+   SUMMARY ICON
+   ========================================================= */
+
+.summary-icon {
+  width: 54px;
+  height: 54px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-right: 15px;
+
+  border-radius: 50%;
+
+  font-size: 25px;
+  font-weight: 700;
+}
+
+.summary-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.summary-label {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.summary-content strong {
+  font-size: 29px;
+  line-height: 1.1;
+  font-weight: 700;
+}
+
+.summary-arrow {
+  position: absolute;
+
+  right: 18px;
+  bottom: 18px;
+
+  font-size: 18px;
+  font-weight: 700;
+}
+
+
+/* =========================================================
+   PENDING CARD
+   ========================================================= */
+
+.pending-card {
+  border-color: #f4d36c;
+  background: #fffdf3;
+}
+
+.pending-card .summary-icon {
+  background: #fbbf24;
+  color: #ffffff;
+}
+
+.pending-card .summary-label,
+.pending-card .summary-content strong,
+.pending-card .summary-arrow {
+  color: #253858;
+}
+
+
+/* =========================================================
+   OUT CARD
+   ========================================================= */
+
+.out-card {
+  border-color: #93c5fd;
+  background: #f5f9ff;
+}
+
+.out-card .summary-icon {
+  background: #3b82f6;
+  color: #ffffff;
+}
+
+.out-card .summary-label,
+.out-card .summary-content strong,
+.out-card .summary-arrow {
+  color: #1e3a5f;
+}
+
+
+/* =========================================================
+   RESOLVED CARD
+   ========================================================= */
+
+.resolved-card {
+  border-color: #a7dfbd;
+  background: #f5fcf7;
+}
+
+.resolved-card .summary-icon {
+  background: #22a05a;
+  color: #ffffff;
+}
+
+.resolved-card .summary-label,
+.resolved-card .summary-content strong,
+.resolved-card .summary-arrow {
+  color: #1f5134;
+}
+
+
+/* =========================================================
+   MAIN DASHBOARD GRID
+   ========================================================= */
+
+.dashboard-grid {
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1.25fr)
+    minmax(0, 0.75fr);
+
+  gap: 18px;
+
+  align-items: start;
+}
+
+
+/* =========================================================
+   DASHBOARD CARD
+   ========================================================= */
+
+.dashboard-card {
+  background: #ffffff;
+
+  border: 1px solid #e2e8f0;
+  border-radius: 9px;
+
+  box-shadow:
+    0 2px 7px rgba(30, 55, 90, 0.04);
+
+  overflow: hidden;
+}
+
+
+/* =========================================================
+   CARD HEADER
+   ========================================================= */
+
+.card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  padding: 20px;
+
+  border-bottom: 1px solid #edf1f6;
+}
+
+.card-header h3 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 
   margin: 0;
 
-  font-size: 28px;
+  font-size: 19px;
+  font-weight: 800;
 
-  font-weight: 700;
+  color: #19375f;
+}
 
-  color: #222;
+.card-header p {
+  margin: 6px 0 0;
 
+  font-size: 13px;
+
+  color: #60748e;
+}
+
+.header-icon {
+  font-size: 17px;
 }
 
 
-/* =========================
-   STATUS SECTION
-   ========================= */
+/* =========================================================
+   CARD COUNT
+   ========================================================= */
 
-.status-section {
+.card-count {
+  min-width: 28px;
+  height: 28px;
 
-  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-  margin-bottom: 24px;
+  padding: 0 8px;
 
-  background: white;
+  border-radius: 50%;
 
-  border: 1px solid #c8c8c8;
+  background: #eaf2ff;
+  color: #2463a9;
 
-  border-radius: 5px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+
+/* =========================================================
+   FILE STATUS OVERVIEW
+   ========================================================= */
+
+.status-overview {
+  grid-column: 1;
+  grid-row: 1;
+
+  min-height: 0;
+}
+
+.status-list {
+  padding: 21px 20px 10px;
+}
+
+.status-row {
+  display: grid;
+
+  grid-template-columns:
+    92px
+    minmax(0, 1fr)
+    28px;
+
+  align-items: center;
+
+  gap: 12px;
+
+  margin-bottom: 21px;
+}
+
+.status-row:last-child {
+  margin-bottom: 0;
+}
+
+.status-name {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  font-size: 13px;
+  color: #344563;
+}
+
+.status-name strong {
+  font-weight: 700;
+}
+
+
+/* =========================================================
+   STATUS DOTS
+   ========================================================= */
+
+.status-dot {
+  width: 9px;
+  height: 9px;
+
+  border-radius: 50%;
+
+  flex-shrink: 0;
+}
+
+.pending-dot {
+  background: #fbbf24;
+}
+
+.resolved-dot {
+  background: #22a05a;
+}
+
+.out-dot {
+  background: #3b82f6;
+}
+
+
+/* =========================================================
+   STATUS PROGRESS
+   ========================================================= */
+
+.status-progress {
+  height: 10px;
 
   overflow: hidden;
 
+  border-radius: 20px;
+
+  background: #edf2f7;
+}
+
+.progress-bar {
+  height: 100%;
+
+  min-width: 0;
+
+  border-radius: 20px;
+
+  transition: width 0.5s ease;
+}
+
+.pending-progress {
+  background: #fbbf24;
+}
+
+.resolved-progress {
+  background: #48bb78;
+}
+
+.out-progress {
+  background: #4299e1;
+}
+
+.status-row > strong {
+  text-align: right;
+
+  font-size: 13px;
+
+  color: #253858;
 }
 
 
-/* =========================
-   SECTION HEADER
-   ========================= */
+/* =========================================================
+   STATUS TOTAL
+   ========================================================= */
 
-.section-header {
-
+.status-total {
   display: flex;
-
+  align-items: center;
   justify-content: space-between;
 
-  align-items: center;
+  margin: 7px 20px 20px;
 
-  padding: 14px 18px;
+  padding-top: 16px;
 
-  border-bottom: 1px solid #c8c8c8;
+  border-top: 1px solid #edf1f6;
 
+  font-size: 13px;
+
+  color: #718096;
+}
+
+.status-total strong {
+  font-size: 18px;
+
+  color: #19375f;
 }
 
 
-.section-header h3 {
+/* =========================================================
+   RECENT ACTIVITY
+   ========================================================= */
 
-  margin: 0;
+.activity-card {
+  grid-column: 2;
+  grid-row: 1;
 
-  font-size: 20px;
+  height: 565px;
 
-  font-weight: 700;
-
+  display: flex;
+  flex-direction: column;
 }
 
-
-/* =========================
-   COUNT
-   ========================= */
-
-.count {
-
-  min-width: 32px;
-
-  padding: 5px 10px;
-
-  border-radius: 15px;
-
-  background: #1f4e78;
-
-  color: white;
-
-  font-size: 14px;
-
-  font-weight: 700;
-
-  text-align: center;
-
-}
-
-
-/* =========================
-   TABLE WRAPPER
-   ========================= */
-
-.table-wrapper {
-
-  width: 100%;
-
-  max-height: 300px;
-
-  overflow-x: auto;
+.activity-list {
+  padding: 5px 18px 10px;
 
   overflow-y: auto;
 
+  flex: 1;
+}
+
+/* Scrollbar */
+
+.activity-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.activity-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.activity-list::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 10px;
+}
+
+.activity-list::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+.activity-item {
+  display: flex;
+  align-items: flex-start;
+
+  gap: 11px;
+
+  padding: 14px 0;
+
+  border-bottom: 1px solid #edf1f5;
+}
+
+.activity-item:last-child {
+  border-bottom: none;
 }
 
 
-/* =========================
+.activity-icon {
+  width: 34px;
+  height: 34px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #dbeafe;
+  color: #2874c6;
+
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.activity-icon.resolved {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.activity-icon.pending {
+  background: #fff4cc;
+  color: #a16207;
+}
+
+.activity-icon.out {
+  background: #dbeafe;
+  color: #2563eb;
+}
+
+.activity-content {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 2px;
+}
+
+.activity-content strong {
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  color: #253858;
+}
+
+.activity-content span {
+  font-size: 11px;
+
+  color: #60748e;
+}
+
+.activity-content small {
+  font-size: 10px;
+
+  color: #94a3b8;
+}
+
+
+/* =========================================================
+   FINAL DOCUMENTS
+   ========================================================= */
+
+/*
+   Final Documents is directly BELOW
+   File Status Overview.
+*/
+
+.final-documents-card {
+  grid-column: 1;
+  grid-row: 2;
+
+  min-width: 0;
+
+  /* IMPORTANT: remove the negative margin */
+  margin-top: 0;
+}
+
+
+/* =========================================================
    TABLE
-   ========================= */
+   ========================================================= */
 
-table {
+.table-wrapper {
+  width: 100%;
 
+  overflow-x: auto;
+}
+
+.dashboard-table {
   width: 100%;
 
   border-collapse: collapse;
 
-  table-layout: auto;
+  font-size: 12px;
+}
 
-  font-size: 15px;
-
+.dashboard-table thead {
+  background: #f8fafc;
 }
 
 
-/* =========================
+/* =========================================================
    TABLE HEADER
-   ========================= */
+   ========================================================= */
 
-thead th {
+.dashboard-table th {
+  padding: 12px;
 
-  padding: 11px 14px;
-
-  background: #e7e6e6;
-
-  border: 1px solid #b7b7b7;
-
-  color: #111;
-
-  font-size: 15px;
-
-  font-weight: 700;
+  border-bottom: 1px solid #e6ebf2;
 
   text-align: left;
 
   white-space: nowrap;
 
+  font-size: 12px;
+
+  font-weight: 800;
+
+  color: #19375f;
 }
 
+.dashboard-table td {
+  padding: 12px;
 
-/* =========================
-   TABLE BODY
-   ========================= */
+  border-bottom: 1px solid #edf1f5;
 
-tbody td {
-
-  padding: 11px 14px;
-
-  border: 1px solid #d0d0d0;
-
-  color: #333;
-
-  font-size: 15px;
+  color: #52657d;
 
   white-space: nowrap;
+}
 
+.dashboard-table tbody tr {
+  transition: background 0.15s ease;
+}
+
+.dashboard-table tbody tr:hover {
+  background: #f8fbff;
+}
+
+.dashboard-table td strong {
+  color: #243b5a;
+
+  font-weight: 700;
 }
 
 
-/* =========================
-   ROW HOVER
-   ========================= */
+/* =========================================================
+   DOCUMENT NAME
+   ========================================================= */
 
-tbody tr:hover td {
+.document-name {
+  display: inline-flex;
 
-  background: #f3f6fa;
+  align-items: center;
 
+  gap: 6px;
+
+  color: #385777;
 }
 
 
-/* =========================
-   EMPTY ROW
-   ========================= */
+/* =========================================================
+   TABLE ACTION BUTTON
+   ========================================================= */
 
-.empty-row td {
+.table-action-button {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 6px 10px;
+
+  border: 0;
+
+  border-radius: 6px;
+
+  background: #e7f1ff;
+
+  color: #2670c7;
+
+  font-size: 11px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    transform 0.15s ease;
+}
+
+.table-action-button:hover {
+  background: #d8e9ff;
+}
+
+.table-action-button:active {
+  transform: scale(0.96);
+}
+
+
+/* =========================================================
+   VIEW ALL BUTTON
+   ========================================================= */
+
+.view-all-button {
+  display: block;
+
+  margin: 14px 18px 17px auto;
+
+  padding: 0;
+
+  border: 0;
+
+  background: transparent;
+
+  color: #2874c6;
+
+  font-size: 12px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+.view-all-button:hover {
+  text-decoration: underline;
+}
+
+
+/* =========================================================
+   PENDING FILES
+   ========================================================= */
+
+.pending-files-card {
+  grid-column: 1 / 3;
+  grid-row: 3;
+}
+
+
+/* =========================================================
+   STAGE BADGES
+   ========================================================= */
+
+.stage-badge {
+  display: inline-flex;
+
+  align-items: center;
+
+  padding: 4px 9px;
+
+  border-radius: 20px;
+
+  font-size: 10px;
+
+  font-weight: 700;
+
+  background: #edf2f7;
+
+  color: #52657d;
+}
+
+.stage-badge.received {
+  background: #fff3cd;
+  color: #996c00;
+}
+
+.stage-badge.initial-review {
+  background: #e4f0ff;
+  color: #2871c8;
+}
+
+.stage-badge.final-review {
+  background: #eee7ff;
+  color: #6b46c1;
+}
+
+
+/* =========================================================
+   QUICK ACTIONS
+   ========================================================= */
+
+.quick-actions-card {
+  grid-column: 1 / 3;
+  grid-row: 4;
+}
+
+.quick-actions {
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
+
+  gap: 12px;
+
+  padding: 16px;
+}
+
+.quick-action {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+
+  min-height: 48px;
+
+  padding: 10px 14px;
+
+  border: 1px solid #d9e2ee;
+
+  border-radius: 8px;
+
+  background: #ffffff;
+
+  color: #395572;
+
+  font-size: 12px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.15s ease;
+}
+
+.quick-action:hover {
+  background: #f7faff;
+
+  border-color: #b8cbe1;
+}
+
+.quick-action:active {
+  transform: scale(0.97);
+}
+
+.quick-action.primary {
+  border-color: #2878d4;
+
+  background: #2878d4;
+
+  color: #ffffff;
+}
+
+.quick-action.primary:hover {
+  background: #1f68bb;
+
+  border-color: #1f68bb;
+}
+
+.quick-action-icon {
+  font-size: 16px;
+}
+
+
+/* =========================================================
+   EMPTY STATE
+   ========================================================= */
+
+.empty-state {
+  min-height: 170px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
 
   padding: 20px;
 
-  color: #777;
+  color: #94a3b8;
+}
 
-  text-align: center;
+.empty-icon {
+  margin-bottom: 8px;
 
-  font-style: italic;
+  font-size: 28px;
+
+  opacity: 0.65;
+}
+
+.empty-state p {
+  margin: 0;
+
+  font-size: 12px;
+}
+
+
+/* =========================================================
+   LOADING SPINNER
+   ========================================================= */
+
+.loading-spinner {
+  width: 28px;
+  height: 28px;
+
+  margin-bottom: 10px;
+
+  border: 3px solid #e2e8f0;
+
+  border-top-color: #2878d4;
+
+  border-radius: 50%;
+
+  animation: dashboard-spin 0.8s linear infinite;
+}
+
+@keyframes dashboard-spin {
+
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
 
 }
 
 
-/* =========================
-   STATUS HEADER COLORS
-   ========================= */
+/* =========================================================
+   RESPONSIVE - LARGE TABLET
+   ========================================================= */
 
-.pending-section .section-header {
+@media (max-width: 1200px) {
 
-  background: #fff3cd;
+  .summary-cards {
+    grid-template-columns:
+      repeat(3, minmax(0, 1fr));
+
+    gap: 14px;
+  }
+
+  .dashboard-grid {
+    grid-template-columns:
+      minmax(0, 1.25fr)
+      minmax(0, 0.75fr);
+
+    gap: 16px;
+  }
+
+  /*
+     Keep activity spanning both left-side rows.
+  */
+
+  .status-overview {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .activity-card {
+    grid-column: 2;
+    grid-row: 1 / 3;
+  }
+
+  .final-documents-card {
+    grid-column: 1;
+    grid-row: 2;
+
+    margin-top: 0;
+  }
+
+  .pending-files-card {
+    grid-column: 1 / 3;
+    grid-row: 3;
+  }
+
+  .quick-actions-card {
+    grid-column: 1 / 3;
+    grid-row: 4;
+  }
+
+  .quick-actions {
+    grid-template-columns:
+      repeat(4, minmax(0, 1fr));
+  }
 
 }
 
-.out-section .section-header {
 
-  background: #ffe5cc;
+/* =========================================================
+   RESPONSIVE - TABLET
+   ========================================================= */
 
-}
-
-.resolved-section .section-header {
-
-  background: #d4edda;
-
-}
-
-.archived-section .section-header {
-
-  background: #e9ecef;
-
-}
-
-.cancelled-section .section-header {
-
-  background: #e4d4f4;
-
-}
-
-
-/* =========================
-   RESPONSIVE
-   ========================= */
-
-@media (max-width: 800px) {
+@media (max-width: 850px) {
 
   .dashboard {
+    padding: 20px;
+  }
+
+  .summary-cards {
+    grid-template-columns:
+      repeat(3, minmax(0, 1fr));
+
+    gap: 12px;
+  }
+
+  .summary-card {
+    padding: 16px;
+  }
+
+  .summary-icon {
+    width: 46px;
+    height: 46px;
+
+    margin-right: 11px;
+
+    font-size: 21px;
+  }
+
+  .summary-content strong {
+    font-size: 25px;
+  }
+
+  /*
+     On tablet, switch everything to one column.
+  */
+
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+
+    gap: 12px;
+  }
+
+  .status-overview,
+  .activity-card,
+  .final-documents-card,
+  .pending-files-card,
+  .quick-actions-card {
+    grid-column: auto;
+    grid-row: auto;
+
+    margin-top: 0;
+  }
+
+  .quick-actions {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+}
+
+
+/* =========================================================
+   RESPONSIVE - MOBILE
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+  .dashboard {
+    padding: 14px;
+  }
+
+  .dashboard-header {
+    align-items: center;
+
+    gap: 12px;
+  }
+
+  .dashboard-title h2 {
+    font-size: 22px;
+  }
+
+  .dashboard-title p {
+    font-size: 12px;
+  }
+
+  .refresh-button span {
+    display: none;
+  }
+
+  .refresh-button {
+    width: 38px;
+    height: 38px;
+
+    padding: 0;
+
+    justify-content: center;
+  }
+
+
+  /* =====================================================
+     SUMMARY
+     ===================================================== */
+
+  .summary-cards {
+    grid-template-columns: 1fr;
+
+    gap: 10px;
+  }
+
+  .summary-card {
+    min-height: 86px;
 
     padding: 15px;
-
   }
 
-  .dashboard-header h2 {
+  .summary-icon {
+    width: 44px;
+    height: 44px;
 
+    font-size: 20px;
+  }
+
+  .summary-content strong {
     font-size: 24px;
-
   }
 
-  .section-header h3 {
 
-    font-size: 18px;
+  /* =====================================================
+     GRID
+     ===================================================== */
 
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+
+    gap: 12px;
   }
 
-  table {
+  .status-overview,
+  .activity-card,
+  .final-documents-card,
+  .pending-files-card,
+  .quick-actions-card {
+    grid-column: auto;
 
-    min-width: 700px;
+    grid-row: auto;
 
+    margin-top: 0;
+  }
+
+
+  /* =====================================================
+     CARDS
+     ===================================================== */
+
+  .card-header {
+    padding: 15px;
+  }
+
+  .card-header h3 {
+    font-size: 17px;
+  }
+
+  .card-header p {
+    font-size: 12px;
+  }
+
+
+  /* =====================================================
+     STATUS
+     ===================================================== */
+
+  .status-list {
+    padding: 17px 15px 5px;
+  }
+
+  .status-row {
+    grid-template-columns:
+      85px
+      minmax(0, 1fr)
+      25px;
+
+    gap: 8px;
+  }
+
+
+  /* =====================================================
+     TABLE
+     ===================================================== */
+
+  .pending-files-card,
+  .final-documents-card {
+    overflow: hidden;
+  }
+
+  .table-wrapper {
+    overflow-x: auto;
+  }
+
+  .dashboard-table {
+    min-width: 650px;
+  }
+
+
+  /* =====================================================
+     ACTIVITY
+     ===================================================== */
+
+  .activity-list {
+    padding: 5px 15px 10px;
+  }
+
+
+  /* =====================================================
+     QUICK ACTIONS
+     ===================================================== */
+
+  .quick-actions {
+    grid-template-columns: 1fr;
+  }
+
+}/* =========================================================
+   DASHBOARD
+   ========================================================= */
+
+.dashboard {
+  min-height: 100%;
+  padding: 28px;
+  background: #f5f7fb;
+  box-sizing: border-box;
+  color: #172b4d;
+}
+
+
+/* =========================================================
+   DASHBOARD HEADER
+   ========================================================= */
+
+.dashboard-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.dashboard-title h2 {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 700;
+  color: #172b4d;
+}
+
+.dashboard-title p {
+  margin: 5px 0 0;
+  font-size: 14px;
+  color: #718096;
+}
+
+.refresh-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 9px 15px;
+
+  border: 1px solid #d7deea;
+  border-radius: 8px;
+
+  background: #ffffff;
+  color: #29456d;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.refresh-button:hover {
+  background: #f8fafc;
+  border-color: #b9c6d8;
+}
+
+.refresh-button:active {
+  transform: scale(0.97);
+}
+
+
+/* =========================================================
+   ERROR
+   ========================================================= */
+
+.dashboard-error {
+  margin-bottom: 20px;
+  padding: 13px 16px;
+
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+
+  background: #fef2f2;
+  color: #b91c1c;
+
+  font-size: 14px;
+}
+
+
+/* =========================================================
+   SUMMARY CARDS
+   ========================================================= */
+
+.summary-cards {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+
+  gap: 18px;
+
+  margin-bottom: 22px;
+}
+
+.summary-card {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+
+  min-height: 108px;
+
+  padding: 20px;
+
+  border: 1px solid;
+  border-radius: 10px;
+
+  background: #ffffff;
+
+  cursor: pointer;
+  overflow: hidden;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.summary-card:hover {
+  transform: translateY(-3px);
+
+  box-shadow:
+    0 8px 20px rgba(30, 55, 90, 0.10);
+}
+
+
+/* =========================================================
+   SUMMARY ICON
+   ========================================================= */
+
+.summary-icon {
+  width: 54px;
+  height: 54px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-right: 15px;
+
+  border-radius: 50%;
+
+  font-size: 25px;
+  font-weight: 700;
+}
+
+.summary-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.summary-label {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.summary-content strong {
+  font-size: 29px;
+  line-height: 1.1;
+  font-weight: 700;
+}
+
+.summary-arrow {
+  position: absolute;
+
+  right: 18px;
+  bottom: 18px;
+
+  font-size: 18px;
+  font-weight: 700;
+}
+
+
+/* =========================================================
+   PENDING CARD
+   ========================================================= */
+
+.pending-card {
+  border-color: #f4d36c;
+  background: #fffdf3;
+}
+
+.pending-card .summary-icon {
+  background: #fbbf24;
+  color: #ffffff;
+}
+
+.pending-card .summary-label,
+.pending-card .summary-content strong,
+.pending-card .summary-arrow {
+  color: #253858;
+}
+
+
+/* =========================================================
+   OUT CARD
+   ========================================================= */
+
+.out-card {
+  border-color: #93c5fd;
+  background: #f5f9ff;
+}
+
+.out-card .summary-icon {
+  background: #3b82f6;
+  color: #ffffff;
+}
+
+.out-card .summary-label,
+.out-card .summary-content strong,
+.out-card .summary-arrow {
+  color: #1e3a5f;
+}
+
+
+/* =========================================================
+   RESOLVED CARD
+   ========================================================= */
+
+.resolved-card {
+  border-color: #a7dfbd;
+  background: #f5fcf7;
+}
+
+.resolved-card .summary-icon {
+  background: #22a05a;
+  color: #ffffff;
+}
+
+.resolved-card .summary-label,
+.resolved-card .summary-content strong,
+.resolved-card .summary-arrow {
+  color: #1f5134;
+}
+
+
+/* =========================================================
+   MAIN DASHBOARD GRID
+   ========================================================= */
+
+.dashboard-grid {
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1.25fr)
+    minmax(0, 0.75fr);
+
+  gap: 18px;
+
+  align-items: start;
+}
+
+
+/* =========================================================
+   DASHBOARD CARD
+   ========================================================= */
+
+.dashboard-card {
+  background: #ffffff;
+
+  border: 1px solid #e2e8f0;
+  border-radius: 9px;
+
+  box-shadow:
+    0 2px 7px rgba(30, 55, 90, 0.04);
+
+  overflow: hidden;
+}
+
+
+/* =========================================================
+   CARD HEADER
+   ========================================================= */
+
+.card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  padding: 20px;
+
+  border-bottom: 1px solid #edf1f6;
+}
+
+.card-header h3 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  margin: 0;
+
+  font-size: 19px;
+  font-weight: 800;
+
+  color: #19375f;
+}
+
+.card-header p {
+  margin: 6px 0 0;
+
+  font-size: 13px;
+
+  color: #60748e;
+}
+
+.header-icon {
+  font-size: 17px;
+}
+
+
+/* =========================================================
+   CARD COUNT
+   ========================================================= */
+
+.card-count {
+  min-width: 28px;
+  height: 28px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0 8px;
+
+  border-radius: 50%;
+
+  background: #eaf2ff;
+  color: #2463a9;
+
+  font-size: 12px;
+  font-weight: 700;
+}
+
+
+/* =========================================================
+   FILE STATUS OVERVIEW
+   ========================================================= */
+
+.status-overview {
+  grid-column: 1;
+  grid-row: 1;
+
+  min-height: 0;
+}
+
+.status-list {
+  padding: 21px 20px 10px;
+}
+
+.status-row {
+  display: grid;
+
+  grid-template-columns:
+    92px
+    minmax(0, 1fr)
+    28px;
+
+  align-items: center;
+
+  gap: 12px;
+
+  margin-bottom: 21px;
+}
+
+.status-row:last-child {
+  margin-bottom: 0;
+}
+
+.status-name {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  font-size: 13px;
+  color: #344563;
+}
+
+.status-name strong {
+  font-weight: 700;
+}
+
+
+/* =========================================================
+   STATUS DOTS
+   ========================================================= */
+
+.status-dot {
+  width: 9px;
+  height: 9px;
+
+  border-radius: 50%;
+
+  flex-shrink: 0;
+}
+
+.pending-dot {
+  background: #fbbf24;
+}
+
+.resolved-dot {
+  background: #22a05a;
+}
+
+.out-dot {
+  background: #3b82f6;
+}
+
+
+/* =========================================================
+   STATUS PROGRESS
+   ========================================================= */
+
+.status-progress {
+  height: 10px;
+
+  overflow: hidden;
+
+  border-radius: 20px;
+
+  background: #edf2f7;
+}
+
+.progress-bar {
+  height: 100%;
+
+  min-width: 0;
+
+  border-radius: 20px;
+
+  transition: width 0.5s ease;
+}
+
+.pending-progress {
+  background: #fbbf24;
+}
+
+.resolved-progress {
+  background: #48bb78;
+}
+
+.out-progress {
+  background: #4299e1;
+}
+
+.status-row > strong {
+  text-align: right;
+
+  font-size: 13px;
+
+  color: #253858;
+}
+
+
+/* =========================================================
+   STATUS TOTAL
+   ========================================================= */
+
+.status-total {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin: 7px 20px 20px;
+
+  padding-top: 16px;
+
+  border-top: 1px solid #edf1f6;
+
+  font-size: 13px;
+
+  color: #718096;
+}
+
+.status-total strong {
+  font-size: 18px;
+
+  color: #19375f;
+}
+
+
+/* =========================================================
+   RECENT ACTIVITY
+   ========================================================= */
+
+/*
+   IMPORTANT:
+
+   Recent Activity spans both:
+   Row 1 = File Status
+   Row 2 = Final Documents
+
+   This prevents it from pushing Final Documents down.
+*/
+
+.activity-card {
+  grid-column: 2;
+  grid-row: 1 / 3;
+
+  min-height: 0;
+}
+
+.activity-list {
+  padding: 5px 18px 10px;
+}
+
+.activity-item {
+  display: flex;
+  align-items: flex-start;
+
+  gap: 11px;
+
+  padding: 14px 0;
+
+  border-bottom: 1px solid #edf1f5;
+}
+
+.activity-item:last-child {
+  border-bottom: none;
+}
+
+.activity-icon {
+  width: 34px;
+  height: 34px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #dbeafe;
+  color: #2874c6;
+
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.activity-icon.resolved {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.activity-icon.pending {
+  background: #fff4cc;
+  color: #a16207;
+}
+
+.activity-icon.out {
+  background: #dbeafe;
+  color: #2563eb;
+}
+
+.activity-content {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 2px;
+}
+
+.activity-content strong {
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  color: #253858;
+}
+
+.activity-content span {
+  font-size: 11px;
+
+  color: #60748e;
+}
+
+.activity-content small {
+  font-size: 10px;
+
+  color: #94a3b8;
+}
+
+
+/* =========================================================
+   FINAL DOCUMENTS
+   ========================================================= */
+
+/*
+   Final Documents is directly BELOW
+   File Status Overview.
+*/
+
+.final-documents-card {
+  grid-column: 1;
+  grid-row: 2;
+
+  min-width: 0;
+
+  /* IMPORTANT: remove the negative margin */
+  margin-top: 0;
+}
+
+
+/* =========================================================
+   TABLE
+   ========================================================= */
+
+.table-wrapper {
+  width: 100%;
+
+  overflow-x: auto;
+}
+
+.dashboard-table {
+  width: 100%;
+
+  border-collapse: collapse;
+
+  font-size: 12px;
+}
+
+.dashboard-table thead {
+  background: #f8fafc;
+}
+
+
+/* =========================================================
+   TABLE HEADER
+   ========================================================= */
+
+.dashboard-table th {
+  padding: 12px;
+
+  border-bottom: 1px solid #e6ebf2;
+
+  text-align: left;
+
+  white-space: nowrap;
+
+  font-size: 12px;
+
+  font-weight: 800;
+
+  color: #19375f;
+}
+
+.dashboard-table td {
+  padding: 12px;
+
+  border-bottom: 1px solid #edf1f5;
+
+  color: #52657d;
+
+  white-space: nowrap;
+}
+
+.dashboard-table tbody tr {
+  transition: background 0.15s ease;
+}
+
+.dashboard-table tbody tr:hover {
+  background: #f8fbff;
+}
+
+.dashboard-table td strong {
+  color: #243b5a;
+
+  font-weight: 700;
+}
+
+
+/* =========================================================
+   DOCUMENT NAME
+   ========================================================= */
+
+.document-name {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 6px;
+
+  color: #385777;
+}
+
+
+/* =========================================================
+   TABLE ACTION BUTTON
+   ========================================================= */
+
+.table-action-button {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 6px 10px;
+
+  border: 0;
+
+  border-radius: 6px;
+
+  background: #e7f1ff;
+
+  color: #2670c7;
+
+  font-size: 11px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    transform 0.15s ease;
+}
+
+.table-action-button:hover {
+  background: #d8e9ff;
+}
+
+.table-action-button:active {
+  transform: scale(0.96);
+}
+
+
+/* =========================================================
+   VIEW ALL BUTTON
+   ========================================================= */
+
+.view-all-button {
+  display: block;
+
+  margin: 14px 18px 17px auto;
+
+  padding: 0;
+
+  border: 0;
+
+  background: transparent;
+
+  color: #2874c6;
+
+  font-size: 12px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+.view-all-button:hover {
+  text-decoration: underline;
+}
+
+
+/* =========================================================
+   PENDING FILES
+   ========================================================= */
+
+.pending-files-card {
+  grid-column: 1 / 3;
+  grid-row: 3;
+}
+
+
+/* =========================================================
+   STAGE BADGES
+   ========================================================= */
+
+.stage-badge {
+  display: inline-flex;
+
+  align-items: center;
+
+  padding: 4px 9px;
+
+  border-radius: 20px;
+
+  font-size: 10px;
+
+  font-weight: 700;
+
+  background: #edf2f7;
+
+  color: #52657d;
+}
+
+.stage-badge.received {
+  background: #fff3cd;
+  color: #996c00;
+}
+
+.stage-badge.initial-review {
+  background: #e4f0ff;
+  color: #2871c8;
+}
+
+.stage-badge.final-review {
+  background: #eee7ff;
+  color: #6b46c1;
+}
+
+
+/* =========================================================
+   QUICK ACTIONS
+   ========================================================= */
+
+.quick-actions-card {
+  grid-column: 1 / 3;
+  grid-row: 4;
+}
+
+.quick-actions {
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
+
+  gap: 12px;
+
+  padding: 16px;
+}
+
+.quick-action {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+
+  min-height: 48px;
+
+  padding: 10px 14px;
+
+  border: 1px solid #d9e2ee;
+
+  border-radius: 8px;
+
+  background: #ffffff;
+
+  color: #395572;
+
+  font-size: 12px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.15s ease;
+}
+
+.quick-action:hover {
+  background: #f7faff;
+
+  border-color: #b8cbe1;
+}
+
+.quick-action:active {
+  transform: scale(0.97);
+}
+
+.quick-action.primary {
+  border-color: #2878d4;
+
+  background: #2878d4;
+
+  color: #ffffff;
+}
+
+.quick-action.primary:hover {
+  background: #1f68bb;
+
+  border-color: #1f68bb;
+}
+
+.quick-action-icon {
+  font-size: 16px;
+}
+
+
+/* =========================================================
+   EMPTY STATE
+   ========================================================= */
+
+.empty-state {
+  min-height: 170px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+
+  color: #94a3b8;
+}
+
+.empty-icon {
+  margin-bottom: 8px;
+
+  font-size: 28px;
+
+  opacity: 0.65;
+}
+
+.empty-state p {
+  margin: 0;
+
+  font-size: 12px;
+}
+
+
+/* =========================================================
+   LOADING SPINNER
+   ========================================================= */
+
+.loading-spinner {
+  width: 28px;
+  height: 28px;
+
+  margin-bottom: 10px;
+
+  border: 3px solid #e2e8f0;
+
+  border-top-color: #2878d4;
+
+  border-radius: 50%;
+
+  animation: dashboard-spin 0.8s linear infinite;
+}
+
+@keyframes dashboard-spin {
+
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+
+}
+
+
+/* =========================================================
+   RESPONSIVE - LARGE TABLET
+   ========================================================= */
+
+@media (max-width: 1200px) {
+
+  .summary-cards {
+    grid-template-columns:
+      repeat(3, minmax(0, 1fr));
+
+    gap: 14px;
+  }
+
+  .dashboard-grid {
+    grid-template-columns:
+      minmax(0, 1.25fr)
+      minmax(0, 0.75fr);
+
+    gap: 16px;
+  }
+
+  /*
+     Keep activity spanning both left-side rows.
+  */
+
+  .status-overview {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .activity-card {
+    grid-column: 2;
+    grid-row: 1 / 3;
+  }
+
+  .final-documents-card {
+    grid-column: 1;
+    grid-row: 2;
+
+    margin-top: 0;
+  }
+
+  .pending-files-card {
+    grid-column: 1 / 3;
+    grid-row: 3;
+  }
+
+  .quick-actions-card {
+    grid-column: 1 / 3;
+    grid-row: 4;
+  }
+
+  .quick-actions {
+    grid-template-columns:
+      repeat(4, minmax(0, 1fr));
+  }
+
+}
+
+
+/* =========================================================
+   RESPONSIVE - TABLET
+   ========================================================= */
+
+@media (max-width: 850px) {
+
+  .dashboard {
+    padding: 20px;
+  }
+
+  .summary-cards {
+    grid-template-columns:
+      repeat(3, minmax(0, 1fr));
+
+    gap: 12px;
+  }
+
+  .summary-card {
+    padding: 16px;
+  }
+
+  .summary-icon {
+    width: 46px;
+    height: 46px;
+
+    margin-right: 11px;
+
+    font-size: 21px;
+  }
+
+  .summary-content strong {
+    font-size: 25px;
+  }
+
+  /*
+     On tablet, switch everything to one column.
+  */
+
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+
+    gap: 12px;
+  }
+
+  .status-overview,
+  .activity-card,
+  .final-documents-card,
+  .pending-files-card,
+  .quick-actions-card {
+    grid-column: auto;
+    grid-row: auto;
+
+    margin-top: 0;
+  }
+
+  .quick-actions {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+}
+
+
+/* =========================================================
+   RESPONSIVE - MOBILE
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+  .dashboard {
+    padding: 14px;
+  }
+
+  .dashboard-header {
+    align-items: center;
+
+    gap: 12px;
+  }
+
+  .dashboard-title h2 {
+    font-size: 22px;
+  }
+
+  .dashboard-title p {
+    font-size: 12px;
+  }
+
+  .refresh-button span {
+    display: none;
+  }
+
+  .refresh-button {
+    width: 38px;
+    height: 38px;
+
+    padding: 0;
+
+    justify-content: center;
+  }
+
+
+  /* =====================================================
+     SUMMARY
+     ===================================================== */
+
+  .summary-cards {
+    grid-template-columns: 1fr;
+
+    gap: 10px;
+  }
+
+  .summary-card {
+    min-height: 86px;
+
+    padding: 15px;
+  }
+
+  .summary-icon {
+    width: 44px;
+    height: 44px;
+
+    font-size: 20px;
+  }
+
+  .summary-content strong {
+    font-size: 24px;
+  }
+
+
+  /* =====================================================
+     GRID
+     ===================================================== */
+
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+
+    gap: 12px;
+  }
+
+  .status-overview,
+  .activity-card,
+  .final-documents-card,
+  .pending-files-card,
+  .quick-actions-card {
+    grid-column: auto;
+
+    grid-row: auto;
+
+    margin-top: 0;
+  }
+
+
+  /* =====================================================
+     CARDS
+     ===================================================== */
+
+  .card-header {
+    padding: 15px;
+  }
+
+  .card-header h3 {
+    font-size: 17px;
+  }
+
+  .card-header p {
+    font-size: 12px;
+  }
+
+
+  /* =====================================================
+     STATUS
+     ===================================================== */
+
+  .status-list {
+    padding: 17px 15px 5px;
+  }
+
+  .status-row {
+    grid-template-columns:
+      85px
+      minmax(0, 1fr)
+      25px;
+
+    gap: 8px;
+  }
+
+
+  /* =====================================================
+     TABLE
+     ===================================================== */
+
+  .pending-files-card,
+  .final-documents-card {
+    overflow: hidden;
+  }
+
+  .table-wrapper {
+    overflow-x: auto;
+  }
+
+  .dashboard-table {
+    min-width: 650px;
+  }
+
+
+  /* =====================================================
+     ACTIVITY
+     ===================================================== */
+
+  .activity-list {
+    padding: 5px 15px 10px;
+  }
+
+
+  /* =====================================================
+     QUICK ACTIONS
+     ===================================================== */
+
+  .quick-actions {
+    grid-template-columns: 1fr;
   }
 
 }

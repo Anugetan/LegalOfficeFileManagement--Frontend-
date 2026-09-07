@@ -1,158 +1,620 @@
 import {
-ChangeDetectorRef,
-Component,
-OnInit
+  ChangeDetectorRef,
+  Component,
+  OnInit
 } from '@angular/core';
 
-import { LegalFileServiceTs } from '../../service/legal-file.service.ts';
-import { LegalFile } from '../../model/legalFiles/legal-files-model.js';
+import { CommonModule } from '@angular/common';
+import { Router, RouterModule } from '@angular/router';
+
+import {
+  LegalFile
+} from '../../model/legalFiles/legal-files-model.js';
+
+import {
+  LegalFileServiceTs
+} from '../../service/legal-file.service.js';
+
+
+
+import { forkJoin, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import { FinalDocumentService } from '../../service/FinalDocumentService.js';
+import { FinalDocument } from '../../model/final-document/final-document.js';
+
 
 @Component({
-selector: 'app-dashboard',
-standalone: true,
-imports: [],
-templateUrl: './dashboard.html',
-styleUrl: './dashboard.css',
+  selector: 'app-dashboard',
+  standalone: true,
+
+  imports: [
+    CommonModule,
+    RouterModule
+  ],
+
+  templateUrl: './dashboard.html',
+  styleUrl: './dashboard.css'
 })
 export class Dashboard implements OnInit {
 
-// =========================================================
-// ALL LEGAL FILES
-// =========================================================
+  // =========================================================
+  // ALL LEGAL FILES
+  // =========================================================
 
-legalFiles: LegalFile[] = [];
-
-// =========================================================
-// FILES SEPARATED BY STATUS
-// =========================================================
-
-pendingFiles: LegalFile[] = [];
-
-outFiles: LegalFile[] = [];
-
-resolvedFiles: LegalFile[] = [];
-
-archivedFiles: LegalFile[] = [];
-
-cancelledFiles: LegalFile[] = [];
-
-// =========================================================
-// CONSTRUCTOR
-// =========================================================
-
-constructor(
-private legalFileService: LegalFileServiceTs,
-private cdr: ChangeDetectorRef
-) {}
-
-// =========================================================
-// INITIALIZE
-// =========================================================
-
-ngOnInit(): void {
+  legalFiles: LegalFile[] = [];
 
 
-this.loadLegalFiles();
+  // =========================================================
+  // STATUS FILES
+  // =========================================================
+
+  pendingFiles: LegalFile[] = [];
+
+  outFiles: LegalFile[] = [];
+
+  resolvedFiles: LegalFile[] = [];
+
+  archivedFiles: LegalFile[] = [];
+
+  cancelledFiles: LegalFile[] = [];
 
 
-}
+  // =========================================================
+  // FINAL DOCUMENTS
+  // =========================================================
 
-// =========================================================
-// LOAD ALL LEGAL FILES
-// =========================================================
+  finalDocuments: FinalDocument[] = [];
 
-loadLegalFiles(): void {
+  finalDocumentFiles: LegalFile[] = [];
 
-this.legalFileService
-  .getAllLegalFiles()
-  .subscribe({
+  loadingFinalDocuments = false;
 
-    next: (data: LegalFile[]) => {
 
-      console.log(
-        'DASHBOARD LEGAL FILES:',
-        data
+  // =========================================================
+  // RECENT ACTIVITY
+  // =========================================================
+
+  recentFiles: LegalFile[] = [];
+
+
+  // =========================================================
+  // LOADING
+  // =========================================================
+
+  loading = false;
+
+
+  // =========================================================
+  // ERROR
+  // =========================================================
+
+  errorMessage = '';
+
+
+  constructor(
+    private legalFileService: LegalFileServiceTs,
+    private finalDocumentService: FinalDocumentService,
+    private router: Router,
+    private cdr: ChangeDetectorRef
+  ) {}
+
+
+  // =========================================================
+  // INITIALIZE
+  // =========================================================
+
+  ngOnInit(): void {
+
+    this.loadDashboard();
+
+  }
+
+
+  // =========================================================
+  // LOAD DASHBOARD
+  // =========================================================
+
+  loadDashboard(): void {
+
+    this.loading = true;
+    this.errorMessage = '';
+
+    this.legalFileService
+      .getAllLegalFiles()
+      .subscribe({
+
+        next: (data: LegalFile[]) => {
+
+          console.log(
+            'DASHBOARD LEGAL FILES:',
+            data
+          );
+
+          this.legalFiles = data || [];
+
+          this.filterByStatus();
+
+          this.prepareRecentFiles();
+
+          this.loadFinalDocuments();
+
+          this.loading = false;
+
+          this.cdr.detectChanges();
+        },
+
+        error: (error) => {
+
+          console.error(
+            'Error loading dashboard files:',
+            error
+          );
+
+          this.loading = false;
+
+          this.errorMessage =
+            'Unable to load legal files.';
+
+          this.cdr.detectChanges();
+        }
+
+      });
+
+  }
+
+
+  // =========================================================
+  // FILTER BY STATUS
+  // =========================================================
+
+  filterByStatus(): void {
+
+    this.pendingFiles =
+      this.legalFiles.filter(
+        file =>
+          file.statusName
+            ?.trim()
+            .toLowerCase() === 'pending'
       );
 
-      // Store all files
-      this.legalFiles = data;
+
+    this.outFiles =
+      this.legalFiles.filter(
+        file =>
+          file.statusName
+            ?.trim()
+            .toLowerCase() === 'out'
+      );
 
 
-      // Separate files by status
-      this.filterByStatus();
+    this.resolvedFiles =
+      this.legalFiles.filter(
+        file =>
+          file.statusName
+            ?.trim()
+            .toLowerCase() === 'resolved'
+      );
 
 
-      // Force UI update
+    this.archivedFiles =
+      this.legalFiles.filter(
+        file =>
+          file.statusName
+            ?.trim()
+            .toLowerCase() === 'archived'
+      );
+
+
+    this.cancelledFiles =
+      this.legalFiles.filter(
+        file =>
+          file.statusName
+            ?.trim()
+            .toLowerCase() === 'cancelled'
+      );
+
+  }
+
+
+  // =========================================================
+  // LOAD FINAL DOCUMENTS
+  // =========================================================
+
+  loadFinalDocuments(): void {
+
+    this.loadingFinalDocuments = true;
+
+    this.finalDocuments = [];
+
+    this.finalDocumentFiles = [];
+
+
+    /*
+     * Only RESOLVED files can have final documents
+     */
+
+    if (this.resolvedFiles.length === 0) {
+
+      this.loadingFinalDocuments = false;
+
       this.cdr.detectChanges();
 
-    },
+      return;
+    }
 
-    error: (error) => {
 
-      console.error(
-        'Error loading legal files:',
-        error
+    const requests =
+      this.resolvedFiles.map(file =>
+
+        this.finalDocumentService
+          .getByFileId(file.id)
+          .pipe(
+            catchError(error => {
+
+              console.error(
+                `Error loading final documents for file ${file.id}:`,
+                error
+              );
+
+              return of([]);
+
+            })
+          )
+
       );
+
+
+    forkJoin(requests)
+      .subscribe({
+
+        next: (results: FinalDocument[][]) => {
+
+          results.forEach(
+            (documents: FinalDocument[]) => {
+
+              if (
+                documents &&
+                documents.length > 0
+              ) {
+
+                this.finalDocuments.push(
+                  ...documents
+                );
+
+              }
+
+            }
+          );
+
+
+          /*
+           * Sort newest final documents first
+           */
+
+          this.finalDocuments.sort(
+            (a, b) => {
+
+              const dateA =
+                a.finalizedAt
+                  ? new Date(a.finalizedAt).getTime()
+                  : 0;
+
+              const dateB =
+                b.finalizedAt
+                  ? new Date(b.finalizedAt).getTime()
+                  : 0;
+
+              return dateB - dateA;
+
+            }
+          );
+
+
+          /*
+           * Find the legal files that have
+           * at least one final document
+           */
+
+          const fileIds =
+            new Set(
+              this.finalDocuments.map(
+                document => document.fileId
+              )
+            );
+
+
+          this.finalDocumentFiles =
+            this.legalFiles.filter(
+              file => fileIds.has(file.id)
+            );
+
+
+          this.loadingFinalDocuments = false;
+
+          this.cdr.detectChanges();
+
+        },
+
+        error: (error) => {
+
+          console.error(
+            'Error loading final documents:',
+            error
+          );
+
+          this.loadingFinalDocuments = false;
+
+          this.cdr.detectChanges();
+
+        }
+
+      });
+
+  }
+
+
+  // =========================================================
+  // RECENT FILES
+  // =========================================================
+
+  prepareRecentFiles(): void {
+
+    this.recentFiles =
+      [...this.legalFiles]
+        .sort((a, b) => {
+
+          const dateA =
+            a.createdAt
+              ? new Date(a.createdAt).getTime()
+              : 0;
+
+          const dateB =
+            b.createdAt
+              ? new Date(b.createdAt).getTime()
+              : 0;
+
+          return dateB - dateA;
+
+        })
+        .slice(0, 6);
+
+  }
+
+
+  // =========================================================
+  // STATUS COUNT
+  // =========================================================
+
+  get totalFiles(): number {
+
+    return this.legalFiles.length;
+
+  }
+
+
+  // =========================================================
+  // FINAL DOCUMENT COUNT
+  // =========================================================
+
+  get finalDocumentCount(): number {
+
+    return this.finalDocuments.length;
+
+  }
+
+
+  // =========================================================
+  // GET STATUS CLASS
+  // =========================================================
+
+  getStatusClass(file: LegalFile): string {
+
+    const status =
+      file.statusName
+        ?.trim()
+        .toLowerCase();
+
+
+    switch (status) {
+
+      case 'pending':
+        return 'pending';
+
+      case 'out':
+        return 'out';
+
+      case 'resolved':
+        return 'resolved';
+
+      case 'archived':
+        return 'archived';
+
+      case 'cancelled':
+        return 'cancelled';
+
+      default:
+        return 'pending';
 
     }
 
-  });
+  }
 
 
-}
+  // =========================================================
+  // GET STAGE LABEL
+  // =========================================================
 
-// =========================================================
-// FILTER FILES BY STATUS
-// =========================================================
+  getStageLabel(file: LegalFile): string {
 
-filterByStatus(): void {
+    if (!file.currentStage) {
+      return 'Received';
+    }
 
+    return file.currentStage
+      .replace(/_/g, ' ')
+      .toLowerCase()
+      .replace(/\b\w/g, char =>
+        char.toUpperCase()
+      );
 
-this.pendingFiles =
-  this.legalFiles.filter(
-    file =>
-      file.statusName
-        ?.trim()
-        .toLowerCase() === 'pending'
-  );
-
-
-this.outFiles =
-  this.legalFiles.filter(
-    file =>
-      file.statusName
-        ?.trim()
-        .toLowerCase() === 'out'
-  );
+  }
 
 
-this.resolvedFiles =
-  this.legalFiles.filter(
-    file =>
-      file.statusName
-        ?.trim()
-        .toLowerCase() === 'resolved'
-  );
+  // =========================================================
+  // GET ACTIVITY TITLE
+  // =========================================================
+
+  getActivityTitle(file: LegalFile): string {
+
+    const stage =
+      file.currentStage
+        ?.toUpperCase();
 
 
-this.archivedFiles =
-  this.legalFiles.filter(
-    file =>
-      file.statusName
-        ?.trim()
-        .toLowerCase() === 'archived'
-  );
+    switch (stage) {
+
+      case 'RECEIVED':
+        return 'New legal file received';
+
+      case 'INITIAL_REVIEW':
+        return 'File under initial review';
+
+      case 'FINAL_REVIEW':
+        return 'File under final review';
+
+      case 'RESOLVED':
+        return 'File resolved';
+
+      case 'OUT':
+        return 'File sent out';
+
+      default:
+        return 'Legal file updated';
+
+    }
+
+  }
 
 
-this.cancelledFiles =
-  this.legalFiles.filter(
-    file =>
-      file.statusName
-        ?.trim()
-        .toLowerCase() === 'cancelled'
-  );
+  // =========================================================
+  // GET ACTIVITY ICON
+  // =========================================================
+
+  getActivityIcon(file: LegalFile): string {
+
+    const stage =
+      file.currentStage
+        ?.toUpperCase();
 
 
-}
+    switch (stage) {
+
+      case 'RECEIVED':
+        return '＋';
+
+      case 'INITIAL_REVIEW':
+        return '📝';
+
+      case 'FINAL_REVIEW':
+        return '✓';
+
+      case 'RESOLVED':
+        return '✓';
+
+      case 'OUT':
+        return '➤';
+
+      default:
+        return '📄';
+
+    }
+
+  }
+
+
+  // =========================================================
+  // VIEW LEGAL FILE
+  // =========================================================
+
+  viewLegalFiles(): void {
+
+    this.router.navigate([
+      '/menubar/legal-files'
+    ]);
+
+  }
+
+
+  // =========================================================
+  // VIEW PROOF OF SERVICE
+  // =========================================================
+
+  viewProofOfService(): void {
+
+    this.router.navigate([
+      '/menubar/proof-of-service'
+    ]);
+
+  }
+
+
+  // =========================================================
+  // ADD LEGAL FILE
+  // =========================================================
+
+  addLegalFile(): void {
+
+    this.router.navigate([
+      '/menubar/legal-files'
+    ]);
+
+  }
+
+
+  // =========================================================
+  // VIEW FILE
+  // =========================================================
+
+  viewFile(file: LegalFile): void {
+
+    /*
+     * Currently opens Legal Files page.
+     *
+     * Later you can change this to:
+     *
+     * /menubar/legal-files/:id
+     *
+     * if you create a detail page.
+     */
+
+    this.router.navigate([
+      '/menubar/legal-files'
+    ]);
+
+  }
+
+
+  // =========================================================
+  // VIEW FINAL DOCUMENTS
+  // =========================================================
+
+  viewFinalDocuments(): void {
+
+    this.router.navigate([
+      '/menubar/legal-files'
+    ]);
+
+  }
+
+
+  // =========================================================
+  // REFRESH
+  // =========================================================
+
+  refreshDashboard(): void {
+
+    this.loadDashboard();
+
+  }
 
 }

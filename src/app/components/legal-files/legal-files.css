@@ -2935,3 +2935,1164 @@ tr.selected-row
   }
 
 }
+/* =========================================================
+   FINAL DOCUMENT BUTTON
+   ========================================================= */
+
+.final-document-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+
+  min-width: 145px;
+  padding: 8px 14px;
+
+  border: none;
+  border-radius: 7px;
+
+  background: #2563eb;
+  color: #ffffff;
+
+  font-size: 12px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.final-document-button:hover {
+  background: #1d4ed8;
+
+  transform: translateY(-1px);
+
+  box-shadow: 0 4px 10px rgba(37, 99, 235, 0.25);
+}
+
+.final-document-button:active {
+  transform: translateY(0);
+}
+
+
+/* =========================================================
+   FINAL DOCUMENT OVERLAY
+   ========================================================= */
+
+.final-document-overlay {
+  position: fixed;
+
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  width: 100%;
+  height: 100%;
+
+  z-index: 9999;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /*
+   * THIS IS THE BACKGROUND OF THE MODAL
+   */
+  background: rgba(15, 23, 42, 0.65);
+
+  padding: 20px;
+
+  box-sizing: border-box;
+
+  overflow-y: auto;
+
+  animation: finalDocumentOverlayIn 0.2s ease;
+}
+
+
+/* =========================================================
+   FINAL DOCUMENT MODAL
+   ========================================================= */
+
+.final-document-modal {
+  position: relative;
+
+  width: 100%;
+  max-width: 820px;
+
+  max-height: calc(100vh - 40px);
+
+  display: flex;
+  flex-direction: column;
+
+  background: #ffffff;
+
+  border-radius: 14px;
+
+  overflow: hidden;
+
+  box-shadow:
+    0 25px 60px rgba(0, 0, 0, 0.25),
+    0 8px 20px rgba(0, 0, 0, 0.12);
+
+  animation: finalDocumentModalIn 0.25s ease;
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.final-document-header {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 20px 24px;
+
+  background: #ffffff;
+
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.final-document-header h3 {
+  margin: 0 0 5px 0;
+
+  font-size: 20px;
+  font-weight: 700;
+
+  color: #111827;
+}
+
+.final-document-case {
+  display: block;
+
+  font-size: 13px;
+
+  color: #6b7280;
+}
+
+.final-document-case strong {
+  color: #111827;
+  font-weight: 700;
+}
+
+
+/* =========================================================
+   CLOSE BUTTON
+   ========================================================= */
+
+.final-document-close {
+  width: 36px;
+  height: 36px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+
+  border: none;
+  border-radius: 8px;
+
+  background: transparent;
+
+  color: #6b7280;
+
+  font-size: 24px;
+  line-height: 1;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.final-document-close:hover {
+  background: #f3f4f6;
+
+  color: #111827;
+}
+
+
+/* =========================================================
+   BODY
+   ========================================================= */
+
+.final-document-body {
+  padding: 24px;
+
+  overflow-y: auto;
+
+  background: #ffffff;
+}
+
+
+/* =========================================================
+   FILE INFORMATION
+   ========================================================= */
+
+.final-document-information {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+
+  gap: 12px;
+
+  margin-bottom: 24px;
+}
+
+.final-document-info-item {
+  min-width: 0;
+
+  padding: 14px 16px;
+
+  background: #f8fafc;
+
+  border: 1px solid #e5e7eb;
+
+  border-radius: 9px;
+}
+
+.final-document-info-item > span {
+  display: block;
+
+  margin-bottom: 6px;
+
+  font-size: 11px;
+
+  font-weight: 600;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.4px;
+
+  color: #64748b;
+}
+
+.final-document-info-item strong {
+  display: block;
+
+  font-size: 14px;
+
+  color: #1e293b;
+}
+
+
+/* =========================================================
+   RESOLVED BADGE
+   ========================================================= */
+
+.final-document-info-item .stage-resolved {
+  display: inline-flex;
+
+  align-items: center;
+
+  padding: 4px 9px;
+
+  border-radius: 20px;
+
+  background: #dcfce7;
+
+  color: #166534;
+
+  font-size: 11px;
+
+  font-weight: 700;
+}
+
+
+/* =========================================================
+   FORM
+   ========================================================= */
+
+.final-document-form {
+  margin-bottom: 26px;
+}
+
+.final-document-form-group {
+  margin-bottom: 18px;
+}
+
+.final-document-form-group label {
+  display: block;
+
+  margin-bottom: 7px;
+
+  font-size: 13px;
+
+  font-weight: 600;
+
+  color: #374151;
+}
+
+.final-document-form-group .required {
+  color: #dc2626;
+
+  margin-left: 2px;
+}
+
+
+/* =========================================================
+   INPUTS
+   ========================================================= */
+
+.final-document-form-group input,
+.final-document-form-group textarea {
+  width: 100%;
+
+  box-sizing: border-box;
+
+  padding: 11px 13px;
+
+  border: 1px solid #d1d5db;
+
+  border-radius: 8px;
+
+  background: #ffffff;
+
+  color: #111827;
+
+  font-family: inherit;
+
+  font-size: 13px;
+
+  outline: none;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.final-document-form-group input {
+  height: 42px;
+}
+
+.final-document-form-group textarea {
+  min-height: 105px;
+
+  resize: vertical;
+
+  line-height: 1.5;
+}
+
+.final-document-form-group input::placeholder,
+.final-document-form-group textarea::placeholder {
+  color: #9ca3af;
+}
+
+.final-document-form-group input:focus,
+.final-document-form-group textarea:focus {
+  border-color: #2563eb;
+
+  box-shadow:
+    0 0 0 3px rgba(37, 99, 235, 0.10);
+
+  background: #ffffff;
+}
+
+
+/* =========================================================
+   HINT
+   ========================================================= */
+
+.final-document-hint {
+  display: block;
+
+  margin-top: 6px;
+
+  font-size: 11px;
+
+  color: #6b7280;
+}
+
+
+/* =========================================================
+   WORKFLOW INFORMATION
+   ========================================================= */
+
+.final-document-workflow {
+  display: flex;
+
+  align-items: flex-start;
+
+  gap: 12px;
+
+  margin-top: 20px;
+
+  padding: 15px 16px;
+
+  border: 1px solid #bbf7d0;
+
+  border-radius: 9px;
+
+  background: #f0fdf4;
+}
+
+.final-document-workflow-icon {
+  width: 28px;
+  height: 28px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #16a34a;
+
+  color: #ffffff;
+
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.final-document-workflow strong {
+  display: block;
+
+  margin-bottom: 3px;
+
+  color: #166534;
+
+  font-size: 13px;
+}
+
+.final-document-workflow p {
+  margin: 0;
+
+  color: #4b5563;
+
+  font-size: 12px;
+
+  line-height: 1.5;
+}
+
+
+/* =========================================================
+   FORM ACTIONS
+   ========================================================= */
+
+.final-document-actions {
+  display: flex;
+
+  justify-content: flex-end;
+
+  gap: 10px;
+
+  margin-top: 20px;
+}
+
+.final-document-cancel,
+.final-document-save {
+  min-width: 125px;
+
+  height: 40px;
+
+  padding: 0 16px;
+
+  border-radius: 7px;
+
+  font-size: 13px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+
+/* CANCEL */
+
+.final-document-cancel {
+  border: 1px solid #d1d5db;
+
+  background: #ffffff;
+
+  color: #374151;
+}
+
+.final-document-cancel:hover {
+  background: #f9fafb;
+
+  border-color: #9ca3af;
+}
+
+
+/* SAVE */
+
+.final-document-save {
+  border: 1px solid #2563eb;
+
+  background: #2563eb;
+
+  color: #ffffff;
+}
+
+.final-document-save:hover:not(:disabled) {
+  background: #1d4ed8;
+
+  box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2);
+
+  transform: translateY(-1px);
+}
+
+.final-document-save:disabled {
+  background: #cbd5e1;
+
+  border-color: #cbd5e1;
+
+  color: #94a3b8;
+
+  cursor: not-allowed;
+
+  box-shadow: none;
+}
+
+
+/* =========================================================
+   FINAL DOCUMENT HISTORY
+   ========================================================= */
+
+.final-document-history {
+  margin-top: 10px;
+
+  padding-top: 22px;
+
+  border-top: 1px solid #e5e7eb;
+}
+
+.final-document-history-header {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 14px;
+}
+
+.final-document-history-header h4 {
+  margin: 0;
+
+  font-size: 15px;
+
+  font-weight: 700;
+
+  color: #1f2937;
+}
+
+
+/* =========================================================
+   LOADING
+   ========================================================= */
+
+.final-document-loading {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+
+  padding: 25px;
+
+  color: #6b7280;
+
+  font-size: 13px;
+}
+
+
+/* =========================================================
+   EMPTY HISTORY
+   ========================================================= */
+
+.final-document-empty {
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 6px;
+
+  padding: 30px 20px;
+
+  background: #f8fafc;
+
+  border: 1px dashed #cbd5e1;
+
+  border-radius: 9px;
+
+  text-align: center;
+}
+
+.final-document-empty-icon {
+  margin-bottom: 3px;
+
+  font-size: 26px;
+}
+
+.final-document-empty strong {
+  font-size: 13px;
+
+  color: #374151;
+}
+
+.final-document-empty span:last-child {
+  font-size: 12px;
+
+  color: #6b7280;
+}
+
+
+/* =========================================================
+   DOCUMENT LIST
+   ========================================================= */
+
+.final-document-list {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 10px;
+}
+
+
+/* =========================================================
+   DOCUMENT ITEM
+   ========================================================= */
+
+.final-document-item {
+  display: flex;
+
+  align-items: flex-start;
+
+  gap: 12px;
+
+  padding: 14px;
+
+  background: #ffffff;
+
+  border: 1px solid #e5e7eb;
+
+  border-radius: 9px;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.final-document-item:hover {
+  border-color: #cbd5e1;
+
+  box-shadow: 0 3px 10px rgba(15, 23, 42, 0.06);
+}
+
+
+/* =========================================================
+   DOCUMENT ICON
+   ========================================================= */
+
+.final-document-item-icon {
+  width: 38px;
+  height: 38px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 8px;
+
+  background: #eff6ff;
+
+  font-size: 18px;
+}
+
+
+/* =========================================================
+   DOCUMENT CONTENT
+   ========================================================= */
+
+.final-document-item-content {
+  min-width: 0;
+
+  flex: 1;
+}
+
+.final-document-item-header {
+  display: flex;
+
+  align-items: flex-start;
+  justify-content: space-between;
+
+  gap: 15px;
+
+  margin-bottom: 9px;
+}
+
+.final-document-item-header strong {
+  min-width: 0;
+
+  font-size: 13px;
+
+  font-weight: 700;
+
+  color: #1f2937;
+
+  overflow-wrap: anywhere;
+}
+
+.final-document-item-header > span {
+  flex-shrink: 0;
+
+  font-size: 11px;
+
+  color: #6b7280;
+}
+
+
+/* =========================================================
+   DOCUMENT ROW
+   ========================================================= */
+
+.final-document-item-row {
+  display: flex;
+
+  align-items: flex-start;
+
+  gap: 6px;
+
+  margin-top: 5px;
+
+  font-size: 12px;
+
+  line-height: 1.5;
+
+  color: #4b5563;
+}
+
+.final-document-item-label {
+  flex-shrink: 0;
+
+  font-weight: 600;
+
+  color: #6b7280;
+}
+
+
+/* =========================================================
+   FILE PATH
+   ========================================================= */
+
+.final-document-file-path {
+  min-width: 0;
+
+  color: #2563eb;
+
+  overflow-wrap: anywhere;
+
+  word-break: break-word;
+}
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.final-document-footer {
+  display: flex;
+
+  justify-content: flex-end;
+
+  padding: 14px 24px;
+
+  border-top: 1px solid #e5e7eb;
+
+  background: #f8fafc;
+}
+
+.final-document-close-footer {
+  min-width: 90px;
+
+  height: 38px;
+
+  padding: 0 15px;
+
+  border: 1px solid #d1d5db;
+
+  border-radius: 7px;
+
+  background: #ffffff;
+
+  color: #374151;
+
+  font-size: 13px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.final-document-close-footer:hover {
+  background: #f3f4f6;
+
+  border-color: #9ca3af;
+}
+
+
+/* =========================================================
+   SCROLLBAR
+   ========================================================= */
+
+.final-document-body::-webkit-scrollbar {
+  width: 7px;
+}
+
+.final-document-body::-webkit-scrollbar-track {
+  background: #f8fafc;
+}
+
+.final-document-body::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+
+  border-radius: 10px;
+}
+
+.final-document-body::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+
+/* =========================================================
+   ANIMATIONS
+   ========================================================= */
+
+@keyframes finalDocumentOverlayIn {
+
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+
+}
+
+@keyframes finalDocumentModalIn {
+
+  from {
+    opacity: 0;
+
+    transform: translateY(15px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+
+    transform: translateY(0) scale(1);
+  }
+
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 768px) {
+
+  .final-document-overlay {
+    padding: 10px;
+  }
+
+  .final-document-modal {
+    max-height: calc(100vh - 20px);
+
+    border-radius: 10px;
+  }
+
+  .final-document-header {
+    padding: 16px 18px;
+  }
+
+  .final-document-body {
+    padding: 18px;
+  }
+
+  .final-document-information {
+    grid-template-columns: 1fr;
+  }
+
+  .final-document-item-header {
+    flex-direction: column;
+
+    gap: 4px;
+  }
+
+  .final-document-actions {
+    flex-direction: column-reverse;
+  }
+
+  .final-document-cancel,
+  .final-document-save {
+    width: 100%;
+  }
+
+  .final-document-footer {
+    padding: 12px 18px;
+  }
+
+}
+
+
+
+/* =========================================================
+   OUT LABEL
+   ========================================================= */
+
+.out-label {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 6px 12px;
+
+  border-radius: 20px;
+
+  background: #dcfce7;
+
+  color: #166534;
+
+  font-size: 12px;
+
+  font-weight: 700;
+}
+
+/* ===================================================== */
+/* WORKFLOW INFORMATION TOOLTIP */
+/* ===================================================== */
+
+.workflow-info-tooltip {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  margin: 0 0 12px 0;
+}
+
+
+/* ===================================================== */
+/* INFO ICON */
+/* ===================================================== */
+
+.workflow-info-icon {
+  width: 22px;
+  height: 22px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid #0b4f8a;
+  border-radius: 50%;
+
+  color: #0b4f8a;
+  background: #ffffff;
+
+  font-size: 14px;
+  font-weight: 700;
+  font-family: Arial, sans-serif;
+
+  cursor: help;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+
+/* ===================================================== */
+/* ICON HOVER */
+/* ===================================================== */
+
+.workflow-info-icon:hover {
+  background: #0b4f8a;
+  color: #ffffff;
+
+  transform: scale(1.05);
+}
+
+
+/* ===================================================== */
+/* TOOLTIP */
+/* ===================================================== */
+
+.workflow-tooltip-content {
+  position: absolute;
+
+  left: 32px;
+  top: 50%;
+
+  transform: translateY(-50%) translateX(-5px);
+
+  width: 330px;
+
+  background: #ffffff;
+
+  border: 1px solid #d7dee8;
+  border-radius: 8px;
+
+  padding: 14px 16px;
+
+  box-shadow:
+    0 10px 30px rgba(15, 23, 42, 0.18);
+
+  opacity: 0;
+  visibility: hidden;
+
+  pointer-events: none;
+
+  transition:
+    opacity 0.18s ease,
+    transform 0.18s ease,
+    visibility 0.18s ease;
+
+  z-index: 100000;
+}
+
+
+/* ===================================================== */
+/* TOOLTIP ARROW */
+/* ===================================================== */
+
+.workflow-tooltip-content::before {
+  content: "";
+
+  position: absolute;
+
+  left: -7px;
+  top: 50%;
+
+  width: 12px;
+  height: 12px;
+
+  background: #ffffff;
+
+  border-left: 1px solid #d7dee8;
+  border-bottom: 1px solid #d7dee8;
+
+  transform: translateY(-50%) rotate(45deg);
+}
+
+
+/* ===================================================== */
+/* SHOW TOOLTIP ON HOVER */
+/* ===================================================== */
+
+.workflow-info-tooltip:hover .workflow-tooltip-content {
+  opacity: 1;
+  visibility: visible;
+
+  transform:
+    translateY(-50%)
+    translateX(0);
+
+  pointer-events: auto;
+}
+
+
+/* ===================================================== */
+/* TOOLTIP HEADER */
+/* ===================================================== */
+
+.workflow-tooltip-header {
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+
+  margin-bottom: 10px;
+
+  color: #1f2937;
+
+  font-size: 14px;
+}
+
+
+/* ===================================================== */
+/* TOOLTIP ICON */
+/* ===================================================== */
+
+.workflow-tooltip-icon {
+  width: 20px;
+  height: 20px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #eaf3ff;
+  color: #0b4f8a;
+
+  font-size: 12px;
+  font-weight: 700;
+}
+
+
+/* ===================================================== */
+/* TOOLTIP BODY */
+/* ===================================================== */
+
+.workflow-tooltip-body {
+  color: #4b5563;
+
+  font-size: 13px;
+
+  line-height: 1.6;
+}
+
+
+/* ===================================================== */
+/* TOOLTIP PARAGRAPH */
+/* ===================================================== */
+
+.workflow-tooltip-body p {
+  margin: 0 0 8px;
+}
+
+.workflow-tooltip-body p:last-child {
+  margin-bottom: 0;
+}
+
+
+/* ===================================================== */
+/* STRONG TEXT */
+/* ===================================================== */
+
+.workflow-tooltip-body strong {
+  color: #1f2937;
+  font-weight: 700;
+}

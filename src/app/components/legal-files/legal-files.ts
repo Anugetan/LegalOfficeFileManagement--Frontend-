@@ -22,19 +22,50 @@ import {
   DocumentFormat
 } from '../../model/legalFiles/legal-files-model';
 
-import { LegalFileServiceTs } from '../../service/legal-file.service.ts';
 import { CreateLegalFile } from '../../model/legalFiles/create-legal-files';
 
 import { FileDocumentService } from '../../service/FileDocumentService';
-import { FileAction } from '../../model/file-action/file-action';
-import { FileUploadResponse } from '../../model/file-upload/file-upload';
-import { CreateFileReview, FileReview } from '../../model/file-review/file-review';
-import { FileReviewService } from '../../service/FileReviewService';
+
+import {
+  FileAction
+} from '../../model/file-action/file-action';
+
+import {
+  FileUploadResponse
+} from '../../model/file-upload/file-upload';
+
+import {
+  CreateFileReview,
+  FileReview
+} from '../../model/final-review/final-review';
+
+import {
+  FileReviewService
+} from '../../service/FileReviewService';
+
+import {
+  InitialReview,
+  InitialReviewRequest
+} from '../../model/initial-review/initial-review';
+
+import { InitialReviewService } from '../../service/InitialReviewService ';
+
+import {
+  CreateFinalDocument,
+  FinalDocument
+} from '../../model/final-document/final-document';
+
+import {
+  FinalDocumentService
+} from '../../service/FinalDocumentService';
+
+import {
+  LegalFileServiceTs
+} from '../../service/legal-file.service';
 
 
 @Component({
   selector: 'app-legal-files',
-
   standalone: true,
 
   imports: [
@@ -73,26 +104,53 @@ export class LegalFiles implements OnInit {
   showActivityModal = false;
 
   loadingFileActions = false;
-  
-// =====================================================
-// FILE REVIEW
-// =====================================================
 
-selectedReviewFile: LegalFile | null = null;
 
-fileReviews: FileReview[] = [];
+  // =====================================================
+  // REVIEW
+  // =====================================================
 
-showReviewModal = false;
+  selectedReviewFile: LegalFile | null = null;
 
-loadingReviews = false;
+  initialReviews: InitialReview[] = [];
 
-savingReview = false;
+  fileReviews: FileReview[] = [];
 
-reviewForm = {
-  reviewType: 'INITIAL',
-  reviewStatus: 'PENDING',
-  remarks: ''
-};
+  showReviewModal = false;
+
+  loadingReviews = false;
+
+  savingReview = false;
+
+  reviewType: 'INITIAL' | 'FINAL' = 'INITIAL';
+
+  reviewForm = {
+    reviewStatus: 'PENDING',
+    remarks: ''
+  };
+
+
+  // =====================================================
+  // FINAL DOCUMENT
+  // =====================================================
+
+  selectedFinalDocumentFile: LegalFile | null = null;
+
+  finalDocuments: FinalDocument[] = [];
+
+  showFinalDocumentModal = false;
+
+  loadingFinalDocuments = false;
+
+  savingFinalDocument = false;
+
+  finalDocumentForm: CreateFinalDocument = {
+    fileId: 0,
+    documentName: '',
+    filePath: '',
+    remarks: ''
+  };
+
 
   // =====================================================
   // SELECTED ROW
@@ -102,7 +160,7 @@ reviewForm = {
 
 
   // =====================================================
-  // SAVE NOTIFICATIONS
+  // NOTIFICATIONS
   // =====================================================
 
   successMessage = '';
@@ -124,17 +182,6 @@ reviewForm = {
 
 
   // =====================================================
-  // STATUS CHANGES
-  // =====================================================
-
-  statusChanges =
-    new Map<number, number>();
-
-  originalStatusIds =
-    new Map<number, number | null>();
-
-
-  // =====================================================
   // DROPDOWN DATA
   // =====================================================
 
@@ -150,7 +197,7 @@ reviewForm = {
 
 
   // =====================================================
-  // FORM VISIBILITY
+  // CREATE FORM VISIBILITY
   // =====================================================
 
   showForm = false;
@@ -184,10 +231,24 @@ reviewForm = {
   constructor(
 
     private fb: FormBuilder,
-    private legalFileServiceTs: LegalFileServiceTs,
-    private fileDocumentService: FileDocumentService,
-    private fileReviewService: FileReviewService,
-    private cdr: ChangeDetectorRef
+
+    private legalFileServiceTs:
+      LegalFileServiceTs,
+
+    private fileDocumentService:
+      FileDocumentService,
+
+    private finalDocumentService:
+      FinalDocumentService,
+
+    private fileReviewService:
+      FileReviewService,
+
+    private initialReviewService:
+      InitialReviewService,
+
+    private cdr:
+      ChangeDetectorRef
 
   ) {
 
@@ -209,15 +270,6 @@ reviewForm = {
           Validators.required
         ],
 
-        dateCompleted: [
-          ''
-        ],
-
-        statusId: [
-          null as number | null,
-          Validators.required
-        ],
-
         spmsTypeId: [
           null as number | null
         ],
@@ -236,11 +288,6 @@ reviewForm = {
 
         contactDetails: [
           ''
-        ],
-
-        currentStage: [
-          'RECEIVED',
-          Validators.required
         ]
 
       });
@@ -273,34 +320,27 @@ reviewForm = {
   // SELECT ROW
   // =====================================================
 
-selectRow(fileId: number): void {
+  selectRow(fileId: number): void {
 
-  console.log('ROW CLICKED:', fileId);
+    if (
+      this.selectedRowId === fileId
+    ) {
 
-  // Click same row = remove highlight
-  if (this.selectedRowId === fileId) {
+      this.selectedRowId = null;
 
-    this.selectedRowId = null;
+    } else {
 
-  } else {
+      this.selectedRowId = fileId;
 
-    // Click different row = highlight that row
-    this.selectedRowId = fileId;
+    }
+
+    this.cdr.detectChanges();
 
   }
 
-  console.log(
-    'SELECTED ROW ID:',
-    this.selectedRowId
-  );
-
-  this.cdr.detectChanges();
-
-}
-
 
   // =====================================================
-  // GET STATUS CSS CLASS
+  // STATUS CSS CLASS
   // =====================================================
 
   getStatusClass(
@@ -316,13 +356,11 @@ selectRow(fileId: number): void {
 
     }
 
-
     const status =
       this.statuses.find(
         item =>
           item.id === statusId
       );
-
 
     if (!status) {
 
@@ -330,42 +368,29 @@ selectRow(fileId: number): void {
 
     }
 
-
     const statusName =
       (status.statusName ?? '')
         .trim()
         .toLowerCase();
 
-
     switch (statusName) {
 
       case 'pending':
-
         return 'status-select status-pending';
 
-
       case 'out':
-
         return 'status-select status-out';
 
-
       case 'archived':
-
         return 'status-select status-archived';
 
-
       case 'resolved':
-
         return 'status-select status-resolved';
 
-
       case 'cancelled':
-
         return 'status-select status-cancelled';
 
-
       default:
-
         return 'status-select';
 
     }
@@ -374,7 +399,138 @@ selectRow(fileId: number): void {
 
 
   // =====================================================
-  // SORT LEGAL FILES BY STATUS
+  // STAGE CSS CLASS
+  // =====================================================
+
+  getStageClass(
+    stage: string | null | undefined
+  ): string {
+
+    const currentStage =
+      (stage ?? '')
+        .trim()
+        .toUpperCase();
+
+    switch (currentStage) {
+
+      case 'RECEIVED':
+        return 'stage-received';
+
+      case 'INITIAL_REVIEW':
+        return 'stage-initial-review';
+
+      case 'FINAL_REVIEW':
+        return 'stage-final-review';
+
+      case 'RESOLVED':
+        return 'stage-resolved';
+
+      case 'OUT':
+        return 'stage-out';
+
+      default:
+        return 'stage-default';
+
+    }
+
+  }
+
+
+  // =====================================================
+  // WORKFLOW LABEL
+  // =====================================================
+
+  getWorkflowAction(
+    file: LegalFile
+  ): string {
+
+    const stage =
+      (file.currentStage ?? '')
+        .trim()
+        .toUpperCase();
+
+    switch (stage) {
+
+      case 'RECEIVED':
+        return 'Initial Review';
+
+      case 'INITIAL_REVIEW':
+        return 'Initial Review';
+
+      case 'FINAL_REVIEW':
+        return 'Final Review';
+
+      case 'RESOLVED':
+        return 'Resolved';
+
+      case 'OUT':
+        return 'Out';
+
+      default:
+        return 'View';
+
+    }
+
+  }
+
+
+  // =====================================================
+  // INITIAL REVIEW AVAILABLE
+  // =====================================================
+
+  isInitialReviewAvailable(
+    file: LegalFile
+  ): boolean {
+
+    const stage =
+      (file.currentStage ?? '')
+        .trim()
+        .toUpperCase();
+
+    return (
+      stage === 'RECEIVED' ||
+      stage === 'INITIAL_REVIEW'
+    );
+
+  }
+
+
+  // =====================================================
+  // FINAL REVIEW AVAILABLE
+  // =====================================================
+
+  isFinalReviewAvailable(
+    file: LegalFile
+  ): boolean {
+
+    const stage =
+      (file.currentStage ?? '')
+        .trim()
+        .toUpperCase();
+
+    return stage === 'FINAL_REVIEW';
+
+  }
+
+
+  // =====================================================
+  // REVIEW AVAILABLE
+  // =====================================================
+
+  isReviewAvailable(
+    file: LegalFile
+  ): boolean {
+
+    return (
+      this.isInitialReviewAvailable(file) ||
+      this.isFinalReviewAvailable(file)
+    );
+
+  }
+
+
+  // =====================================================
+  // SORT LEGAL FILES
   // =====================================================
 
   sortLegalFiles(
@@ -384,41 +540,36 @@ selectRow(fileId: number): void {
     const priority:
       Record<string, number> = {
 
-      pending: 1,
+      received: 1,
 
-      out: 2,
+      initial_review: 2,
 
-      archived: 3,
+      final_review: 3,
 
       resolved: 4,
 
-      cancelled: 5
+      out: 5
 
     };
-
 
     return [...files].sort(
       (a, b) => {
 
-        const statusA =
-          (a.statusName ?? '')
+        const stageA =
+          (a.currentStage ?? '')
             .trim()
             .toLowerCase();
 
-
-        const statusB =
-          (b.statusName ?? '')
+        const stageB =
+          (b.currentStage ?? '')
             .trim()
             .toLowerCase();
-
 
         const priorityA =
-          priority[statusA] ?? 99;
-
+          priority[stageA] ?? 99;
 
         const priorityB =
-          priority[statusB] ?? 99;
-
+          priority[stageB] ?? 99;
 
         return priorityA - priorityB;
 
@@ -441,10 +592,6 @@ selectRow(fileId: number): void {
   }
 
 
-  // =====================================================
-  // TOGGLE SINGLE CHECKBOX
-  // =====================================================
-
   toggleSelection(
     id: number,
     event: Event
@@ -452,7 +599,6 @@ selectRow(fileId: number): void {
 
     const checkbox =
       event.target as HTMLInputElement;
-
 
     if (checkbox.checked) {
 
@@ -464,7 +610,6 @@ selectRow(fileId: number): void {
 
     }
 
-
     this.updateAllSelected();
 
     this.cdr.detectChanges();
@@ -472,17 +617,12 @@ selectRow(fileId: number): void {
   }
 
 
-  // =====================================================
-  // SELECT / DESELECT ALL
-  // =====================================================
-
   toggleSelectAll(
     event: Event
   ): void {
 
     const checkbox =
       event.target as HTMLInputElement;
-
 
     if (checkbox.checked) {
 
@@ -502,19 +642,13 @@ selectRow(fileId: number): void {
 
     }
 
-
     this.allSelected =
       checkbox.checked;
-
 
     this.cdr.detectChanges();
 
   }
 
-
-  // =====================================================
-  // UPDATE SELECT ALL STATE
-  // =====================================================
 
   updateAllSelected(): void {
 
@@ -528,7 +662,6 @@ selectRow(fileId: number): void {
 
     }
 
-
     this.allSelected =
       this.legalFiles.every(
         file =>
@@ -541,80 +674,7 @@ selectRow(fileId: number): void {
 
 
   // =====================================================
-  // STATUS CHANGED
-  // =====================================================
-
-  onStatusChange(
-
-    file: LegalFile,
-
-    newStatusId: number
-
-  ): void {
-
-    const originalStatusId =
-      this.originalStatusIds.get(
-        file.id
-      ) ?? null;
-
-
-    if (
-      newStatusId ===
-      originalStatusId
-    ) {
-
-      this.statusChanges.delete(
-        file.id
-      );
-
-    } else {
-
-      this.statusChanges.set(
-        file.id,
-        newStatusId
-      );
-
-    }
-
-
-    const selectedStatus =
-      this.statuses.find(
-        status =>
-          status.id === newStatusId
-      );
-
-
-    file.statusId =
-      newStatusId;
-
-    file.statusName =
-      selectedStatus?.statusName ?? '';
-
-
-    this.legalFiles =
-      this.sortLegalFiles(
-        this.legalFiles
-      );
-
-
-    this.cdr.detectChanges();
-
-  }
-
-
-  // =====================================================
-  // CHECK STATUS CHANGES
-  // =====================================================
-
-  hasStatusChanges(): boolean {
-
-    return this.statusChanges.size > 0;
-
-  }
-
-
-  // =====================================================
-  // SELECT DOCUMENT DURING CREATE
+  // DOCUMENT SELECTION
   // =====================================================
 
   onDocumentFileSelected(
@@ -624,42 +684,27 @@ selectRow(fileId: number): void {
     const input =
       event.target as HTMLInputElement;
 
-
     if (
       !input.files ||
       input.files.length === 0
     ) {
 
-      this.selectedDocumentFile =
-        null;
+      this.selectedDocumentFile = null;
 
-      this.uploadStatus =
-        'idle';
+      this.uploadStatus = 'idle';
 
-      this.uploadStatusMessage =
-        '';
+      this.uploadStatusMessage = '';
 
       return;
 
     }
 
-
     this.selectedDocumentFile =
       input.files[0];
 
+    this.uploadStatus = 'idle';
 
-    this.uploadStatus =
-      'idle';
-
-    this.uploadStatusMessage =
-      '';
-
-
-    console.log(
-      'SELECTED FILE:',
-      this.selectedDocumentFile
-    );
-
+    this.uploadStatusMessage = '';
 
     this.cdr.detectChanges();
 
@@ -674,34 +719,22 @@ selectRow(fileId: number): void {
     legalFileId: number
   ): void {
 
-    if (
-      !this.selectedDocumentFile
-    ) {
-
+    if (!this.selectedDocumentFile) {
       return;
-
     }
-
 
     const fileToUpload =
       this.selectedDocumentFile;
-
 
     const documentFormatId =
       this.legalFileForm
         .get('documentFormatId')
         ?.value;
 
-
-    this.uploadStatus =
-      'uploading';
+    this.uploadStatus = 'uploading';
 
     this.uploadStatusMessage =
       'Uploading file...';
-
-
-    this.cdr.detectChanges();
-
 
     this.fileDocumentService
       .uploadFile(
@@ -720,17 +753,12 @@ selectRow(fileId: number): void {
             response
           );
 
-
-          this.uploadStatus =
-            'success';
+          this.uploadStatus = 'success';
 
           this.uploadStatusMessage =
             'File uploaded successfully ✓';
 
-
-          this.selectedDocumentFile =
-            null;
-
+          this.selectedDocumentFile = null;
 
           this.cdr.detectChanges();
 
@@ -745,13 +773,10 @@ selectRow(fileId: number): void {
             error
           );
 
-
-          this.uploadStatus =
-            'error';
+          this.uploadStatus = 'error';
 
           this.uploadStatusMessage =
             'File upload failed. Please try again.';
-
 
           this.cdr.detectChanges();
 
@@ -776,44 +801,15 @@ selectRow(fileId: number): void {
           data: LegalFile[]
         ) => {
 
-          console.log(
-            'LEGAL FILES FROM DATABASE:',
-            data
-          );
-
-
-          this.originalStatusIds.clear();
-
-
-          data.forEach(
-            file => {
-
-              this.originalStatusIds.set(
-                file.id,
-                file.statusId ?? null
-              );
-
-            }
-          );
-
-
-          this.statusChanges.clear();
-
-
           this.legalFiles =
-            this.sortLegalFiles(
-              data
-            );
-
+            this.sortLegalFiles(data);
 
           const existingIds =
             new Set(
               data.map(
-                file =>
-                  file.id
+                file => file.id
               )
             );
-
 
           this.selectedFiles =
             new Set(
@@ -824,9 +820,12 @@ selectRow(fileId: number): void {
                 )
             );
 
-
           this.updateAllSelected();
 
+
+          // -----------------------------------------------
+          // LOAD DOCUMENTS
+          // -----------------------------------------------
 
           this.legalFiles.forEach(
             file => {
@@ -845,14 +844,6 @@ selectRow(fileId: number): void {
                     file.documents =
                       documents;
 
-
-                    console.log(
-                      'DOCUMENTS FOR CASE:',
-                      file.caseNo,
-                      documents
-                    );
-
-
                     this.cdr.detectChanges();
 
                   },
@@ -862,14 +853,11 @@ selectRow(fileId: number): void {
                   ) => {
 
                     console.error(
-                      'ERROR LOADING DOCUMENTS FOR CASE:',
-                      file.caseNo,
+                      'ERROR LOADING DOCUMENTS:',
                       error
                     );
 
-
-                    file.documents =
-                      [];
+                    file.documents = [];
 
                   }
 
@@ -877,7 +865,6 @@ selectRow(fileId: number): void {
 
             }
           );
-
 
           this.cdr.detectChanges();
 
@@ -892,6 +879,13 @@ selectRow(fileId: number): void {
             error
           );
 
+          this.errorMessage =
+            'Unable to load legal files.';
+
+          this.showErrorNotification = true;
+
+          this.cdr.detectChanges();
+
         }
 
       });
@@ -900,52 +894,31 @@ selectRow(fileId: number): void {
 
 
   // =====================================================
-  // OPEN ACTIVITY HISTORY
+  // ACTIVITY HISTORY
   // =====================================================
 
   openActivityHistory(
     file: LegalFile
   ): void {
 
-    console.log(
-      'OPENING ACTIVITY HISTORY:',
-      file
-    );
+    this.selectedLegalFile = file;
 
+    this.fileActions = [];
 
-    this.selectedLegalFile =
-      file;
+    this.showActivityModal = true;
 
-
-    this.fileActions =
-      [];
-
-
-    this.showActivityModal =
-      true;
-
-
-    this.loadFileActions(
-      file.id
-    );
-
+    this.loadFileActions(file.id);
 
     this.cdr.detectChanges();
 
   }
 
 
-  // =====================================================
-  // LOAD FILE ACTIONS
-  // =====================================================
-
   loadFileActions(
     fileId: number
   ): void {
 
-    this.loadingFileActions =
-      true;
-
+    this.loadingFileActions = true;
 
     this.legalFileServiceTs
       .getFileActions(fileId)
@@ -955,19 +928,9 @@ selectRow(fileId: number): void {
           data: FileAction[]
         ) => {
 
-          console.log(
-            'FILE ACTIONS:',
-            data
-          );
+          this.fileActions = data;
 
-
-          this.fileActions =
-            data;
-
-
-          this.loadingFileActions =
-            false;
-
+          this.loadingFileActions = false;
 
           this.cdr.detectChanges();
 
@@ -982,14 +945,9 @@ selectRow(fileId: number): void {
             error
           );
 
+          this.fileActions = [];
 
-          this.fileActions =
-            [];
-
-
-          this.loadingFileActions =
-            false;
-
+          this.loadingFileActions = false;
 
           this.cdr.detectChanges();
 
@@ -999,141 +957,450 @@ selectRow(fileId: number): void {
 
   }
 
-    // =====================================================
-  // OPEN REVIEW 
-  // ====================================================
 
-openReview(file: LegalFile): void {
+  closeActivityHistory(): void {
 
-  console.log('OPEN REVIEW:', file);
+    this.showActivityModal = false;
 
-  this.selectedReviewFile = file;
+    this.selectedLegalFile = null;
 
-  this.fileReviews = [];
+    this.fileActions = [];
 
-  this.reviewForm = {
-    reviewType: 'INITIAL',
-    reviewStatus: 'PENDING',
-    remarks: ''
-  };
+    this.cdr.detectChanges();
 
-  this.showReviewModal = true;
-
-  this.loadFileReviews(file.id);
-
-  this.cdr.detectChanges();
-}
-
-loadFileReviews(fileId: number): void {
-
-  console.log('LOADING REVIEWS FOR FILE:', fileId);
-
-  this.loadingReviews = true;
-
-  this.fileReviewService
-    .getReviewsByFile(fileId)
-    .subscribe({
-
-      next: (reviews: FileReview[]) => {
-
-        console.log(
-          'FILE REVIEWS:',
-          reviews
-        );
-
-        this.fileReviews = reviews;
-
-        this.loadingReviews = false;
-
-        this.cdr.detectChanges();
-      },
-
-      error: (error: unknown) => {
-
-        console.error(
-          'ERROR LOADING FILE REVIEWS:',
-          error
-        );
-
-        this.fileReviews = [];
-
-        this.loadingReviews = false;
-
-        this.cdr.detectChanges();
-      }
-
-    });
-}
-
-saveReview(): void {
-
-  // ---------------------------------------------------
-  // CHECK SELECTED FILE
-  // ---------------------------------------------------
-
-  if (!this.selectedReviewFile) {
-
-    console.error(
-      'NO LEGAL FILE SELECTED FOR REVIEW'
-    );
-
-    return;
   }
 
 
-  // ---------------------------------------------------
-  // GET CURRENT USER ID
-  // ---------------------------------------------------
+  // =====================================================
+  // REVIEW
+  // =====================================================
 
-  const storedUserId =
-    localStorage.getItem('userId');
+  openReview(
+    file: LegalFile
+  ): void {
 
-  console.log(
-    'STORED USER ID:',
-    storedUserId
-  );
+    if (!this.isReviewAvailable(file)) {
+      return;
+    }
+
+    this.selectedReviewFile = file;
+
+    this.initialReviews = [];
+
+    this.fileReviews = [];
+
+    this.reviewForm = {
+      reviewStatus: 'PENDING',
+      remarks: ''
+    };
 
 
-  const userId =
-    storedUserId
-      ? Number(storedUserId)
-      : null;
+    if (
+      this.isInitialReviewAvailable(file)
+    ) {
+
+      this.reviewType = 'INITIAL';
+
+      this.loadInitialReviews(file.id);
+
+    } else if (
+      this.isFinalReviewAvailable(file)
+    ) {
+
+      this.reviewType = 'FINAL';
+
+      this.loadFileReviews(file.id);
+
+    }
+
+    this.showReviewModal = true;
+
+    this.cdr.detectChanges();
+
+  }
 
 
-  // ---------------------------------------------------
-  // CHECK USER ID
-  // ---------------------------------------------------
+  // =====================================================
+  // LOAD INITIAL REVIEWS
+  // =====================================================
 
-  if (
-    userId === null ||
-    Number.isNaN(userId) ||
-    userId <= 0
-  ) {
+  loadInitialReviews(
+    fileId: number
+  ): void {
 
-    console.error(
-      'CURRENT USER ID NOT FOUND IN LOCAL STORAGE'
-    );
+    this.loadingReviews = true;
 
-    console.log(
-      'LOCAL STORAGE:',
-      {
-        userId:
-          localStorage.getItem('userId'),
+    this.initialReviewService
+      .getReviewsByFile(fileId)
+      .subscribe({
 
-        username:
-          localStorage.getItem('username'),
+        next: (
+          reviews: InitialReview[]
+        ) => {
 
-        fullName:
-          localStorage.getItem('fullName'),
+          this.initialReviews = reviews;
 
-        role:
-          localStorage.getItem('role'),
+          this.loadingReviews = false;
 
-        token:
-          localStorage.getItem('token')
-      }
-    );
+          this.cdr.detectChanges();
 
+        },
+
+        error: (
+          error: unknown
+        ) => {
+
+          console.error(
+            'ERROR LOADING INITIAL REVIEWS:',
+            error
+          );
+
+          this.initialReviews = [];
+
+          this.loadingReviews = false;
+
+          this.cdr.detectChanges();
+
+        }
+
+      });
+
+  }
+
+
+  // =====================================================
+  // LOAD FINAL REVIEWS
+  // =====================================================
+
+  loadFileReviews(
+    fileId: number
+  ): void {
+
+    this.loadingReviews = true;
+
+    this.fileReviewService
+      .getReviewsByFile(fileId)
+      .subscribe({
+
+        next: (
+          reviews: FileReview[]
+        ) => {
+
+          this.fileReviews = reviews;
+
+          this.loadingReviews = false;
+
+          this.cdr.detectChanges();
+
+        },
+
+        error: (
+          error: unknown
+        ) => {
+
+          console.error(
+            'ERROR LOADING FINAL REVIEWS:',
+            error
+          );
+
+          this.fileReviews = [];
+
+          this.loadingReviews = false;
+
+          this.cdr.detectChanges();
+
+        }
+
+      });
+
+  }
+
+
+  // =====================================================
+  // SAVE REVIEW
+  // =====================================================
+
+  saveReview(): void {
+
+    if (!this.selectedReviewFile) {
+      return;
+    }
+
+    if (this.reviewType === 'INITIAL') {
+
+      this.saveInitialReview();
+
+      return;
+
+    }
+
+    if (this.reviewType === 'FINAL') {
+
+      this.saveFinalReview();
+
+      return;
+
+    }
+
+  }
+
+
+  // =====================================================
+  // SAVE INITIAL REVIEW
+  // =====================================================
+
+  saveInitialReview(): void {
+
+    if (!this.selectedReviewFile) {
+      return;
+    }
+
+    const storedUserId =
+      localStorage.getItem('userId');
+
+    const userId =
+      storedUserId
+        ? Number(storedUserId)
+        : null;
+
+    if (
+      userId === null ||
+      Number.isNaN(userId) ||
+      userId <= 0
+    ) {
+
+      this.showUserError();
+
+      return;
+
+    }
+
+    const request:
+      InitialReviewRequest = {
+
+      fileId:
+        this.selectedReviewFile.id,
+
+      reviewedBy:
+        userId,
+
+      reviewStatus:
+        this.reviewForm.reviewStatus,
+
+      remarks:
+        this.reviewForm.remarks?.trim() || ''
+
+    };
+
+    this.savingReview = true;
+
+    this.initialReviewService
+      .createReview(request)
+      .subscribe({
+
+        next: (
+          review: InitialReview
+        ) => {
+
+          console.log(
+            'INITIAL REVIEW CREATED:',
+            review
+          );
+
+          this.savingReview = false;
+
+          this.successMessage =
+            'Initial review saved successfully.';
+
+          this.showSuccessNotification = true;
+
+          this.loadInitialReviews(
+            this.selectedReviewFile!.id
+          );
+
+          this.loadLegalFiles();
+
+          this.reviewForm = {
+            reviewStatus: 'PENDING',
+            remarks: ''
+          };
+
+          this.cdr.detectChanges();
+
+          this.hideSuccessNotification();
+
+        },
+
+        error: (
+          error: any
+        ) => {
+
+          console.error(
+            'ERROR SAVING INITIAL REVIEW:',
+            error
+          );
+
+          this.savingReview = false;
+
+          this.showReviewError(
+            error,
+            'Failed to save initial review.'
+          );
+
+        }
+
+      });
+
+  }
+
+
+  // =====================================================
+  // SAVE FINAL REVIEW
+  // =====================================================
+
+  saveFinalReview(): void {
+
+    if (!this.selectedReviewFile) {
+      return;
+    }
+
+    const storedUserId =
+      localStorage.getItem('userId');
+
+    const userId =
+      storedUserId
+        ? Number(storedUserId)
+        : null;
+
+    if (
+      userId === null ||
+      Number.isNaN(userId) ||
+      userId <= 0
+    ) {
+
+      this.showUserError();
+
+      return;
+
+    }
+
+    const request:
+      CreateFileReview = {
+
+      fileId:
+        this.selectedReviewFile.id,
+
+      reviewedBy:
+        userId,
+
+      reviewType:
+        'FINAL',
+
+      reviewStatus:
+        this.reviewForm.reviewStatus,
+
+      remarks:
+        this.reviewForm.remarks?.trim() || ''
+
+    };
+
+    this.savingReview = true;
+
+    this.fileReviewService
+      .createReview(request)
+      .subscribe({
+
+        next: (
+          review: FileReview
+        ) => {
+
+          console.log(
+            'FINAL REVIEW CREATED:',
+            review
+          );
+
+          this.savingReview = false;
+
+          this.successMessage =
+            'Final review saved successfully.';
+
+          this.showSuccessNotification = true;
+
+          this.loadFileReviews(
+            this.selectedReviewFile!.id
+          );
+
+          this.loadLegalFiles();
+
+          this.reviewForm = {
+            reviewStatus: 'PENDING',
+            remarks: ''
+          };
+
+          this.cdr.detectChanges();
+
+          this.hideSuccessNotification();
+
+        },
+
+        error: (
+          error: any
+        ) => {
+
+          console.error(
+            'ERROR SAVING FINAL REVIEW:',
+            error
+          );
+
+          this.savingReview = false;
+
+          this.showReviewError(
+            error,
+            'Failed to save final review.'
+          );
+
+        }
+
+      });
+
+  }
+
+
+  // =====================================================
+  // CLOSE REVIEW
+  // =====================================================
+
+  closeReviewModal(): void {
+
+    this.showReviewModal = false;
+
+    this.selectedReviewFile = null;
+
+    this.initialReviews = [];
+
+    this.fileReviews = [];
+
+    this.reviewType = 'INITIAL';
+
+    this.reviewForm = {
+      reviewStatus: 'PENDING',
+      remarks: ''
+    };
+
+    this.loadingReviews = false;
+
+    this.savingReview = false;
+
+    this.cdr.detectChanges();
+
+  }
+
+
+  // =====================================================
+  // REVIEW ERRORS
+  // =====================================================
+
+  private showUserError(): void {
 
     this.errorMessage =
       'Unable to determine the current user. Please login again.';
@@ -1142,209 +1409,91 @@ saveReview(): void {
 
     this.cdr.detectChanges();
 
-    return;
+    setTimeout(() => {
+
+      this.showErrorNotification = false;
+
+      this.cdr.detectChanges();
+
+    }, 5000);
+
   }
 
 
-  // ---------------------------------------------------
-  // START SAVING
-  // ---------------------------------------------------
-
-  this.savingReview = true;
-
-
-  // ---------------------------------------------------
-  // CREATE REQUEST
-  // ---------------------------------------------------
-
-  const request: CreateFileReview = {
-
-    fileId:
-      this.selectedReviewFile.id,
-
-    reviewedBy:
-      userId,
-
-    reviewType:
-      this.reviewForm.reviewType,
-
-    reviewStatus:
-      this.reviewForm.reviewStatus,
-
-    remarks:
-      this.reviewForm.remarks?.trim() || ''
-
-  };
-
-
-  console.log(
-    'SAVING FILE REVIEW:',
-    request
-  );
-
-
-  // ---------------------------------------------------
-  // SEND TO BACKEND
-  // ---------------------------------------------------
-
-  this.fileReviewService
-    .createReview(request)
-    .subscribe({
-
-      next: (review: FileReview) => {
-
-        console.log(
-          'REVIEW CREATED SUCCESSFULLY:',
-          review
-        );
-
-
-        // ---------------------------------------------
-        // SUCCESS MESSAGE
-        // ---------------------------------------------
-
-        this.successMessage =
-          'File review saved successfully.';
-
-        this.showSuccessNotification =
-          true;
-
-
-        this.savingReview =
-          false;
-
-
-        // ---------------------------------------------
-        // RELOAD REVIEW HISTORY
-        // ---------------------------------------------
-
-        this.loadFileReviews(
-          this.selectedReviewFile!.id
-        );
-
-
-        // ---------------------------------------------
-        // RESET FORM
-        // ---------------------------------------------
-
-        this.reviewForm = {
-
-          reviewType:
-            this.reviewForm.reviewType,
-
-          reviewStatus:
-            'PENDING',
-
-          remarks:
-            ''
-
-        };
-
-
-        this.cdr.detectChanges();
-
-
-        // ---------------------------------------------
-        // HIDE SUCCESS MESSAGE
-        // ---------------------------------------------
-
-        setTimeout(() => {
-
-          this.showSuccessNotification =
-            false;
-
-          this.cdr.detectChanges();
-
-        }, 5000);
-
-      },
-
-
-      error: (error: any) => {
-
-        console.error(
-          'ERROR SAVING FILE REVIEW:',
-          error
-        );
-
-
-        this.savingReview =
-          false;
-
-
-        this.errorMessage =
-          error?.error?.message ||
-          error?.error ||
-          'Failed to save file review.';
-
-
-        this.showErrorNotification =
-          true;
-
-
-        this.cdr.detectChanges();
-
-
-        setTimeout(() => {
-
-          this.showErrorNotification =
-            false;
-
-          this.cdr.detectChanges();
-
-        }, 5000);
-
-      }
-
-    });
-}
-
-
-closeReviewModal(): void {
-
-  this.showReviewModal = false;
-  this.selectedReviewFile = null;
-  this.fileReviews = [];
-
-  this.reviewForm = {
-    reviewType: 'INITIAL',
-    reviewStatus: 'PENDING',
-    remarks:''
-  };
-
-  this.loadingReviews =
-    false;
-
-  this.savingReview =
-    false;
-
-  this.cdr.detectChanges();
-}
-  // =====================================================
-  // CLOSE ACTIVITY HISTORY
-  // =====================================================
-
-  closeActivityHistory(): void {
-
-    this.showActivityModal =
-      false;
-
-
-    this.selectedLegalFile =
-      null;
-
-
-    this.fileActions =
-      [];
-
+  private showReviewError(
+    error: any,
+    defaultMessage: string
+  ): void {
+
+    this.errorMessage =
+      error?.error?.message ||
+      error?.error ||
+      defaultMessage;
+
+    this.showErrorNotification = true;
 
     this.cdr.detectChanges();
 
+    setTimeout(() => {
+
+      this.showErrorNotification = false;
+
+      this.cdr.detectChanges();
+
+    }, 5000);
+
+  }
+
+
+  private hideSuccessNotification(): void {
+
+    setTimeout(() => {
+
+      this.showSuccessNotification = false;
+
+      this.cdr.detectChanges();
+
+    }, 5000);
+
   }
 
 
   // =====================================================
-  // FORMAT ACTIVITY DATE
+  // ACTION USER
+  // =====================================================
+
+  getActionUser(
+    action: FileAction
+  ): string {
+
+    if (action.performedByName) {
+
+      return action.performedByName;
+
+    }
+
+    if (action.performedByUsername) {
+
+      return action.performedByUsername;
+
+    }
+
+    if (
+      action.performedBy !== null &&
+      action.performedBy !== undefined
+    ) {
+
+      return `User #${action.performedBy}`;
+
+    }
+
+    return 'System';
+
+  }
+
+
+  // =====================================================
+  // FORMAT ACTION DATE
   // =====================================================
 
   formatActionDate(
@@ -1352,15 +1501,11 @@ closeReviewModal(): void {
   ): string {
 
     if (!date) {
-
       return 'N/A';
-
     }
-
 
     const parsedDate =
       new Date(date);
-
 
     if (
       Number.isNaN(
@@ -1372,49 +1517,7 @@ closeReviewModal(): void {
 
     }
 
-
     return parsedDate.toLocaleString();
-
-  }
-
-
-  // =====================================================
-  // GET ACTION USER
-  // =====================================================
-
-  getActionUser(
-    action: FileAction
-  ): string {
-
-    if (
-      action.performedByName
-    ) {
-
-      return action.performedByName;
-
-    }
-
-
-    if (
-      action.performedByUsername
-    ) {
-
-      return action.performedByUsername;
-
-    }
-
-
-    if (
-      action.performedBy !== null &&
-      action.performedBy !== undefined
-    ) {
-
-      return `User #${action.performedBy}`;
-
-    }
-
-
-    return 'System';
 
   }
 
@@ -1433,15 +1536,7 @@ closeReviewModal(): void {
           data: Status[]
         ) => {
 
-          console.log(
-            'STATUSES:',
-            data
-          );
-
-
-          this.statuses =
-            data;
-
+          this.statuses = data;
 
           this.cdr.detectChanges();
 
@@ -1477,15 +1572,7 @@ closeReviewModal(): void {
           data: SpmsType[]
         ) => {
 
-          console.log(
-            'SPMS TYPES:',
-            data
-          );
-
-
-          this.spmsTypes =
-            data;
-
+          this.spmsTypes = data;
 
           this.cdr.detectChanges();
 
@@ -1521,15 +1608,7 @@ closeReviewModal(): void {
           data: Office[]
         ) => {
 
-          console.log(
-            'OFFICES:',
-            data
-          );
-
-
-          this.offices =
-            data;
-
+          this.offices = data;
 
           this.cdr.detectChanges();
 
@@ -1565,15 +1644,7 @@ closeReviewModal(): void {
           data: DocumentType[]
         ) => {
 
-          console.log(
-            'DOCUMENT TYPES:',
-            data
-          );
-
-
-          this.documentTypes =
-            data;
-
+          this.documentTypes = data;
 
           this.cdr.detectChanges();
 
@@ -1609,15 +1680,7 @@ closeReviewModal(): void {
           data: DocumentFormat[]
         ) => {
 
-          console.log(
-            'DOCUMENT FORMATS:',
-            data
-          );
-
-
-          this.documentFormats =
-            data;
-
+          this.documentFormats = data;
 
           this.cdr.detectChanges();
 
@@ -1640,7 +1703,7 @@ closeReviewModal(): void {
 
 
   // =====================================================
-  // LOAD DOCUMENTS FOR LEGAL FILE
+  // LOAD DOCUMENTS
   // =====================================================
 
   loadDocumentsForLegalFile(
@@ -1661,14 +1724,6 @@ closeReviewModal(): void {
           legalFile.documents =
             documents;
 
-
-          console.log(
-            'DOCUMENTS FOR CASE:',
-            legalFile.caseNo,
-            documents
-          );
-
-
           this.cdr.detectChanges();
 
         },
@@ -1678,13 +1733,11 @@ closeReviewModal(): void {
         ) => {
 
           console.error(
-            'ERROR LOADING DOCUMENTS FOR CASE:',
+            'ERROR LOADING DOCUMENTS:',
             error
           );
 
-
-          legalFile.documents =
-            [];
+          legalFile.documents = [];
 
         }
 
@@ -1701,12 +1754,6 @@ closeReviewModal(): void {
     document: FileUploadResponse
   ): void {
 
-    console.log(
-      'DOWNLOADING DOCUMENT:',
-      document
-    );
-
-
     this.fileDocumentService
       .downloadFile(
         document.id
@@ -1722,27 +1769,19 @@ closeReviewModal(): void {
               blob
             );
 
-
           const link =
             window.document.createElement(
               'a'
             );
 
-
-          link.href =
-            url;
-
+          link.href = url;
 
           link.download =
             document.documentName;
 
-
           link.click();
 
-
-          window.URL.revokeObjectURL(
-            url
-          );
+          window.URL.revokeObjectURL(url);
 
         },
 
@@ -1763,51 +1802,34 @@ closeReviewModal(): void {
 
 
   // =====================================================
-  // OPEN CREATE FORM
+  // CREATE LEGAL FILE FORM
   // =====================================================
 
   openCreateForm(): void {
 
-    this.showForm =
-      true;
-
+    this.showForm = true;
 
     this.resetForm();
 
+    this.uploadStatus = 'idle';
 
-    this.uploadStatus =
-      'idle';
-
-    this.uploadStatusMessage =
-      '';
-
+    this.uploadStatusMessage = '';
 
     this.cdr.detectChanges();
 
   }
 
-
-  // =====================================================
-  // CLOSE CREATE FORM
-  // =====================================================
 
   closeCreateForm(): void {
 
-    this.showForm =
-      false;
-
+    this.showForm = false;
 
     this.resetForm();
-
 
     this.cdr.detectChanges();
 
   }
 
-
-  // =====================================================
-  // RESET FORM
-  // =====================================================
 
   resetForm(): void {
 
@@ -1819,10 +1841,6 @@ closeReviewModal(): void {
 
       timeReceived: '',
 
-      dateCompleted: '',
-
-      statusId: null,
-
       spmsTypeId: null,
 
       requestingOfficeId: null,
@@ -1831,83 +1849,51 @@ closeReviewModal(): void {
 
       documentFormatId: null,
 
-      contactDetails: '',
-
-      currentStage: 'RECEIVED'
+      contactDetails: ''
 
     });
 
+    this.selectedDocumentFile = null;
 
-    this.selectedDocumentFile =
-      null;
+    this.uploadStatus = 'idle';
 
-
-    this.uploadStatus =
-      'idle';
-
-    this.uploadStatusMessage =
-      '';
+    this.uploadStatusMessage = '';
 
   }
 
 
   // =====================================================
-  // OPEN REPLACE DOCUMENT MODAL
+  // REPLACE DOCUMENT
   // =====================================================
 
   openReplaceDocument(
     document: FileUploadResponse
   ): void {
 
-    console.log(
-      'OPEN REPLACE MODAL:',
-      document
-    );
-
-
     this.selectedReplaceDocument =
       document;
 
+    this.selectedReplaceFile = null;
 
-    this.selectedReplaceFile =
-      null;
-
-
-    this.showReplaceModal =
-      true;
-
+    this.showReplaceModal = true;
 
     this.cdr.detectChanges();
 
   }
 
-
-  // =====================================================
-  // CLOSE REPLACE DOCUMENT MODAL
-  // =====================================================
 
   closeReplaceModal(): void {
 
-    this.showReplaceModal =
-      false;
+    this.showReplaceModal = false;
 
+    this.selectedReplaceDocument = null;
 
-    this.selectedReplaceDocument =
-      null;
-
-
-    this.selectedReplaceFile =
-      null;
-
+    this.selectedReplaceFile = null;
 
     this.cdr.detectChanges();
 
   }
 
-
-  // =====================================================
-  // SELECT REPLACEMENT FILE
-  // =====================================================
 
   onReplaceFileSelected(
     event: Event
@@ -1916,38 +1902,24 @@ closeReviewModal(): void {
     const input =
       event.target as HTMLInputElement;
 
-
     if (
       !input.files ||
       input.files.length === 0
     ) {
 
-      this.selectedReplaceFile =
-        null;
+      this.selectedReplaceFile = null;
 
       return;
 
     }
 
-
     this.selectedReplaceFile =
       input.files[0];
-
-
-    console.log(
-      'SELECTED REPLACEMENT FILE:',
-      this.selectedReplaceFile
-    );
-
 
     this.cdr.detectChanges();
 
   }
 
-
-  // =====================================================
-  // CONFIRM REPLACE DOCUMENT
-  // =====================================================
 
   confirmReplaceDocument(): void {
 
@@ -1956,34 +1928,15 @@ closeReviewModal(): void {
       !this.selectedReplaceFile
     ) {
 
-      console.warn(
-        'NO DOCUMENT OR REPLACEMENT FILE SELECTED'
-      );
-
       return;
 
     }
 
-
     const documentId =
       this.selectedReplaceDocument.id;
 
-
     const newFile =
       this.selectedReplaceFile;
-
-
-    console.log(
-      'REPLACING DOCUMENT ID:',
-      documentId
-    );
-
-
-    console.log(
-      'NEW FILE:',
-      newFile.name
-    );
-
 
     this.fileDocumentService
       .replaceFile(
@@ -1997,16 +1950,13 @@ closeReviewModal(): void {
         ) => {
 
           console.log(
-            'FILE REPLACED SUCCESSFULLY:',
+            'FILE REPLACED:',
             response
           );
 
-
           this.closeReplaceModal();
 
-
           this.loadLegalFiles();
-
 
           this.cdr.detectChanges();
 
@@ -2028,227 +1978,17 @@ closeReviewModal(): void {
   }
 
 
-  // =====================================================
-  // OLD DIRECT REPLACE METHOD
-  // =====================================================
-
   replaceDocument(
     document: FileUploadResponse
   ): void {
 
-    this.openReplaceDocument(
-      document
-    );
+    this.openReplaceDocument(document);
 
   }
 
 
   // =====================================================
-  // UPDATE CHANGED STATUSES
-  // =====================================================
-
-  updateChangedStatuses(): void {
-
-    if (
-      this.statusChanges.size === 0
-    ) {
-
-      console.log(
-        'No status changes.'
-      );
-
-      return;
-
-    }
-
-
-    console.log(
-      'STATUS CHANGES:',
-      Array.from(
-        this.statusChanges.entries()
-      )
-    );
-
-
-    const changes =
-      Array.from(
-        this.statusChanges.entries()
-      );
-
-
-    let completedUpdates =
-      0;
-
-
-    changes.forEach(
-      ([fileId, newStatusId]) => {
-
-        const file =
-          this.legalFiles.find(
-            item =>
-              item.id === fileId
-          );
-
-
-        if (!file) {
-
-          console.error(
-            'Legal file not found:',
-            fileId
-          );
-
-          return;
-
-        }
-
-
-        const legalFile:
-          CreateLegalFile = {
-
-          caseNo:
-            file.caseNo,
-
-          dateReceived:
-            file.dateReceived,
-
-          timeReceived:
-            file.timeReceived ?? '',
-
-          dateCompleted:
-            file.dateCompleted ?? null,
-
-          statusId:
-            newStatusId,
-
-          spmsTypeId:
-            file.spmsTypeId ?? null,
-
-          requestingOfficeId:
-            file.requestingOfficeId ?? null,
-
-          documentTypeId:
-            file.documentTypeId ?? null,
-
-          documentFormatId:
-            file.documentFormatId ?? null,
-
-          contactDetails:
-            file.contactDetails ?? '',
-
-          currentStage:
-            file.currentStage ??
-            'RECEIVED'
-
-        };
-
-
-        console.log(
-          'UPDATING LEGAL FILE:',
-          fileId
-        );
-
-
-        console.log(
-          'REQUEST:',
-          legalFile
-        );
-
-
-        this.legalFileServiceTs
-          .updateLegalFile(
-            fileId,
-            legalFile
-          )
-          .subscribe({
-
-            next: (
-              updatedFile: LegalFile
-            ) => {
-
-              console.log(
-                'LEGAL FILE UPDATED:',
-                updatedFile
-              );
-
-
-              this.originalStatusIds.set(
-                fileId,
-                updatedFile.statusId ?? null
-              );
-
-
-              const index =
-                this.legalFiles.findIndex(
-                  item =>
-                    item.id === fileId
-                );
-
-
-              if (index !== -1) {
-
-                this.legalFiles[index] =
-                  updatedFile;
-
-              }
-
-
-              completedUpdates++;
-
-
-              if (
-                completedUpdates ===
-                changes.length
-              ) {
-
-                console.log(
-                  'ALL STATUS UPDATES COMPLETED'
-                );
-
-
-                this.statusChanges.clear();
-
-
-                this.loadLegalFiles();
-
-
-                this.cdr.detectChanges();
-
-              } else {
-
-                this.legalFiles =
-                  this.sortLegalFiles(
-                    [...this.legalFiles]
-                  );
-
-
-                this.cdr.detectChanges();
-
-              }
-
-            },
-
-            error: (
-              error: unknown
-            ) => {
-
-              console.error(
-                `ERROR UPDATING LEGAL FILE ${fileId}:`,
-                error
-              );
-
-            }
-
-          });
-
-      }
-
-    );
-
-  }
-
-
-  // =====================================================
-  // DELETE SELECTED LEGAL FILES
+  // DELETE SELECTED FILES
   // =====================================================
 
   deleteSelectedFiles(): void {
@@ -2265,60 +2005,36 @@ closeReviewModal(): void {
 
     }
 
-
     const selectedIds =
       Array.from(
         this.selectedFiles
       );
-
 
     const confirmed =
       window.confirm(
         `Are you sure you want to delete ${selectedIds.length} selected legal file(s)?`
       );
 
-
     if (!confirmed) {
-
       return;
-
     }
 
-
-    console.log(
-      'DELETING LEGAL FILES:',
-      selectedIds
-    );
-
-
-    let completedDeletes =
-      0;
-
+    let completedDeletes = 0;
 
     selectedIds.forEach(
       fileId => {
 
         this.legalFileServiceTs
-          .deleteLegalFile(
-            fileId
-          )
+          .deleteLegalFile(fileId)
           .subscribe({
 
             next: () => {
 
-              console.log(
-                'LEGAL FILE DELETED:',
-                fileId
-              );
-
-
               completedDeletes++;
-
 
               this.selectedFiles.delete(
                 fileId
               );
-
 
               this.legalFiles =
                 this.legalFiles.filter(
@@ -2326,29 +2042,18 @@ closeReviewModal(): void {
                     file.id !== fileId
                 );
 
-
               if (
                 completedDeletes ===
                 selectedIds.length
               ) {
 
-                console.log(
-                  'ALL SELECTED FILES DELETED'
-                );
-
-
                 this.selectedFiles.clear();
 
-                this.allSelected =
-                  false;
+                this.allSelected = false;
 
-
-                this.selectedRowId =
-                  null;
-
+                this.selectedRowId = null;
 
                 this.loadLegalFiles();
-
 
                 this.cdr.detectChanges();
 
@@ -2377,6 +2082,238 @@ closeReviewModal(): void {
 
 
   // =====================================================
+  // FINAL DOCUMENT
+  // =====================================================
+
+  closeFinalDocument(): void {
+
+    this.showFinalDocumentModal = false;
+
+    this.selectedFinalDocumentFile = null;
+
+    this.finalDocuments = [];
+
+    this.finalDocumentForm = {
+
+      fileId: 0,
+
+      documentName: '',
+
+      filePath: '',
+
+      remarks: ''
+
+    };
+
+  }
+
+
+  loadFinalDocuments(
+    fileId: number
+  ): void {
+
+    this.loadingFinalDocuments = true;
+
+    this.finalDocumentService
+      .getByFileId(fileId)
+      .subscribe({
+
+        next: (
+          documents
+        ) => {
+
+          this.finalDocuments =
+            documents;
+
+          this.loadingFinalDocuments = false;
+
+          this.cdr.detectChanges();
+
+        },
+
+        error: (
+          error
+        ) => {
+
+          console.error(
+            'Error loading final documents:',
+            error
+          );
+
+          this.finalDocuments = [];
+
+          this.loadingFinalDocuments = false;
+
+          this.cdr.detectChanges();
+
+        }
+
+      });
+
+  }
+
+
+  openFinalDocument(
+    file: LegalFile
+  ): void {
+
+    if (
+      file.currentStage !== 'RESOLVED'
+    ) {
+
+      alert(
+        'Final document can only be created after the file is resolved.'
+      );
+
+      return;
+
+    }
+
+    this.selectedFinalDocumentFile =
+      file;
+
+    this.finalDocumentForm = {
+
+      fileId: file.id!,
+
+      documentName: '',
+
+      filePath: '',
+
+      remarks: ''
+
+    };
+
+    this.finalDocuments = [];
+
+    this.showFinalDocumentModal = true;
+
+    this.loadFinalDocuments(
+      file.id!
+    );
+
+  }
+
+
+  saveFinalDocument(): void {
+
+    if (
+      !this.selectedFinalDocumentFile
+    ) {
+
+      alert(
+        'No legal file selected.'
+      );
+
+      return;
+
+    }
+
+    if (
+      !this.finalDocumentForm.documentName
+        .trim()
+    ) {
+
+      alert(
+        'Document name is required.'
+      );
+
+      return;
+
+    }
+
+    this.savingFinalDocument = true;
+
+    const request:
+      CreateFinalDocument = {
+
+      fileId:
+        this.selectedFinalDocumentFile.id!,
+
+      documentName:
+        this.finalDocumentForm.documentName
+          .trim(),
+
+      filePath:
+        this.finalDocumentForm.filePath?.trim()
+          || null,
+
+      remarks:
+        this.finalDocumentForm.remarks?.trim()
+          || null
+
+    };
+
+    this.finalDocumentService
+      .createFinalDocument(request)
+      .subscribe({
+
+        next: (
+          document
+        ) => {
+
+          console.log(
+            'Final document created:',
+            document
+          );
+
+          this.savingFinalDocument = false;
+
+          this.loadFinalDocuments(
+            this.selectedFinalDocumentFile!.id!
+          );
+
+          this.finalDocumentForm = {
+
+            fileId:
+              this.selectedFinalDocumentFile!.id!,
+
+            documentName: '',
+
+            filePath: '',
+
+            remarks: ''
+
+          };
+
+          this.successMessage =
+            'Final document saved successfully.';
+
+          this.showSuccessNotification = true;
+
+          this.cdr.detectChanges();
+
+          this.hideSuccessNotification();
+
+        },
+
+        error: (
+          error
+        ) => {
+
+          console.error(
+            'Error saving final document:',
+            error
+          );
+
+          this.savingFinalDocument = false;
+
+          this.errorMessage =
+            error?.error?.message ||
+            'Failed to save final document.';
+
+          this.showErrorNotification = true;
+
+          this.cdr.detectChanges();
+
+        }
+
+      });
+
+  }
+
+
+  // =====================================================
   // CREATE LEGAL FILE
   // =====================================================
 
@@ -2388,21 +2325,12 @@ closeReviewModal(): void {
 
       this.legalFileForm.markAllAsTouched();
 
-
-      console.log(
-        'FORM INVALID:',
-        this.legalFileForm.getRawValue()
-      );
-
-
       return;
 
     }
 
-
     const formValue =
       this.legalFileForm.getRawValue();
-
 
     const legalFile:
       CreateLegalFile = {
@@ -2415,12 +2343,6 @@ closeReviewModal(): void {
 
       timeReceived:
         formValue.timeReceived || '',
-
-      dateCompleted:
-        formValue.dateCompleted || null,
-
-      statusId:
-        formValue.statusId,
 
       spmsTypeId:
         formValue.spmsTypeId,
@@ -2435,62 +2357,30 @@ closeReviewModal(): void {
         formValue.documentFormatId,
 
       contactDetails:
-        formValue.contactDetails || '',
-
-      currentStage:
-        formValue.currentStage!
+        formValue.contactDetails || ''
 
     };
-
 
     const fileToUpload =
       this.selectedDocumentFile;
 
-
     const documentFormatId =
       formValue.documentFormatId;
 
+    this.showSuccessNotification = false;
 
-    this.showSuccessNotification =
-      false;
+    this.showErrorNotification = false;
 
-    this.showErrorNotification =
-      false;
+    this.successMessage = '';
 
-    this.successMessage =
-      '';
+    this.errorMessage = '';
 
-    this.errorMessage =
-      '';
+    this.uploadStatus = 'idle';
 
-
-    this.uploadStatus =
-      'idle';
-
-    this.uploadStatusMessage =
-      '';
-
-
-    console.log(
-      'SENDING LEGAL FILE:',
-      JSON.stringify(
-        legalFile,
-        null,
-        2
-      )
-    );
-
-
-    console.log(
-      'SELECTED DOCUMENT:',
-      fileToUpload
-    );
-
+    this.uploadStatusMessage = '';
 
     this.legalFileServiceTs
-      .createLegalFile(
-        legalFile
-      )
+      .createLegalFile(legalFile)
       .subscribe({
 
         next: (
@@ -2502,39 +2392,15 @@ closeReviewModal(): void {
             data
           );
 
-
-          console.log(
-            'NEW LEGAL FILE ID:',
-            data.id
-          );
-
-
-          console.log(
-            'RETURNED STATUS ID:',
-            data.statusId
-          );
-
-
-          console.log(
-            'RETURNED STATUS NAME:',
-            data.statusName
-          );
-
-
           if (
             fileToUpload &&
             data.id
           ) {
 
-            this.uploadStatus =
-              'uploading';
+            this.uploadStatus = 'uploading';
 
             this.uploadStatusMessage =
               'Uploading document...';
-
-
-            this.cdr.detectChanges();
-
 
             this.fileDocumentService
               .uploadFile(
@@ -2553,42 +2419,25 @@ closeReviewModal(): void {
                     response
                   );
 
-
-                  this.uploadStatus =
-                    'success';
+                  this.uploadStatus = 'success';
 
                   this.uploadStatusMessage =
                     'Document uploaded successfully ✓';
 
-
-                  this.showForm =
-                    false;
-
+                  this.showForm = false;
 
                   this.resetForm();
 
-
                   this.loadLegalFiles();
-
 
                   this.successMessage =
                     `Legal file ${data.caseNo} and document were saved successfully.`;
 
-                  this.showSuccessNotification =
-                    true;
-
+                  this.showSuccessNotification = true;
 
                   this.cdr.detectChanges();
 
-
-                  setTimeout(() => {
-
-                    this.showSuccessNotification =
-                      false;
-
-                    this.cdr.detectChanges();
-
-                  }, 5000);
+                  this.hideSuccessNotification();
 
                 },
 
@@ -2601,20 +2450,15 @@ closeReviewModal(): void {
                     error
                   );
 
-
-                  this.uploadStatus =
-                    'error';
+                  this.uploadStatus = 'error';
 
                   this.uploadStatusMessage =
                     'File upload failed. Please try again.';
 
-
                   this.errorMessage =
                     `Legal file ${data.caseNo} was created, but the document upload failed.`;
 
-                  this.showErrorNotification =
-                    true;
-
+                  this.showErrorNotification = true;
 
                   this.cdr.detectChanges();
 
@@ -2622,40 +2466,29 @@ closeReviewModal(): void {
 
               });
 
-
             return;
 
           }
 
 
-          this.showForm =
-            false;
+          // -----------------------------------------------
+          // CREATED WITHOUT DOCUMENT
+          // -----------------------------------------------
 
+          this.showForm = false;
 
           this.resetForm();
 
-
           this.loadLegalFiles();
-
 
           this.successMessage =
             `Legal file ${data.caseNo} was saved successfully.`;
 
-          this.showSuccessNotification =
-            true;
-
+          this.showSuccessNotification = true;
 
           this.cdr.detectChanges();
 
-
-          setTimeout(() => {
-
-            this.showSuccessNotification =
-              false;
-
-            this.cdr.detectChanges();
-
-          }, 5000);
+          this.hideSuccessNotification();
 
         },
 
@@ -2668,22 +2501,21 @@ closeReviewModal(): void {
             error
           );
 
-
           this.errorMessage =
-            'Unable to save the legal file. Please try again.';
+            error &&
+            typeof error === 'object' &&
+            'error' in error
+              ? (error as any).error?.message ||
+                'Unable to save the legal file. Please try again.'
+              : 'Unable to save the legal file. Please try again.';
 
-
-          this.showErrorNotification =
-            true;
-
+          this.showErrorNotification = true;
 
           this.cdr.detectChanges();
 
-
           setTimeout(() => {
 
-            this.showErrorNotification =
-              false;
+            this.showErrorNotification = false;
 
             this.cdr.detectChanges();
 
