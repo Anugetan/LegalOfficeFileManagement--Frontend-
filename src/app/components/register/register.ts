@@ -35,8 +35,20 @@ export class Register {
 
   loading = false;
 
-  // Registration success popup
+  // =====================================================
+  // REGISTRATION POPUP
+  // =====================================================
+
   showSuccessPopup = false;
+
+  // Popup title
+  popupTitle = '';
+
+  // Popup message
+  popupMessage = '';
+
+  // Popup type
+  popupType: 'success' | 'pending' | 'rejected' | 'offline' = 'success';
 
 
   constructor(
@@ -54,7 +66,6 @@ export class Register {
 
     this.errorMessage = '';
     this.successMessage = '';
-
 
     // =====================================================
     // VALIDATE FIELDS
@@ -127,16 +138,17 @@ export class Register {
 
           this.errorMessage = '';
 
-          /*
-           * Do NOT automatically login.
-           *
-           * The account is now:
-           *
-           * registrationStatus = PENDING
-           * active = false
-           *
-           * The administrator must approve it first.
-           */
+          // =================================================
+          // REGISTRATION IS PENDING
+          // =================================================
+
+          this.popupType = 'pending';
+
+          this.popupTitle =
+            'Registration Submitted';
+
+          this.popupMessage =
+            'Your registration request has been submitted successfully. An administrator will review your registration request. You will be able to login after your registration has been approved.';
 
           this.showSuccessPopup = true;
 
@@ -158,28 +170,84 @@ export class Register {
           this.loading = false;
 
 
+          // =================================================
+          // BACKEND IS NOT REACHABLE
+          // =================================================
+          //
+          // If Spring Boot is stopped, Railway is down,
+          // network is unavailable, or the frontend cannot
+          // reach the backend, show the popup from Angular.
+          //
+
+          if (
+            error.status === 0 ||
+            error.status === 502 ||
+            error.status === 503 ||
+            error.status === 504
+          ) {
+
+            this.popupType = 'offline';
+
+            this.popupTitle =
+              'Registration Service Unavailable';
+
+            this.popupMessage =
+              'The registration service is currently unavailable. Please try again later.';
+
+            this.showSuccessPopup = true;
+
+            this.cdr.detectChanges();
+
+            return;
+          }
+
+
+          // =================================================
+          // USERNAME / EMAIL ALREADY EXISTS
+          // =================================================
+
           if (error.status === 409) {
 
             this.errorMessage =
               'Username or email already exists.';
 
-          } else if (error.status === 400) {
+          }
+
+
+          // =================================================
+          // BAD REQUEST
+          // =================================================
+
+          else if (error.status === 400) {
 
             this.errorMessage =
               error.error?.message ||
               'Invalid registration information.';
 
-          } else if (error.status === 403) {
+          }
+
+
+          // =================================================
+          // FORBIDDEN
+          // =================================================
+
+          else if (error.status === 403) {
 
             this.errorMessage =
               'Access forbidden. Check your Spring Security configuration.';
 
-          } else {
+          }
+
+
+          // =================================================
+          // OTHER ERROR
+          // =================================================
+
+          else {
 
             this.errorMessage =
               error.error?.message ||
               'Registration failed. Please try again.';
-
           }
 
           this.cdr.detectChanges();
@@ -190,7 +258,7 @@ export class Register {
 
 
   // =====================================================
-  // CLOSE SUCCESS POPUP
+  // CLOSE POPUP
   // =====================================================
 
   closeSuccessPopup(): void {
@@ -199,7 +267,7 @@ export class Register {
 
     this.cdr.detectChanges();
 
-    // Redirect user to Login
+    // Redirect to Login
     this.router.navigate([
       '/login'
     ]);
