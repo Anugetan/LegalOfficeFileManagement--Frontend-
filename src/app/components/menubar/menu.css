@@ -41,12 +41,13 @@
   display: block;
 
   width: 100%;
-  min-height: 100vh;
+  height: 100vh;
+  
 }
 
 .dashboard-layout {
   width: 100%;
-  min-height: 100vh;
+  height: 100vh;
 
   display: flex;
 
@@ -66,9 +67,9 @@
   left: 0;
   width: 90px;
   height: 100vh;
-  background: rgba(255, 255, 255, 0.123);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.082);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(1px);
 
   display: flex;
 
@@ -99,7 +100,7 @@
 ========================================= */
 
 .sidebar:hover {
-  width: 240px;
+  width: 260px;
 }
 
 
