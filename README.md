@@ -1,173 +1,98 @@
-# Legal Office Management System
+# Legal Office Management System - Frontend
 
-A web-based **Legal Office Management System** for managing, monitoring, and tracking legal files throughout their processing workflow.
+Frontend application for the **Legal Office Management System**.
 
-Built with **Angular**, **Spring Boot**, and **PostgreSQL**.
+This application provides a web-based interface for managing legal files, registration requests, proof of service, user authentication, and other legal office processes.
 
-## Features
+The frontend is built using **Angular** and communicates with a **Spring Boot REST API** backend.
 
-* User registration and login
-* JWT authentication
-* Legal file management
-* Case and status tracking
-* Document type and format management
-* File actions and reviews
-* Final document and proof of service management
-* Dashboard for monitoring legal files
+---
 
-## Technology Stack
+# 🚀 Project Overview
 
-**Frontend**
+The Legal Office Management System is designed to help legal offices manage and track files throughout their workflow.
 
-* Angular 21
-* TypeScript
-* HTML & CSS
-* RxJS
+The frontend provides interfaces for:
 
-**Backend**
+- User registration
+- User login
+- Administrator registration approval
+- Dashboard
+- Legal file management
+- Legal file tracking
+- Proof of Service
+- User access control
+- File and document information
+- Status tracking
+- Communication with the backend REST API
 
-* Java
-* Spring Boot
-* Spring Security
-* JWT
-* Spring Data JPA
-* Maven
+---
 
-**Database**
+# 🛠️ Technologies Used
 
-* PostgreSQL
+### Frontend
 
-**Tools**
+- Angular
+- TypeScript
+- HTML5
+- CSS3
+- Bootstrap
+- RxJS
 
-* Visual Studio Code
-* Eclipse
-* Git & GitHub
-* Postman
+### Backend Integration
 
-## System Architecture
+- Java
+- Spring Boot
+- Spring Security
+- JWT Authentication
+- REST API
 
-```text
-Angular Frontend
-       ↓
-  REST API / HTTP
-       ↓
-Spring Boot Backend
-       ↓
-   JPA / Hibernate
-       ↓
-PostgreSQL Database
-```
+### Database
 
-### Authentication
+- PostgreSQL
 
-```text
-Angular
-   ↓
-Login / Register
-   ↓
-Spring Boot
-   ↓
-Spring Security + JWT
-   ↓
-PostgreSQL
-```
+### Development Tools
 
-## Legal File Workflow
+- Visual Studio Code
+- Eclipse
+- Postman
+- Git
+- GitHub
+
+---
+
+# 🏗️ Application Architecture
+
+The frontend communicates with the Spring Boot backend through REST APIs.
 
 ```text
-RECEIVED
-    ↓
-INITIAL REVIEW
-    ↓
-FOR REVIEW
-    ↓
-FINAL DOCUMENT
-    ↓
-COMPLETED
-```
+┌─────────────────────────┐
+│     Angular Frontend    │
+│                         │
+│  Components             │
+│  Services               │
+│  Models                 │
+│  Routing                │
+│  Authentication         │
+└────────────┬────────────┘
+             │
+             │ HTTP / REST API
+             ▼
+┌─────────────────────────┐
+│     Spring Boot API     │
+│                         │
+│  Controllers            │
+│  Services               │
+│  Spring Security        │
+│  JWT Authentication     │
+└────────────┬────────────┘
+             │
+             ▼
+┌─────────────────────────┐
+│       PostgreSQL        │
+└─────────────────────────┘
 
-## Database
 
-Main tables:
+# 👨‍💻 Developer
 
-```text
-users
-statuses
-spms_types
-offices
-document_types
-logbook_types
-document_formats
-legal_files
-file_actions
-file_documents
-initial_reviews
-file_reviews
-final_documents
-proof_of_service
-```
-
-The `legal_files` table serves as the **central record** of the system.
-
-## Development
-
-Install dependencies:
-
-```bash
-npm install
-```
-
-Run the development server:
-
-```bash
-ng serve
-```
-
-Open:
-
-```text
-http://localhost:4200/
-```
-
-Build the project:
-
-```bash
-ng build
-```
-
-Run tests:
-
-```bash
-ng test
-```
-
-## Deployment
-
-Planned deployment:
-
-```text
-Angular Frontend → Vercel
-Spring Boot API  → Railway
-PostgreSQL       → Database Server
-```
-
-## Project Status
-
-* [/] Angular project setup
-* [/] Login & registration
-* [/] JWT authentication
-* [/] Dashboard
-* [/] Legal Files interface
-* [/] PostgreSQL database
-* [/] Spring Boot backend foundation
-* [/] Legal file editing
-* [/] Status updating
-* [/] Document management
-* [/] Review workflow
-* [/] Production deployment
-
-## Author
-
-**Jonathan Eguna**
-
-Built with **Angular, Spring Boot, Java, Spring Security, JWT, and PostgreSQL**.
+**Jonathan Eguna**    **Software Engineer**
