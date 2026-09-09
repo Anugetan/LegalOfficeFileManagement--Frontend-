@@ -6,6 +6,7 @@ import { MenuBar } from './components/menubar/menu';
 import { LegalFiles } from './components/legal-files/legal-files';
 import { Dashboard } from './components/dashboard/dashboard';
 import { ProofOfServiceComponent } from './components/proof-of-service/proof-of-service';
+import { RegistrationRequestsComponent } from './components/register-request/register-request';
 // import { Home } from './components/home/home';
 // import { Cases } from './components/cases/cases';
 // import { Settings } from './components/settings/settings';
@@ -53,6 +54,16 @@ export const routes: Routes = [
       {
       path: 'proof-of-service',
       component: ProofOfServiceComponent
+     },
+
+    {
+      path: 'proof-of-service/:fileId',
+      component: ProofOfServiceComponent
+    },
+
+    {
+      path: 'register-request',
+      component: RegistrationRequestsComponent
     }
 
 

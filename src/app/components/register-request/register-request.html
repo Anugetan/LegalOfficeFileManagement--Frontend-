@@ -1,0 +1,165 @@
+<div class="registration-container">
+
+  <!-- HEADER -->
+  <div class="page-header">
+
+    <div>
+      <h2>Registration Requests</h2>
+
+      <p>
+        Review and manage user registration requests.
+      </p>
+    </div>
+
+    <button
+      class="refresh-button"
+      type="button"
+      (click)="loadPendingUsers()">
+
+      Refresh
+
+    </button>
+
+  </div>
+
+
+  <!-- SUCCESS MESSAGE -->
+  <div
+    class="message success"
+    *ngIf="successMessage">
+
+    {{ successMessage }}
+
+  </div>
+
+
+  <!-- ERROR MESSAGE -->
+  <div
+    class="message error"
+    *ngIf="errorMessage">
+
+    {{ errorMessage }}
+
+  </div>
+
+
+  <!-- LOADING -->
+  <div
+    class="loading"
+    *ngIf="loading">
+
+    Loading registration requests...
+
+  </div>
+
+
+  <!-- NO REQUESTS -->
+  <div
+    class="empty-state"
+    *ngIf="!loading && pendingUsers.length === 0">
+
+    <h3>No pending registrations</h3>
+
+    <p>
+      There are currently no registration requests
+      waiting for approval.
+    </p>
+
+  </div>
+
+
+  <!-- TABLE -->
+  <div
+    class="table-wrapper"
+    *ngIf="!loading && pendingUsers.length > 0">
+
+    <table>
+
+      <thead>
+
+        <tr>
+
+          <th>ID</th>
+
+          <th>Username</th>
+
+          <th>Full Name</th>
+
+          <th>Email</th>
+
+          <th>Status</th>
+
+          <th>Registered</th>
+
+          <th>Action</th>
+
+        </tr>
+
+      </thead>
+
+
+      <tbody>
+
+        <tr
+          *ngFor="let user of pendingUsers">
+
+          <td>
+            {{ user.id }}
+          </td>
+
+          <td>
+            {{ user.username }}
+          </td>
+
+          <td>
+            {{ user.fullName }}
+          </td>
+
+          <td>
+            {{ user.email || 'N/A' }}
+          </td>
+
+          <td>
+
+            <span class="status pending">
+              {{ user.registrationStatus }}
+            </span>
+
+          </td>
+
+          <td>
+            {{ user.createdAt | date:'medium' }}
+          </td>
+
+          <td class="actions">
+
+            <button
+              type="button"
+              class="approve-button"
+              (click)="approveUser(user)">
+
+              Approve
+
+            </button>
+
+
+            <button
+              type="button"
+              class="reject-button"
+              (click)="rejectUser(user)">
+
+              Reject
+
+            </button>
+
+          </td>
+
+        </tr>
+
+      </tbody>
+
+    </table>
+
+  </div>
+
+</div>

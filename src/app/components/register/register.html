@@ -39,6 +39,7 @@
   </header>
 
 
+
   <!-- =========================================
        REGISTER CONTENT
   ========================================== -->
@@ -46,6 +47,7 @@
   <main class="register-content">
 
     <div class="register-card">
+
 
       <!-- =====================================
            TITLE
@@ -58,6 +60,7 @@
       <p class="register-subtitle">
         Please fill in the details below
       </p>
+
 
 
       <!-- =====================================
@@ -88,6 +91,7 @@
         </div>
 
 
+
         <!-- USERNAME -->
 
         <div class="form-group">
@@ -107,6 +111,7 @@
           >
 
         </div>
+
 
 
         <!-- EMAIL -->
@@ -130,6 +135,7 @@
         </div>
 
 
+
         <!-- PASSWORD -->
 
         <div class="form-group">
@@ -149,6 +155,7 @@
           >
 
         </div>
+
 
 
         <!-- CONFIRM PASSWORD -->
@@ -172,6 +179,7 @@
         </div>
 
 
+
         <!-- =====================================
              ERROR
         ====================================== -->
@@ -187,8 +195,9 @@
         }
 
 
+
         <!-- =====================================
-             SUCCESS
+             SUCCESS MESSAGE
         ====================================== -->
 
         @if (successMessage) {
@@ -202,6 +211,7 @@
         }
 
 
+
         <!-- =====================================
              REGISTER BUTTON
         ====================================== -->
@@ -211,12 +221,16 @@
           [disabled]="loading"
         >
 
-          {{ loading ? 'Creating Account...' : 'Register' }}
+          {{ loading
+            ? 'Creating Account...'
+            : 'Register'
+          }}
 
         </button>
 
 
       </form>
+
 
 
       <!-- =====================================
@@ -236,5 +250,93 @@
     </div>
 
   </main>
+
+
+
+  <!-- =========================================
+       REGISTRATION SUCCESS POPUP
+  ========================================== -->
+
+  @if (showSuccessPopup) {
+
+    <div class="popup-overlay">
+
+      <div
+        class="registration-popup"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="registration-popup-title">
+
+
+        <!-- SUCCESS ICON -->
+
+        <div class="popup-icon">
+
+          ✓
+
+        </div>
+
+
+
+        <!-- TITLE -->
+
+        <h2 id="registration-popup-title">
+
+          Registration Submitted
+
+        </h2>
+
+
+
+        <!-- MESSAGE -->
+
+        <p class="popup-message">
+
+          Your registration request has been
+          submitted successfully.
+
+        </p>
+
+
+
+        <p class="popup-message">
+
+          An administrator will review your
+          registration request.
+
+        </p>
+
+
+
+        <!-- IMPORTANT NOTICE -->
+
+        <p class="popup-notice">
+
+          <strong>
+            You will be able to login after your
+            registration has been approved.
+          </strong>
+
+        </p>
+
+
+
+        <!-- OK BUTTON -->
+
+        <button
+          type="button"
+          class="popup-button"
+          (click)="closeSuccessPopup()">
+
+          OK
+
+        </button>
+
+
+      </div>
+
+    </div>
+
+  }
 
 </div>

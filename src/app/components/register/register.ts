@@ -32,7 +32,12 @@ export class Register {
 
   errorMessage = '';
   successMessage = '';
+
   loading = false;
+
+  // Registration success popup
+  showSuccessPopup = false;
+
 
   constructor(
     private authService: AuthService,
@@ -40,10 +45,20 @@ export class Register {
     private cdr: ChangeDetectorRef
   ) {}
 
+
+  // =====================================================
+  // REGISTER
+  // =====================================================
+
   register(): void {
 
     this.errorMessage = '';
     this.successMessage = '';
+
+
+    // =====================================================
+    // VALIDATE FIELDS
+    // =====================================================
 
     if (
       !this.registerData.username ||
@@ -61,6 +76,11 @@ export class Register {
       return;
     }
 
+
+    // =====================================================
+    // VALIDATE PASSWORD
+    // =====================================================
+
     if (
       this.registerData.password !==
       this.confirmPassword
@@ -74,13 +94,27 @@ export class Register {
       return;
     }
 
+
+    // =====================================================
+    // START LOADING
+    // =====================================================
+
     this.loading = true;
 
     this.cdr.detectChanges();
 
+
+    // =====================================================
+    // SEND REGISTRATION REQUEST
+    // =====================================================
+
     this.authService
       .register(this.registerData)
       .subscribe({
+
+        // =================================================
+        // SUCCESS
+        // =================================================
 
         next: (response) => {
 
@@ -91,19 +125,28 @@ export class Register {
 
           this.loading = false;
 
-          this.successMessage =
-            'Registration successful! Redirecting to login...';
+          this.errorMessage = '';
+
+          /*
+           * Do NOT automatically login.
+           *
+           * The account is now:
+           *
+           * registrationStatus = PENDING
+           * active = false
+           *
+           * The administrator must approve it first.
+           */
+
+          this.showSuccessPopup = true;
 
           this.cdr.detectChanges();
-
-          setTimeout(() => {
-
-            this.router.navigate([
-              '/login'
-            ]);
-
-          }, 1500);
         },
+
+
+        // =================================================
+        // ERROR
+        // =================================================
 
         error: (error) => {
 
@@ -113,6 +156,7 @@ export class Register {
           );
 
           this.loading = false;
+
 
           if (error.status === 409) {
 
@@ -135,10 +179,30 @@ export class Register {
             this.errorMessage =
               error.error?.message ||
               'Registration failed. Please try again.';
+
           }
 
           this.cdr.detectChanges();
         }
+
       });
   }
+
+
+  // =====================================================
+  // CLOSE SUCCESS POPUP
+  // =====================================================
+
+  closeSuccessPopup(): void {
+
+    this.showSuccessPopup = false;
+
+    this.cdr.detectChanges();
+
+    // Redirect user to Login
+    this.router.navigate([
+      '/login'
+    ]);
+  }
+
 }
