@@ -1,79 +1,95 @@
-# Legal Office Management System - Frontend
+Legal Office Management System - Frontend
 
-Frontend application for the **Legal Office Management System**.
+Frontend application for the Legal Office Management System.
 
 This application provides a web-based interface for managing legal files, registration requests, proof of service, user authentication, and other legal office processes.
 
-The frontend is built using **Angular** and communicates with a **Spring Boot REST API** backend.
+The frontend is built using Angular and communicates with a Spring Boot REST API backend.
 
----
-
-## 🚀 Project Overview
+🚀 Project Overview
 
 The Legal Office Management System is designed to help legal offices manage and track files throughout their workflow.
 
 The frontend provides interfaces for:
 
-- User registration
-- User login
-- Administrator registration approval
-- Dashboard
-- Legal file management
-- Legal file tracking
-- Proof of Service
-- User access control
-- File and document information
-- Status tracking
-- Communication with the backend REST API
+User registration
 
----
+User login
 
-## 🛠️ Technologies Used
+Administrator registration approval
 
-### Frontend
+Dashboard
 
-- Angular
-- TypeScript
-- HTML5
-- CSS3
-- Bootstrap
-- RxJS
+Legal file management
 
-### Backend Integration
+Legal file tracking
 
-- Java
-- Spring Boot
-- Spring Security
-- JWT Authentication
-- REST API
+Proof of Service
 
-### Database
+User access control
 
-- PostgreSQL
+File and document information
 
-### Development Tools
+Status tracking
 
-- Visual Studio Code
-- Eclipse
-- Postman
-- Git
-- GitHub
+Communication with the backend REST API
 
----
+🛠️ Technologies Used
 
-## 🏗️ Application Architecture
+Frontend
+
+Angular
+
+TypeScript
+
+HTML5
+
+CSS3
+
+Bootstrap
+
+RxJS
+
+Backend Integration
+
+Java
+
+Spring Boot
+
+Spring Security
+
+JWT Authentication
+
+REST API
+
+Database
+
+PostgreSQL
+
+Development Tools
+
+Visual Studio Code
+
+Eclipse
+
+Postman
+
+Git
+
+GitHub
+
+🏗️ Application Architecture
 
 The frontend communicates with the Spring Boot backend through REST APIs.
 
-
 Angular Frontend
-      |
-      | HTTP / REST API
-      v
+|
+| HTTP / REST API
+v
 Spring Boot Backend
-      |
-      | JPA / Hibernate
-      v
+|
+| JPA / Hibernate
+v
 PostgreSQL Database
 
 The frontend is organized using Angular components, services, models, routing, and authentication functionality.
@@ -85,26 +101,26 @@ The application uses JWT authentication.
 The authentication process is:
 
 User
-  |
-  v
+|
+v
 Login
-  |
-  v
+|
+v
 Angular AuthService
-  |
-  v
+|
+v
 Spring Boot Authentication API
-  |
-  v
+|
+v
 Spring Security
-  |
-  v
+|
+v
 JWT Token
-  |
-  v
+|
+v
 Angular Local Storage
-  |
-  v
+|
+v
 Authenticated Requests
 
 The JWT token is sent with protected backend requests.
@@ -119,20 +135,20 @@ New users can register through the registration page.
 The system uses an administrator approval workflow.
 
 User Registration
-       |
-       v
-    PENDING
-       |
-       v
+|
+v
+PENDING
+|
+v
 Administrator Review
-       |
-       +----------------+
-       |                |
-       v                v
-   APPROVED          REJECTED
-       |                |
-       v                v
-   Can Login        Login Blocked
+|
++----------------+
+|                |
+v                v
+APPROVED          REJECTED
+|                |
+v                v
+Can Login        Login Blocked
 
 A newly registered user cannot access the system until the administrator approves the registration request.
 
@@ -150,22 +166,22 @@ Refresh registration requests
 Workflow:
 
 Registration Request
-        |
-        v
-      PENDING
-        |
-   Administrator
-      Review
-        |
-   +----+----+
-   |         |
-   v         v
+|
+v
+PENDING
+|
+Administrator
+Review
+|
++----+----+
+|         |
+v         v
 APPROVE    REJECT
-   |         |
-   v         v
+|         |
+v         v
 APPROVED  REJECTED
-   |         |
-   v         v
+|         |
+v         v
 Can Login  Cannot Login
 
 The backend also enforces administrator authorization for these operations.
@@ -211,17 +227,17 @@ Legal files move through different stages of processing.
 Example workflow:
 
 RECEIVED
-   |
-   v
+|
+v
 INITIAL REVIEW
-   |
-   v
+|
+v
 PROCESSING
-   |
-   v
+|
+v
 FINAL REVIEW
-   |
-   v
+|
+v
 COMPLETED
 
 The frontend displays the current status and stage of each legal file.
@@ -247,7 +263,7 @@ Main routes include:
 /menubar/dashboard
 /menubar/legal-files
 /menubar/proof-of-service
-/menubar/proof-of-service/:fileId
+/menubar/proof-of-service/
 /menubar/register-request
 
 The root route redirects to:
@@ -259,65 +275,65 @@ The Angular project follows a component, service, and model based structure.
 
 src/
 └── app/
-    │
-    ├── components/
-    │   │
-    │   ├── login/
-    │   │   ├── login.ts
-    │   │   ├── login.html
-    │   │   └── login.css
-    │   │
-    │   ├── register/
-    │   │   ├── register.ts
-    │   │   ├── register.html
-    │   │   └── register.css
-    │   │
-    │   ├── dashboard/
-    │   │   ├── dashboard.ts
-    │   │   ├── dashboard.html
-    │   │   └── dashboard.css
-    │   │
-    │   ├── menubar/
-    │   │   ├── menu.ts
-    │   │   ├── menu.html
-    │   │   └── menu.css
-    │   │
-    │   ├── legal-files/
-    │   │   ├── legal-files.ts
-    │   │   ├── legal-files.html
-    │   │   └── legal-files.css
-    │   │
-    │   ├── proof-of-service/
-    │   │   ├── proof-of-service.ts
-    │   │   ├── proof-of-service.html
-    │   │   └── proof-of-service.css
-    │   │
-    │   └── register-request/
-    │       ├── register-request.ts
-    │       ├── register-request.html
-    │       └── register-request.css
-    │
-    ├── model/
-    │   ├── auth/
-    │   │   ├── auth-response.model.ts
-    │   │   ├── login-request.model.ts
-    │   │   ├── register-request.model.ts
-    │   │   └── pending-users.model.ts
-    │   │
-    │   └── legalFiles/
-    │       └── legal-files-model.ts
-    │
-    ├── service/
-    │   ├── auth.service.ts
-    │   ├── AdminUserService.ts
-    │   ├── legal-file.service.ts
-    │   └── ...
-    │
-    ├── env/
-    │   └── environment.ts
-    │
-    ├── app.routes.ts
-    └── ...
+│
+├── components/
+│   │
+│   ├── login/
+│   │   ├── login.ts
+│   │   ├── login.html
+│   │   └── login.css
+│   │
+│   ├── register/
+│   │   ├── register.ts
+│   │   ├── register.html
+│   │   └── register.css
+│   │
+│   ├── dashboard/
+│   │   ├── dashboard.ts
+│   │   ├── dashboard.html
+│   │   └── dashboard.css
+│   │
+│   ├── menubar/
+│   │   ├── menu.ts
+│   │   ├── menu.html
+│   │   └── menu.css
+│   │
+│   ├── legal-files/
+│   │   ├── legal-files.ts
+│   │   ├── legal-files.html
+│   │   └── legal-files.css
+│   │
+│   ├── proof-of-service/
+│   │   ├── proof-of-service.ts
+│   │   ├── proof-of-service.html
+│   │   └── proof-of-service.css
+│   │
+│   └── register-request/
+│       ├── register-request.ts
+│       ├── register-request.html
+│       └── register-request.css
+│
+├── model/
+│   ├── auth/
+│   │   ├── auth-response.model.ts
+│   │   ├── login-request.model.ts
+│   │   ├── register-request.model.ts
+│   │   └── pending-users.model.ts
+│   │
+│   └── legalFiles/
+│       └── legal-files-model.ts
+│
+├── service/
+│   ├── auth.service.ts
+│   ├── AdminUserService.ts
+│   ├── legal-file.service.ts
+│   └── ...
+│
+├── env/
+│   └── environment.ts
+│
+├── app.routes.ts
+└── ...
 🔌 Services
 
 Angular services are responsible for communication between the frontend and the Spring Boot backend.
@@ -380,15 +396,15 @@ LegalFile
 Example PendingUser model:
 
 export interface PendingUser {
-  id: number;
-  username: string;
-  fullName: string;
-  email: string;
-  passwordHash?: string;
-  role: string;
-  active: boolean;
-  registrationStatus: string;
-  createdAt: string;
+id: number;
+username: string;
+fullName: string;
+email: string;
+passwordHash?: string;
+role: string;
+active: boolean;
+registrationStatus: string;
+createdAt: string;
 }
 🛡️ Role-Based Access
 
@@ -428,8 +444,8 @@ Backend API configuration is stored in the Angular environment configuration.
 Example development configuration:
 
 export const environment = {
-  production: false,
-  apiUrl: 'http://localhost:8080/api'
+production: false,
+apiUrl: 'http://localhost:8080/api'
 };
 
 For production, the API URL should point to the deployed Spring Boot backend.
@@ -437,20 +453,24 @@ For production, the API URL should point to the deployed Spring Boot backend.
 Example:
 
 export const environment = {
-  production: true,
-  apiUrl: 'YOUR_PRODUCTION_API_URL'
+production: true,
+apiUrl: 'YOUR_PRODUCTION_API_URL'
 };
 
 Do not commit private credentials or secrets to GitHub.
 
 ▶️ Running the Frontend Locally
-1. Clone the repository
+
+Clone the repository
 git clone YOUR_GITHUB_REPOSITORY_URL
-2. Navigate to the project
+
+Navigate to the project
 cd LegalOfficeFrontend
-3. Install dependencies
+
+Install dependencies
 npm install
-4. Start the Angular development server
+
+Start the Angular development server
 ng serve
 
 Or:
@@ -468,12 +488,12 @@ Example local configuration:
 
 Frontend
 http://localhost:4200
-        |
-        v
+|
+v
 Backend
 http://localhost:8080
-        |
-        v
+|
+v
 PostgreSQL
 
 Make sure the backend is running before testing features that require API communication.
@@ -488,31 +508,39 @@ Angular development server
 
 Recommended test flow:
 
-1. Open Registration
-        |
-        v
-2. Create User Account
-        |
-        v
-3. Registration becomes PENDING
-        |
-        v
-4. Login as ADMIN
-        |
-        v
-5. Open Registration Requests
-        |
-        v
-6. Approve User
-        |
-        v
-7. Login as Approved User
-        |
-        v
-8. Access Dashboard
-        |
-        v
-9. Manage Legal Files
+Open Registration
+|
+v
+
+Create User Account
+|
+v
+
+Registration becomes PENDING
+|
+v
+
+Login as ADMIN
+|
+v
+
+Open Registration Requests
+|
+v
+
+Approve User
+|
+v
+
+Login as Approved User
+|
+v
+
+Access Dashboard
+|
+v
+
+Manage Legal Files
 🚨 Registration Messages
 
 The application provides user feedback for different registration states.
@@ -535,35 +563,36 @@ Your registration request was rejected by the administrator.
 
 The complete frontend workflow is:
 
-                    REGISTER
-                       |
-                       v
-                    PENDING
-                       |
-                       v
-              ADMINISTRATOR REVIEW
-                       |
-                +------+------+
-                |             |
-                v             v
-             APPROVE        REJECT
-                |             |
-                v             v
-            APPROVED       REJECTED
-                |             |
-                v             v
-              LOGIN       LOGIN BLOCKED
-                |
-                v
-             JWT TOKEN
-                |
-                v
-            DASHBOARD
-                |
-        +-------+-------+
-        |               |
-        v               v
-   LEGAL FILES    PROOF OF SERVICE
+                REGISTER
+                   |
+                   v
+                PENDING
+                   |
+                   v
+          ADMINISTRATOR REVIEW
+                   |
+            +------+------+
+            |             |
+            v             v
+         APPROVE        REJECT
+            |             |
+            v             v
+        APPROVED       REJECTED
+            |             |
+            v             v
+          LOGIN       LOGIN BLOCKED
+            |
+            v
+         JWT TOKEN
+            |
+            v
+        DASHBOARD
+            |
+    +-------+-------+
+    |               |
+    v               v
+
+LEGAL FILES    PROOF OF SERVICE
 🚀 Production Deployment
 
 The frontend can be deployed using Vercel.
@@ -575,16 +604,16 @@ Typical production architecture:
 │                          │
 │    Angular Frontend      │
 └────────────┬─────────────┘
-             |
-             | HTTPS / REST API
-             v
+|
+| HTTPS / REST API
+v
 ┌──────────────────────────┐
 │         Railway          │
 │                          │
 │     Spring Boot API      │
 └────────────┬─────────────┘
-             |
-             v
+|
+v
 ┌──────────────────────────┐
 │       PostgreSQL         │
 └──────────────────────────┘
@@ -605,8 +634,8 @@ Before deploying, update the frontend API configuration to use the production ba
 Example:
 
 export const environment = {
-  production: true,
-  apiUrl: 'YOUR_RAILWAY_BACKEND_API_URL'
+production: true,
+apiUrl: 'YOUR_RAILWAY_BACKEND_API_URL'
 };
 
 The backend must also allow requests from the deployed frontend domain through CORS.
